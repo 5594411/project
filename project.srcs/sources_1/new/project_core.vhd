@@ -47,7 +47,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity single_cycle_core is
+entity project is
     port ( 
 --           reset  : in  std_logic;
            btnR   : in  std_logic;
@@ -55,9 +55,9 @@ entity single_cycle_core is
 --           btnC   : in std_logic;
            sw     : in  std_logic_vector(15 downto 0);
            led    : out  std_logic_vector(15 downto 0) );
-end single_cycle_core;
+end project;
 
-architecture structural of single_cycle_core is
+architecture structural of project is
 
 component program_counter is
     port ( reset    : in  std_logic;

@@ -54,9 +54,6 @@ begin
     end process;
 end architecture;
 
-adadadadad;
-
-
 -- 1) IF/ID pipeline register (instruction+pc)
 constant IFID_WIDTH : integer := 16 + 4;
 signal IFID_bus_in, IFID_bus_out : std_logic_vector(IFID_WIDTH-1 downto 0);
