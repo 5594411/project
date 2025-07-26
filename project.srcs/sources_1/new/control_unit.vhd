@@ -66,7 +66,7 @@ begin
                   '0';
 
     reg_write  <= '1' when (opcode = OP_ADD 
-                            or opcode = OP_LOADor opcode = OP_READ) else
+                            or opcode = OP_LOAD or opcode = OP_READ) else
                   '0';
     
     alu_src    <= '1' when (opcode = OP_LOAD 

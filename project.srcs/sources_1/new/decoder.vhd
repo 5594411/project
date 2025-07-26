@@ -24,7 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity decoder is
     Port (
-        src : in std_logic_vector(15 downtro 0);
+        src : in std_logic_vector(15 downto 0)
     );
 end decoder;
 

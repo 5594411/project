@@ -110,9 +110,6 @@ signal sig_pc_carry_out         : std_logic;
 signal sig_instr_src             : std_logic_vector(15 downto 0);
 signal sig_instr                 : std_logic_vector(15 downto 0);
 
-signal sig_pc_plus_one_src : std_logic_vector(3 downto 0);
-signal sig_pc_plus_one : std_logic_vector(3 downto 0);
-
 signal sig_sign_extended_offset : std_logic_vector(15 downto 0);
 signal sig_reg_dst              : std_logic;
 signal sig_reg_write            : std_logic;
@@ -143,7 +140,6 @@ signal clk_count : integer := 0;
 constant DIVISOR : integer := 50_000_000; -- adjust as needed
 
 begin
-
     debouncer_r : debounce
     port map ( clk     => clk,
                btn_in  => btnR,
@@ -165,7 +161,7 @@ begin
     port map ( src_a     => sig_normal_next_pc,
                src_b     => sig_instr(3 downto 0),
                sum       => sig_branch_next_pc,
-               carry_out => sig_pc_branch_carry_out );
+               carry_out => sig_pc_branch_carry_out);
                
     pc_src : mux_2to1_4b
     port map ( mux_select => sig_branch,
@@ -178,15 +174,14 @@ begin
                addr_in  => sig_curr_pc,
                insn_out => sig_instr_src);
                
-   pipe_reg_if_id: entity work.pipe_reg_if_id
+    pipe_reg_if_id: entity work.pipe_reg_if_id
     port map (
       clk => clk,
       reset => reset,
       stall => sig_stall,
       instr_in => sig_instr_src,
-      instr_out => sig_instr,
-   );
-
+      instr_out => sig_instr);
+    
     sign_extend : sign_extend_4to16 
     port map ( data_in  => sig_instr(3 downto 0),
                data_out => sig_sign_extended_offset );
@@ -228,9 +223,10 @@ begin
       clk => clk,
       reset => reset,
       stall => sig_stall,
-      data_in => sig_read_data_a & sig_read_data_b,
-      data_out(31 downto 16) => sig_read_data_a
-      data_out(15 downto 0) => sig_read_data_b
+      data_in(31 downto 16) => sig_read_data_a,
+      data_in(15 downto 0) => sig_read_data_b,
+      data_out(31 downto 16) => sig_read_data_a,
+      data_out(15 downto 0) => sig_read_data_b,
       ctrl_MemWrite_in => sig_mem_write,
       ctrl_MemWrite_out => sig_mem_write,
       ctrl_RegWrite_in => sig_reg_write,
@@ -250,7 +246,7 @@ begin
                src_b     => sig_alu_src_b,
                sum       => sig_alu_result,
                carry_out => sig_alu_carry_out,
-               zero      => sig_zero);
+               zero      => "0");
 
    pipe_reg_ex_mem: entity work.pipe_reg_ex_mem
         port map (
@@ -279,19 +275,6 @@ begin
                data_b     => sw,
                data_out   => sig_write_data );
          
-        
-    pipe_reg_mem_wb: entity work.pipe_reg_mem_wb
-        port map (
-          clk => clk,
-          WBAddrIn => sig_write_register_src_mem_wb,
-          WBAddr => sig_write_register,
-          ctrl_MemToRegIN => sig_mem_to_reg_src_mem_wb,
-          ctrl_MemToReg => sig_mem_to_reg,
-          ctrl_RegWriteIN => sig_reg_write_src_mem_wb,
-          ctrl_RegWrite => sig_reg_write,
-          ALUResultIN => sig_alu_result,
-          ALUResult => sig_alu_result_mem_wb,
-          dataMemoryIN => sig_data_mem_out_src,
-          dataMemory => sig_data_mem_out
-        );
+    output: entity work.disp_docoder
+    port map ( data => sig_read_data_b );
 end structural;
