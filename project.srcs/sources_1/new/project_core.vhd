@@ -187,7 +187,6 @@ signal clk_count : integer := 0;
 constant DIVISOR : integer := 50_000_000; -- adjust as needed
 
 begin
-
     process(clk_1)
     begin
         if rising_edge(clk_1) then
@@ -235,7 +234,6 @@ begin
     
     insn_mem : instruction_memory 
     port map ( reset    => reset,
---               clk      => clk,
                addr_in  => sig_curr_pc,
                insn_out => sig_insn );
 
@@ -305,5 +303,83 @@ begin
                data_a     => sig_mux_mem_to_reg_result,
                data_b     => sw,
                data_out   => sig_write_data );
-
+               
+    pipe_reg_if_id: entity work.pipe_reg_if_id
+        port map (
+          clk => clk,
+          reset => reset,
+          stall => sig_freeze,
+          instr_in => sig_insn,
+          pc_plus_one_in => ,
+          instr_out => ,
+          pc_plus_one_out => 
+       );
+            
+    pipe_reg_id_ex: entity work.pipe_reg_id_ex
+        port map (
+          clk => clk,
+          rst => resetReg,
+          WBAddrIn => sig_write_register_src,
+          WBAddr => sig_write_register_src_ex_mem,
+          ctrl_MemToRegIN => sig_mem_to_reg_src,
+          ctrl_MemToReg => sig_mem_to_reg_src_ex_mem,
+          ctrl_RegWriteIN => sig_reg_write_src,
+          ctrl_RegWrite => sig_reg_write_src_ex_mem,
+          ctrl_EnableJumpPCIN => sig_enable_jump_pc_src ,
+          ctrl_EnableJumpPC => sig_enable_jump_pc_src_ex_mem,
+          ctrl_MemWriteIN => sig_mem_write_src ,
+          ctrl_MemWrite => sig_mem_write_src_ex_mem  ,
+          ctrl_ALUSrcIN => sig_alu_src_src,
+          ctrl_ALUSrc => sig_alu_src,
+          ctrl_ALUOperationIN => sig_alu_operation_src,
+          ctrl_ALUOperation => sig_alu_operation,
+          RegData1IN => sig_read_data_a_src,
+          RegData1 =>  sig_read_data_a,
+          RegData2IN => sig_read_data_b_src,
+          RegData2 =>  sig_read_data_b,
+          SignExtendDataIN => sig_sign_extended_offset_src,
+          SignExtendData => sig_sign_extended_offset,
+          PotentialPCIN => sig_insn(3 downto 0),
+          PotentialPC => sig_potential_pc_id_ex
+        );
+         
+    reset_ex_mem <= sig_freeze or resetReg;
+    pipe_reg_ex_mem: entity work.pipe_reg_ex_mem
+        port map (
+          clk => clk,
+          rst => reset_ex_mem,
+          WBAddrIn => sig_write_register_src_ex_mem,
+          WBAddr => sig_write_register_src_mem_wb,
+          ctrl_MemToRegIN => sig_mem_to_reg_src_ex_mem,
+          ctrl_MemToReg => sig_mem_to_reg_src_mem_wb,
+          ctrl_RegWriteIN => sig_reg_write_src_ex_mem,
+          ctrl_RegWrite => sig_reg_write_src_mem_wb,
+          ctrl_EnableJumpPCIN => sig_enable_jump_pc_src_ex_mem ,
+          ctrl_EnableJumpPC => sig_enable_jump_pc,
+          ctrl_MemWriteIN => sig_mem_write_src_ex_mem ,
+          ctrl_MemWrite => sig_mem_write,
+          ctrl_ALUFlagIN => sig_alu_carry_out_src,
+          ctrl_ALUFlag => sig_alu_carry_out,
+          ALUResultIN => sig_alu_result_src,
+          ALUResult => sig_alu_result,
+          dataMemoryWriteIN => sig_read_data_b,
+          dataMemoryWrite => sig_read_data_b_ex_mem,
+          PotentialPCIN => sig_potential_pc_id_ex,
+          PotentialPC => sig_potential_pc_ex_mem
+        );
+        
+    pipe_reg_mem_wb: entity work.pipe_reg_mem_wb
+        port map (
+          clk => clk,
+          WBAddrIn => sig_write_register_src_mem_wb,
+          WBAddr => sig_write_register,
+          ctrl_MemToRegIN => sig_mem_to_reg_src_mem_wb,
+          ctrl_MemToReg => sig_mem_to_reg,
+          ctrl_RegWriteIN => sig_reg_write_src_mem_wb,
+          ctrl_RegWrite => sig_reg_write,
+          ALUResultIN => sig_alu_result,
+          ALUResult => sig_alu_result_mem_wb,
+          dataMemoryIN => sig_data_mem_out_src,
+          dataMemory => sig_data_mem_out
+        );
 end structural;
