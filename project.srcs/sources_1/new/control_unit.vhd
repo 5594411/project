@@ -49,8 +49,7 @@ entity control_unit is
            mem_write  : out std_logic;
            mem_to_reg : out std_logic;
            branch     : out std_logic;
-           disp       : out std_logic;
-           sw_to_reg  : out std_logic );
+           disp       : out std_logic);
 end control_unit;
 
 architecture behavioural of control_unit is
@@ -84,7 +83,5 @@ begin
                   '0';
                   
     disp       <= '1' when opcode = OP_DISP else
-                  '0';
-    sw_to_reg  <= '1' when opcode = OP_READ else
                   '0';
 end behavioural;

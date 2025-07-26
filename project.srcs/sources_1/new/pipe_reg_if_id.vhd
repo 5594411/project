@@ -21,7 +21,7 @@ begin
             clk => clk,
             reset => reset,
             stall => stall,
-            din => instr & pc_plus_one,
+            din => instr_in & pc_plus_one_in,
             dout(19 downto 4) => instr_out,
             dout(3 downto 0) => pc_plus_one_out
         );
