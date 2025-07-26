@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 30.03.2021 23:27:54
+-- Create Date: 07/26/2025 02:25:34 PM
 -- Design Name: 
--- Module Name: PipelineReg_ID_EX - Behavioral
+-- Module Name: decoder - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -22,23 +22,15 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity pipe_reg_id_ex is
-    Port ( clk : in STD_LOGIC;
-           reset : in STD_LOGIC;
-           stall : in STD_LOGIC;
+entity decoder is
+    Port (
+        src : in std_logic_vector(15 downtro 0);
+    );
+end decoder;
 
-       );
-end pipe_reg_id_ex;
-
-architecture Behavioral of pipe_reg_id_ex is
+architecture Behavioral of decoder is
 
 begin
- reg: entity work.pipe_reg
-        GENERIC MAP (width => 6 + 56)
-        PORT MAP (
-          clk => clk,
-          reset => reset,
-          stall => stall
-        );
+
 
 end Behavioral;

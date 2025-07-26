@@ -155,6 +155,9 @@ signal sig_curr_pc              : std_logic_vector(3 downto 0);
 signal sig_one_4b               : std_logic_vector(3 downto 0);
 signal sig_pc_carry_out         : std_logic;
 signal sig_insn                 : std_logic_vector(15 downto 0);
+signal sig_insn_src             : std_logic_vector(15 downto 0);
+signal sig_pc_plus_one_in_src : std_logic_vector(3 downto 0);
+signal sig_pc_plus_one_in : std_logic_vector(3 downto 0);
 signal sig_sign_extended_offset : std_logic_vector(15 downto 0);
 signal sig_reg_dst              : std_logic;
 signal sig_reg_write            : std_logic;
@@ -180,6 +183,7 @@ signal sig_pc_mux_select        : std_logic;
 signal sig_disp                 : std_logic;
 signal sig_mux_mem_to_reg_result: std_logic_vector(15 downto 0);
 signal sig_sw_to_reg            : std_logic;
+signal sig_stall : std_logic;
 
 signal reset                    : std_logic;
 signal clk : std_logic := '0';  -- internal slow clock
@@ -219,13 +223,13 @@ begin
                carry_out => sig_pc_carry_out );
                
     branch_pc : adder_4b
-    port map ( src_a     => sig_normal_next_pc, -- changed from output from next_pc
+    port map ( src_a     => sig_normal_next_pc,
                src_b     => sig_insn(3 downto 0),
                sum       => sig_branch_next_pc,
                carry_out => sig_pc_branch_carry_out );
-               
+
     sig_pc_mux_select <= sig_branch AND sig_zero;
-               
+
     pc_src : mux_2to1_4b
     port map ( mux_select => sig_pc_mux_select,
                data_a     => sig_normal_next_pc,
@@ -235,7 +239,18 @@ begin
     insn_mem : instruction_memory 
     port map ( reset    => reset,
                addr_in  => sig_curr_pc,
-               insn_out => sig_insn );
+               insn_out => sig_insnr);
+               
+   pipe_reg_if_id: entity work.pipe_reg_if_id
+    port map (
+      clk => clk,
+      reset => reset,
+      stall => sig_stall,
+      instr_in => sig_insnr_src,
+      pc_plus_one_in => sig_pc_plus_one_in_src,
+      instr_out => sig_insnr,
+      pc_plus_one_out => sig_pc_plus_one_in
+   );
 
     sign_extend : sign_extend_4to16 
     port map ( data_in  => sig_insn(3 downto 0),
@@ -271,6 +286,19 @@ begin
                read_data_b     => sig_read_data_b,
                led             => led );
     
+    -- All operation for assignment happend here
+    decoder: entity work.decoder
+    port map (
+        src => sw;
+    );
+    
+    pipe_reg_id_ex: entity work.pipe_reg_id_ex
+    port map (
+      clk => clk,
+      reset => reset,
+      stall => sig_stall,
+    );
+        
     mux_alu_src : mux_2to1_16b 
     port map ( mux_select => sig_alu_src,
                data_a     => sig_read_data_b,
@@ -283,6 +311,13 @@ begin
                sum       => sig_alu_result,
                carry_out => sig_alu_carry_out,
                zero      => sig_zero );
+
+   pipe_reg_ex_mem: entity work.pipe_reg_ex_mem
+        port map (
+          clk => clk,
+          reset => reset,
+          stall => sig_stall
+        );
 
     data_mem : data_memory 
     port map ( reset        => reset,
@@ -303,70 +338,7 @@ begin
                data_a     => sig_mux_mem_to_reg_result,
                data_b     => sw,
                data_out   => sig_write_data );
-               
-    pipe_reg_if_id: entity work.pipe_reg_if_id
-        port map (
-          clk => clk,
-          reset => reset,
-          stall => sig_freeze,
-          instr_in => sig_insn,
-          pc_plus_one_in => ,
-          instr_out => ,
-          pc_plus_one_out => 
-       );
-            
-    pipe_reg_id_ex: entity work.pipe_reg_id_ex
-        port map (
-          clk => clk,
-          rst => resetReg,
-          WBAddrIn => sig_write_register_src,
-          WBAddr => sig_write_register_src_ex_mem,
-          ctrl_MemToRegIN => sig_mem_to_reg_src,
-          ctrl_MemToReg => sig_mem_to_reg_src_ex_mem,
-          ctrl_RegWriteIN => sig_reg_write_src,
-          ctrl_RegWrite => sig_reg_write_src_ex_mem,
-          ctrl_EnableJumpPCIN => sig_enable_jump_pc_src ,
-          ctrl_EnableJumpPC => sig_enable_jump_pc_src_ex_mem,
-          ctrl_MemWriteIN => sig_mem_write_src ,
-          ctrl_MemWrite => sig_mem_write_src_ex_mem  ,
-          ctrl_ALUSrcIN => sig_alu_src_src,
-          ctrl_ALUSrc => sig_alu_src,
-          ctrl_ALUOperationIN => sig_alu_operation_src,
-          ctrl_ALUOperation => sig_alu_operation,
-          RegData1IN => sig_read_data_a_src,
-          RegData1 =>  sig_read_data_a,
-          RegData2IN => sig_read_data_b_src,
-          RegData2 =>  sig_read_data_b,
-          SignExtendDataIN => sig_sign_extended_offset_src,
-          SignExtendData => sig_sign_extended_offset,
-          PotentialPCIN => sig_insn(3 downto 0),
-          PotentialPC => sig_potential_pc_id_ex
-        );
          
-    reset_ex_mem <= sig_freeze or resetReg;
-    pipe_reg_ex_mem: entity work.pipe_reg_ex_mem
-        port map (
-          clk => clk,
-          rst => reset_ex_mem,
-          WBAddrIn => sig_write_register_src_ex_mem,
-          WBAddr => sig_write_register_src_mem_wb,
-          ctrl_MemToRegIN => sig_mem_to_reg_src_ex_mem,
-          ctrl_MemToReg => sig_mem_to_reg_src_mem_wb,
-          ctrl_RegWriteIN => sig_reg_write_src_ex_mem,
-          ctrl_RegWrite => sig_reg_write_src_mem_wb,
-          ctrl_EnableJumpPCIN => sig_enable_jump_pc_src_ex_mem ,
-          ctrl_EnableJumpPC => sig_enable_jump_pc,
-          ctrl_MemWriteIN => sig_mem_write_src_ex_mem ,
-          ctrl_MemWrite => sig_mem_write,
-          ctrl_ALUFlagIN => sig_alu_carry_out_src,
-          ctrl_ALUFlag => sig_alu_carry_out,
-          ALUResultIN => sig_alu_result_src,
-          ALUResult => sig_alu_result,
-          dataMemoryWriteIN => sig_read_data_b,
-          dataMemoryWrite => sig_read_data_b_ex_mem,
-          PotentialPCIN => sig_potential_pc_id_ex,
-          PotentialPC => sig_potential_pc_ex_mem
-        );
         
     pipe_reg_mem_wb: entity work.pipe_reg_mem_wb
         port map (
