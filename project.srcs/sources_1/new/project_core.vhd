@@ -105,7 +105,6 @@ end component;
 
 signal sig_next_pc              : std_logic_vector(3 downto 0);
 signal sig_curr_pc              : std_logic_vector(3 downto 0);
-signal sig_one_4b               : std_logic_vector(3 downto 0);
 signal sig_pc_carry_out         : std_logic;
 
 signal sig_instr_src             : std_logic_vector(15 downto 0);
@@ -135,7 +134,6 @@ signal sig_normal_next_pc       : std_logic_vector(3 downto 0);
 signal sig_branch_next_pc       : std_logic_vector(3 downto 0);
 signal sig_pc_branch_carry_out  : std_logic;
 signal sig_pc_mux_select        : std_logic;
-signal sig_disp                 : std_logic;
 signal sig_mux_mem_to_reg_result: std_logic_vector(15 downto 0);
 signal sig_stall : std_logic;
 
@@ -150,8 +148,6 @@ begin
     port map ( clk     => clk,
                btn_in  => btnR,
                btn_out => reset );
-    
-    sig_one_4b <= "0001";
 
     pc : program_counter
     port map ( reset    => reset,
@@ -161,7 +157,7 @@ begin
 
     next_pc : adder_4b 
     port map ( src_a     => sig_curr_pc, 
-               src_b     => sig_one_4b,
+               src_b     => "0001",
                sum       => sig_normal_next_pc,   
                carry_out => sig_pc_carry_out);
                
@@ -232,6 +228,15 @@ begin
       clk => clk,
       reset => reset,
       stall => sig_stall,
+      data_in => sig_read_data_a & sig_read_data_b,
+      data_out(31 downto 16) => sig_read_data_a
+      data_out(15 downto 0) => sig_read_data_b
+      ctrl_MemWrite_in => sig_mem_write,
+      ctrl_MemWrite_out => sig_mem_write,
+      ctrl_RegWrite_in => sig_reg_write,
+      ctrl_RegWrite_out => sig_reg_write,
+      ctrl_Branch_in => sig_branch,
+      ctrl_Branch_out => sig_branch
     );
         
     mux_alu_src : mux_2to1_16b 
