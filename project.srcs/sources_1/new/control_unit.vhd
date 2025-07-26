@@ -57,7 +57,6 @@ architecture behavioural of control_unit is
 constant OP_LOAD  : std_logic_vector(3 downto 0) := "0001";
 constant OP_STORE : std_logic_vector(3 downto 0) := "0011";
 constant OP_BEQ   : std_logic_vector(3 downto 0) := "0100";
-constant OP_DISP  : std_logic_vector(3 downto 0) := "0101";
 constant OP_READ  : std_logic_vector(3 downto 0) := "0110";
 constant OP_ADD   : std_logic_vector(3 downto 0) := "1000";
 
@@ -67,21 +66,18 @@ begin
                   '0';
 
     reg_write  <= '1' when (opcode = OP_ADD 
-                            or opcode = OP_LOAD or opcode = OP_DISP or opcode = OP_READ) else
+                            or opcode = OP_LOADor opcode = OP_READ) else
                   '0';
     
     alu_src    <= '1' when (opcode = OP_LOAD 
-                           or opcode = OP_STORE or opcode = OP_DISP or opcode = OP_READ) else
+                           or opcode = OP_STORE or opcode = OP_READ) else
                   '0';
                  
     mem_write  <= '1' when (opcode = OP_STORE) else
                   '0';
                  
-    mem_to_reg <= '1' when (opcode = OP_LOAD or opcode = OP_DISP) else
+    mem_to_reg <= '1' when (opcode = OP_LOAD) else
                   '0';
     branch     <= '1' when opcode = OP_BEQ else
-                  '0';
-                  
-    disp       <= '1' when opcode = OP_DISP else
                   '0';
 end behavioural;

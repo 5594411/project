@@ -202,9 +202,7 @@ begin
                alu_src    => sig_alu_src,
                mem_write  => sig_mem_write,
                mem_to_reg => sig_mem_to_reg,
-               branch     => sig_branch,
-               disp       => sig_disp,
-               sw_to_reg  => sig_sw_to_reg );
+               branch     => sig_branch);
 
     mux_reg_dst : mux_2to1_4b 
     port map ( mux_select => sig_reg_dst,
@@ -215,15 +213,13 @@ begin
     reg_file : register_file 
     port map ( reset           => reset, 
                clk             => clk,
-               led_output_en   => sig_disp,
                read_register_a => sig_instr(11 downto 8),
                read_register_b => sig_instr(7 downto 4),
                write_enable    => sig_reg_write,
                write_register  => sig_write_register,
                write_data      => sig_write_data,
                read_data_a     => sig_read_data_a,
-               read_data_b     => sig_read_data_b,
-               led             => led );
+               read_data_b     => sig_read_data_b);
     
     -- All operation for assignment happend here
     decoder: entity work.decoder

@@ -93,15 +93,13 @@ entity register_file is
     port (
         reset             : in  std_logic;
         clk               : in  std_logic;
-        led_output_en     : in  std_logic;
         read_register_a   : in  std_logic_vector(3 downto 0);
         read_register_b   : in  std_logic_vector(3 downto 0);
         write_enable      : in  std_logic;
         write_register    : in  std_logic_vector(3 downto 0);
         write_data        : in  std_logic_vector(15 downto 0);
         read_data_a       : out std_logic_vector(15 downto 0);
-        read_data_b       : out std_logic_vector(15 downto 0);
-        led               : out std_logic_vector(15 downto 0)
+        read_data_b       : out std_logic_vector(15 downto 0)
     );
 end register_file;
 
@@ -112,9 +110,6 @@ architecture behavioral of register_file is
 
 begin
 
-    -- LED output connected to reg 15 when enabled, else all 0s
-    led <= sig_regfile(15) when led_output_en = '1' else (others => '0');
-    
     mem_process : process (
         reset,
         clk,
