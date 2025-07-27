@@ -33,6 +33,9 @@ signal sig_block_1      : std_logic_vector(7 downto 0);
 signal sig_block_2      : std_logic_vector(7 downto 0);
 signal sig_block_3      : std_logic_vector(7 downto 0);
 
+signal sig_swaped_block_1 : std_logic_vector(7 downto 0);
+signal sig_swaped_block_2 : std_logic_vector(7 downto 0);
+
 begin
     -- tag size < 8 
     -- tag size >= record size/4
@@ -49,6 +52,15 @@ begin
               block_1      => sig_block_1,
               block_2      => sig_block_2,
               block_3      => sig_block_3);
+    
+    swap1: entity work.swap
+    port map( bx => sig_block_0,
+              by => sig_block_1,
+              px => "0001",
+              py => "0001",
+              s => "0001",
+              bx_swapped => sig_swaped_block_1,
+              by_swapped => sig_swaped_block_2);
     
     pipe_reg: entity work.pipe_reg
         GENERIC MAP (width => 35)
