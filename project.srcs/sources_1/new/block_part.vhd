@@ -1,35 +1,10 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 27.07.2025 15:58:33
--- Design Name: 
--- Module Name: single_cycle_core - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
+library IEEE;
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
-entity single_cycle_core is
-    port ( clk    : in  std_logic);
-end single_cycle_core;
+use IEEE.NUMERIC_STD.ALL;
 
-architecture structural of single_cycle_core is
 
-component block_partitioner is
+entity block_partitioner is
 
     port ( clk          : in  std_logic;
            tag_sz       : in  std_logic_vector(3 downto 0);
@@ -40,28 +15,54 @@ component block_partitioner is
            block_2      : out std_logic_vector(7 downto 0);
            block_3      : out std_logic_vector(7 downto 0));
            
-end component;
-signal sig_tag_sz       : std_logic_vector(3 downto 0);
-signal sig_record_sz    : std_logic_vector(5 downto 0);
-signal sig_record_in    : std_logic_vector(31 downto 0);
-signal sig_block_0      : std_logic_vector(7 downto 0);
-signal sig_block_1      : std_logic_vector(7 downto 0);
-signal sig_block_2      : std_logic_vector(7 downto 0);
-signal sig_block_3      : std_logic_vector(7 downto 0);
+end block_partitioner;
+
+architecture behavioral of block_partitioner is
+
 begin
--- tag size < 8 
--- tag size >= record size/4
--- record size < 32
-    sig_tag_sz <= "0111";
-    sig_record_sz <= "010100";
-    sig_record_in <= "00000000000001010101010101010101";
-    bp1: block_partitioner
-    port map( clk          => clk,              
-              tag_sz       => sig_tag_sz,
-              record_sz    => sig_record_sz,
-              record_in    => sig_record_in,
-              block_0      => sig_block_0,
-              block_1      => sig_block_1,
-              block_2      => sig_block_2,
-              block_3      => sig_block_3);
-end structural;
+   process(clk)
+    variable tag_len : integer;  
+    variable rec_len : integer; 
+    variable pos     : integer;
+    variable trf_len : integer; 
+    variable blk_tmp : std_logic_vector(7 downto 0);
+    begin
+        --if (reset = '1') then
+            --block_0 <= (others => '0');
+           -- block_1 <= (others => '0');
+           -- block_2 <= (others => '0');
+           -- block_3 <= (others => '0');
+        if (rising_edge(clk)) then
+            -- Convert sizes to integers and clamp
+            tag_len := to_integer(unsigned(tag_sz));
+            rec_len := to_integer(unsigned(record_sz));
+
+            pos      := 0;
+            for blk in 0 to 3 loop
+                blk_tmp := (others => '0');
+                if (pos < rec_len) then
+                    trf_len := rec_len - pos;
+                    if (trf_len > tag_len) then
+                            trf_len := tag_len;
+                        end if;
+                    blk_tmp(trf_len-1 downto 0) := record_in(pos + trf_len - 1 downto pos);
+                else
+                    blk_tmp := (others => '0');
+                end if;
+                pos := pos + tag_len;
+                if (blk=3) then
+                    block_0 <= blk_tmp;
+                end if;
+                if (blk=2) then
+                    block_1 <= blk_tmp;
+                end if;
+                if (blk=1) then
+                    block_2 <= blk_tmp;
+                end if;
+                if (blk=0) then
+                    block_3 <= blk_tmp;
+                end if;
+            end loop;
+        end if;
+     end process;
+ end behavioral;
