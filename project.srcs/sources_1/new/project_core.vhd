@@ -275,6 +275,6 @@ begin
                data_b     => sw,
                data_out   => sig_write_data );
          
-    output: entity work.disp_docoder
+    output: entity work.disp_decoder
     port map ( data => sig_read_data_b );
 end structural;
