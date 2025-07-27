@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 07/27/2025 09:34:35 AM
+-- Create Date: 07/27/2025 02:27:30 PM
 -- Design Name: 
--- Module Name: disp_decoder - Behavioral
+-- Module Name: parity - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,13 +31,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity disp_decoder is
-  Port (
-    data : in std_logic_vector(15 downto 0);
-  );
-end disp_decoder;
+entity parity is
+--  Port ( );
+end parity;
 
-architecture Behavioral of disp_decoder is
+architecture Behavioral of parity is
 
 begin
 
