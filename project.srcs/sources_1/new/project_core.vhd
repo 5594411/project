@@ -33,8 +33,10 @@ signal sig_block_1      : std_logic_vector(7 downto 0);
 signal sig_block_2      : std_logic_vector(7 downto 0);
 signal sig_block_3      : std_logic_vector(7 downto 0);
 
-signal sig_swaped_block_1 : std_logic_vector(7 downto 0);
-signal sig_swaped_block_2 : std_logic_vector(7 downto 0);
+signal sig_block_x : std_logic_vector(7 downto 0);
+signal sig_block_y : std_logic_vector(7 downto 0);
+signal sig_swaped_block_x : std_logic_vector(7 downto 0);
+signal sig_swaped_block_y : std_logic_vector(7 downto 0);
 
 begin
     -- tag size < 8 
@@ -53,9 +55,23 @@ begin
               block_2      => sig_block_2,
               block_3      => sig_block_3);
     
-    swap1: entity work.swap
-    port map( bx => sig_block_0,
-              by => sig_block_1,
+    
+    mux1 : entity work.mux_4to2
+    generic map ( WIDTH => 8 );
+    port map (
+        data_0 => sig_block_0,
+        data_1 => sig_block_1,
+        data_2 => sig_block_2,
+        data_3 => sig_block_3,
+        block_x => "01",
+        block_y => "00",
+        data_out_x => sig_block_x,
+        data_out_y => sig_block_y
+    );
+
+    swap1 : entity work.swap
+    port map( block_x => sig_block_x,
+              block_y => sig_block_y,
               px => "0001",
               py => "0001",
               s => "0001",

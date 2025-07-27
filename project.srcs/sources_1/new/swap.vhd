@@ -4,19 +4,19 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity swap is
     port (
-        bx         : in  std_logic_vector(3 downto 0);
-        by         : in  std_logic_vector(3 downto 0);
+        block_x         : in  std_logic_vector(7 downto 0);
+        block_y         : in  std_logic_vector(7 downto 0);
         px         : in  std_logic_vector(3 downto 0);
         py         : in  std_logic_vector(3 downto 0);
         s          : in  std_logic_vector(3 downto 0);
-        bx_swapped : out std_logic_vector(3 downto 0);
-        by_swapped : out std_logic_vector(3 downto 0));
+        bx_swapped : out std_logic_vector(7 downto 0);
+        by_swapped : out std_logic_vector(7 downto 0));
 end swap;
 
 architecture behavioral of swap is
-    constant BLOCK_WIDTH : integer := 4;
+    constant BLOCK_WIDTH : integer := 8;
 begin
-    swap_proc: process(bx, by, px, py, s)
+    swap_proc: process(block_x, block_y, px, py, s)
         variable temp_bx, id_x : std_logic_vector(BLOCK_WIDTH - 1 downto 0);
         variable temp_by, id_y : std_logic_vector(BLOCK_WIDTH - 1 downto 0);
         variable temp_bit : std_logic;
@@ -24,8 +24,8 @@ begin
         variable idx_x, idx_y : integer;
 
     begin
-        temp_bx := bx;
-        temp_by := by;
+        temp_x := block_x;
+        temp_y := block_y;
 
         for i in 0 to to_integer(unsigned(s)) - 1 loop
             idx_x := (to_integer(unsigned(px)) + i) mod BLOCK_WIDTH;
