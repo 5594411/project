@@ -50,7 +50,7 @@ signal sig_swaped_block_x : std_logic_vector(7 downto 0);
 signal sig_swaped_block_y : std_logic_vector(7 downto 0);
 
 begin
-    -- tag size < 8 
+    -- tag size <= 8 
     -- tag size >= record size/4
     -- record size < 32
     sig_tag_sz <= "0111";
