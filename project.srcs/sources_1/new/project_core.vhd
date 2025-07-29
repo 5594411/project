@@ -85,7 +85,7 @@ end component;
 component shifter is
     port (
         s_b        : in  std_logic_vector(7 downto 0);
-        block_size, r : in integer range 1 to 8;
+        block_size_in, r_in : std_logic_vector(3 downto 0);
         shift_o    : out std_logic_vector(7 downto 0)
     );
 end component;
