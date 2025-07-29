@@ -35,7 +35,21 @@ entity shifter is
 end entity shifter;
 
 architecture Behavioral of shifter is
+    signal modulo : integer range 0 to w;
 begin
-    shift_o <= std_logic_vector(shift_left(unsigned(s_b), r)) when r < w
-               else (others => '0');
+    modulo <= r mod w;
+    process(modulo) begin
+        if (modulo = 1) then
+            shift_o <= s_b(w - 2 downto 0) & s_b(w - 1);
+        elsif (modulo = 0) then
+            shift_o <= s_b;
+        elsif (modulo = w - 1) then
+            shift_o <= s_b(0) & s_b(w - 1 downto 1);
+        else
+            shift_o <= s_b(w - 1 - modulo downto 0) & s_b(w - 1 downto w - modulo);
+        end if;
+    end process;
+    --shift_o <= std_logic_vector(unsigned(s_b) rol modulo);
+    --shift_o <= std_logic_vector(shift_left(unsigned(s_b), r)) when r < w
+    --           else (others => '0');
 end architecture Behavioral;
