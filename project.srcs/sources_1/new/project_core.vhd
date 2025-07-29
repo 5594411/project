@@ -26,13 +26,19 @@ component block_partitioner is
            
 end component;
 
-entity shifter is
+component shifter is
     port (
         s_b        : in  std_logic_vector(7 downto 0);
         block_size, r : in integer range 1 to 8;
         shift_o    : out std_logic_vector(7 downto 0)
     );
-end entity shifter;
+end component;
+
+component xor_mod is
+    Port ( block_a, block_b,
+           block_c, block_d : in STD_LOGIC_VECTOR (7 downto 0);
+           xor_out          : out STD_LOGIC_VECTOR(7 downto 0));
+end component;
 
 signal sig_tag_sz       : std_logic_vector(3 downto 0);
 signal sig_record_sz    : std_logic_vector(5 downto 0);
