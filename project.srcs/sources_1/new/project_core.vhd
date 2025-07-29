@@ -160,7 +160,7 @@ begin
     port map( clk          => clk,              
               tag_sz       => sig_tag_sz,
               record_sz    => sig_record_sz,
-              record_in    => sig_record_in,
+              record_in    => sig_record,
               block_0      => sig_block_0,
               block_1      => sig_block_1,
               block_2      => sig_block_2,
