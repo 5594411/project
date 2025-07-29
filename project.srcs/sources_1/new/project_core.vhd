@@ -13,6 +13,29 @@ end project;
 
 architecture structural of project is
 
+component data_memory is
+    port ( reset        : in  std_logic;
+           clk          : in  std_logic;
+           write_enable : in  std_logic;
+           write_data   : in  std_logic_vector(15 downto 0);
+           addr_in      : in  std_logic_vector(3 downto 0);
+           data_out     : out std_logic_vector(15 downto 0) );
+end component;
+
+component mux_4to2 is
+    generic ( WIDTH : integer := 32 );
+    Port (
+        data_0 : in  std_logic_vector(WIDTH - 1 downto 0);
+        data_1 : in  std_logic_vector(WIDTH - 1 downto 0);
+        data_2 : in  std_logic_vector(WIDTH - 1 downto 0);
+        data_3 : in  std_logic_vector(WIDTH - 1 downto 0);
+        block_x : in  std_logic_vector(1 downto 0);
+        block_y : in  std_logic_vector(1 downto 0);
+        data_out_x : out std_logic_vector(WIDTH - 1 downto 0);
+        data_out_y : out std_logic_vector(WIDTH - 1 downto 0)
+    );
+end component;
+
 component block_partitioner is
 
     port ( clk          : in  std_logic;
@@ -84,9 +107,11 @@ end component;
 
 component shifter is
     port (
-        s_b        : in  std_logic_vector(7 downto 0);
-        block_size, r : in integer range 1 to 8;
-        shift_o    : out std_logic_vector(7 downto 0)
+        block_a, block_b        : in std_logic_vector(7 downto 0);
+        shift_select            : in std_logic_vector(1 downto 0);
+        block_c, block_d        : in  std_logic_vector(7 downto 0); --s_b
+        block_size_in, r_in     : in std_logic_vector(3 downto 0);
+        shift_a, shift_b, shift_c, shift_d : out std_logic_vector(7 downto 0)
     );
 end component;
 
@@ -94,6 +119,17 @@ component xor_mod is
     Port ( block_a, block_b,
            block_c, block_d : in STD_LOGIC_VECTOR (7 downto 0);
            xor_out          : out STD_LOGIC_VECTOR(7 downto 0));
+end component;
+
+component swap is
+    port (
+        block_x         : in  std_logic_vector(7 downto 0);
+        block_y         : in  std_logic_vector(7 downto 0);
+        px         : in  std_logic_vector(3 downto 0);
+        py         : in  std_logic_vector(3 downto 0);
+        s          : in  std_logic_vector(3 downto 0);
+        bx_swapped : out std_logic_vector(7 downto 0);
+        by_swapped : out std_logic_vector(7 downto 0));
 end component;
 
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
@@ -148,6 +184,10 @@ signal sig_block_x : std_logic_vector(7 downto 0);
 signal sig_block_y : std_logic_vector(7 downto 0);
 signal sig_swaped_block_x : std_logic_vector(7 downto 0);
 signal sig_swaped_block_y : std_logic_vector(7 downto 0);
+
+signal sig_block_0, sig_block_1 : std_logic_vector(7 downto 0);
+signal sig_block_2, sig_block_3 : std_logic_vector(7 downto 0);
+signal sig_swaped_block_1, sig_swaped_block_2 : std_logic_vector(7 downto 0);
 
 begin
     -- tag size <= 8 
@@ -217,8 +257,8 @@ begin
               block_3_out  => sig_block_shift_3_out,
               record_out   => sig_record_shift);
     
-    mux1 : entity work.mux_4to2
-    generic map ( WIDTH => 8 );
+    mux1 : mux_4to2
+    generic map ( WIDTH => 8 )
     port map (
         data_0 => sig_block_0,
         data_1 => sig_block_1,
@@ -230,7 +270,7 @@ begin
         data_out_y => sig_block_y
     );
 
-    swap1 : entity work.swap
+    swap1 : swap
     port map( block_x => sig_block_x,
               block_y => sig_block_y,
               px => "0001",
@@ -248,7 +288,7 @@ begin
           din => sw,
           dout => led);
 
-    data_memory: entity work.data_memory
+    data_memory_mod: data_memory
         port map (
            clk => clk,
            reset => btnR,

@@ -1,0 +1,18 @@
+0.7
+2020.2
+May 22 2024
+19:03:11
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/adder.vhd,1753777992,vhdl,,,,,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/block_part.vhd,1753777992,vhdl,,,,block_partitioner,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/data_memory.vhd,1753777992,vhdl,,,,data_memory,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/flip.vhd,1753777992,vhdl,,,,,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/mux4to1.vhd,1753779323,vhdl,,,,mux_4to1,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/mux_4to2.vhd,1753777992,vhdl,,,,mux_4to2,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/parity.vhd,1753777992,vhdl,,,,parity,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/pipe_reg.vhd,1753777992,vhdl,C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/project_core.vhd,,,pipe_reg,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/project_core.vhd,1753780897,vhdl,,,,project,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/shift.vhd,1753777992,vhdl,,,,,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/shifter.vhd,1753781023,vhdl,,,,shifter,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/stack.vhd,1753777992,vhdl,,,,stack,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/swap.vhd,1753777992,vhdl,,,,swap,,,,,,,,
+C:/Users/fulic/university courses/group-project/project/project.srcs/sources_1/new/xor.vhd,1753777992,vhdl,,,,xor_mod,,,,,,,,
