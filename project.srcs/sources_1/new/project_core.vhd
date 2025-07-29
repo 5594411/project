@@ -84,9 +84,11 @@ end component;
 
 component shifter is
     port (
-        s_b        : in  std_logic_vector(7 downto 0);
-        block_size_in, r_in : std_logic_vector(3 downto 0);
-        shift_o    : out std_logic_vector(7 downto 0)
+        block_a, block_b        : in std_logic_vector(7 downto 0);
+        shift_select            : in std_logic_vector(1 downto 0);
+        block_c, block_d        : in  std_logic_vector(7 downto 0); --s_b
+        block_size_in, r_in     : in std_logic_vector(3 downto 0);
+        shift_a, shift_b, shift_c, shift_d : out std_logic_vector(7 downto 0)
     );
 end component;
 
@@ -148,6 +150,9 @@ signal sig_block_x : std_logic_vector(7 downto 0);
 signal sig_block_y : std_logic_vector(7 downto 0);
 signal sig_swaped_block_x : std_logic_vector(7 downto 0);
 signal sig_swaped_block_y : std_logic_vector(7 downto 0);
+
+signal sig_block_0, sig_block_1 : std_logic_vector(7 downto 0);
+signal sig_block_2, sig_block_3 : std_logic_vector(7 downto 0);
 
 begin
     -- tag size <= 8 
@@ -218,7 +223,7 @@ begin
               record_out   => sig_record_shift);
     
     mux1 : entity work.mux_4to2
-    generic map ( WIDTH => 8 );
+    generic map ( WIDTH => 8 )
     port map (
         data_0 => sig_block_0,
         data_1 => sig_block_1,

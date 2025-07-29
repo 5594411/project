@@ -25,14 +25,29 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity shifter is
     port (
-        s_b        : in  std_logic_vector(7 downto 0);
-        block_size_in, r_in : std_logic_vector(3 downto 0);
-        shift_o    : out std_logic_vector(7 downto 0)
+        block_a, block_b        : in std_logic_vector(7 downto 0);
+        shift_select            : in std_logic_vector(1 downto 0);
+        block_c, block_d        : in  std_logic_vector(7 downto 0); --s_b
+        block_size_in, r_in     : in std_logic_vector(3 downto 0);
+        shift_a, shift_b, shift_c, shift_d : out std_logic_vector(7 downto 0)
     );
 end entity shifter;
 architecture Behavioral of shifter is
     signal block_end, modulo, block_size, r : integer range 0 to 8;
+    signal s_b, shift_o                     : std_logic_vector(7 downto 0);
 begin
+    --pick the one to shift
+    mux1 : entity work.mux_4to1
+    generic map ( WIDTH => 8 )
+    port map (
+        data_0 => block_a,
+        data_1 => block_b,
+        data_2 => block_c,
+        data_3 => block_d,
+        block_x => shift_select,
+        data_out => s_b
+    );
+    
     --case: rotate by 4 block size 
     block_size <= to_integer(unsigned(block_size_in));
     r <= to_integer(unsigned(r_in));
@@ -53,7 +68,18 @@ begin
             end if;
         end if;
     end process;
-    --shift_o <= std_logic_vector(unsigned(s_b) rol modulo);
-    --shift_o <= std_logic_vector(shift_left(unsigned(s_b), r)) when r < w
-    --           else (others => '0');
+    
+    process(shift_select, s_b, block_a, block_b, block_c, block_d)
+    begin
+        case shift_select is
+            when "00" =>
+                shift_a <= s_b; shift_b <= block_b; shift_c <= block_c; shift_d <= block_d;
+            when "01" =>
+                shift_a <= block_a; shift_b <= s_b; shift_c <= block_c; shift_d <= block_d;
+            when "10" =>
+                shift_a <= block_a; shift_b <= block_b; shift_c <= s_b; shift_d <= block_d;
+            when "11" =>
+                shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= s_b;
+        end case;
+    end process;
 end architecture Behavioral;
