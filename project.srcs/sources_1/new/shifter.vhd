@@ -33,11 +33,23 @@ entity shifter is
     );
 end entity shifter;
 architecture Behavioral of shifter is
+    component mux_4to1 is
+    generic ( WIDTH : integer := 32 );
+    Port (
+        data_0 : in  std_logic_vector(WIDTH - 1 downto 0);
+        data_1 : in  std_logic_vector(WIDTH - 1 downto 0);
+        data_2 : in  std_logic_vector(WIDTH - 1 downto 0);
+        data_3 : in  std_logic_vector(WIDTH - 1 downto 0);
+        block_x : in  std_logic_vector(1 downto 0);
+        data_out : out std_logic_vector(WIDTH - 1 downto 0)
+    );
+    end component;
+
     signal block_end, modulo, block_size, r : integer range 0 to 8;
     signal s_b, shift_o                     : std_logic_vector(7 downto 0);
 begin
     --pick the one to shift
-    mux1 : entity work.mux_4to1
+    mux1 : mux_4to1
     generic map ( WIDTH => 8 )
     port map (
         data_0 => block_a,
