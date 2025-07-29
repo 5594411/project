@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="swap_sim_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="swap_sim" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="999,989 ps"></ZoomStartTime>
+      <ZoomEndTime time="1,000,003 ps"></ZoomEndTime>
+      <Cursor1Time time="1,000,000 ps"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="533"></NameColumnWidth>
+      <ValueColumnWidth column_width="259"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="10" />
+   <wvobject fp_name="/swap_sim/sig_block_x" type="array">
+      <obj_property name="ElementShortName">sig_block_x[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_x[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/sig_block_y" type="array">
+      <obj_property name="ElementShortName">sig_block_y[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_y[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/sig_swaped_block_x" type="array">
+      <obj_property name="ElementShortName">sig_swaped_block_x[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_swaped_block_x[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/sig_swaped_block_y" type="array">
+      <obj_property name="ElementShortName">sig_swaped_block_y[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_swaped_block_y[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/px" type="array">
+      <obj_property name="ElementShortName">px[3:0]</obj_property>
+      <obj_property name="ObjectShortName">px[3:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/py" type="array">
+      <obj_property name="ElementShortName">py[3:0]</obj_property>
+      <obj_property name="ObjectShortName">py[3:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/s" type="array">
+      <obj_property name="ElementShortName">s[3:0]</obj_property>
+      <obj_property name="ObjectShortName">s[3:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/enable" type="logic">
+      <obj_property name="ElementShortName">enable</obj_property>
+      <obj_property name="ObjectShortName">enable</obj_property>
+   </wvobject>
+   <wvobject fp_name="/swap_sim/ClockPeriod" type="other">
+      <obj_property name="ElementShortName">ClockPeriod</obj_property>
+      <obj_property name="ObjectShortName">ClockPeriod</obj_property>
+   </wvobject>
+</wave_config>
