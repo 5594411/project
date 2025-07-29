@@ -18,15 +18,13 @@ end mux_4to2;
 architecture Behavioral of mux_4to2 is
 
 begin
-    data_out_1 <= data_0 when block_x = "00" else
+    data_out_x <= data_0 when block_x = "00" else
                   data_1 when block_x = "01" else
                   data_2 when block_x = "10" else
-                  data_3 when block_x = "11" else
-                  'X';
+                  data_3;
 
-    data_out_2 <= data_0 when block_y = "00" else
+    data_out_y <= data_0 when block_y = "00" else
                   data_1 when block_y = "01" else
                   data_2 when block_y = "10" else
-                  data_3 when block_y = "11" else
-                  'X';
+                  data_3;
 end Behavioral;

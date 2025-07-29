@@ -24,13 +24,13 @@ begin
         variable idx_x, idx_y : integer;
 
     begin
-        temp_x := block_x;
-        temp_y := block_y;
+        temp_bx := block_x;
+        temp_by := block_y;
 
         for i in 0 to to_integer(unsigned(s)) - 1 loop
             idx_x := (to_integer(unsigned(px)) + i) mod BLOCK_WIDTH;
             idx_y := (to_integer(unsigned(py)) + i) mod BLOCK_WIDTH;
-            temp_bit       := temp_bx(idx_x);
+            temp_bit := temp_bx(idx_x);
             temp_bx(idx_x) := temp_by(idx_y);
             temp_by(idx_y) := temp_bit;
         end loop;
