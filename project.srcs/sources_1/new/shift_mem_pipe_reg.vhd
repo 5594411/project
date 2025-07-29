@@ -54,7 +54,4 @@ begin
 
         end process; 
 end behavioural;
-begin
 
-
-end Behavioral;
