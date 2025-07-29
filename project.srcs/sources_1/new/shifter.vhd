@@ -92,6 +92,8 @@ begin
                 shift_a <= block_a; shift_b <= block_b; shift_c <= s_b; shift_d <= block_d;
             when "11" =>
                 shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= s_b;
+            when others =>
+                shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= s_b;
         end case;
     end process;
 end architecture Behavioral;
