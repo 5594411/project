@@ -26,15 +26,13 @@ component block_partitioner is
            
 end component;
 
-component shifter is
-    generic (
-        w : integer := 8);
-    port(
-        r       : in  integer range 0 to w;
-        s_b     : in  std_logic_vector(w-1 downto 0);
-        shift_o : out std_logic_vector(w-1 downto 0)
+entity shifter is
+    port (
+        s_b        : in  std_logic_vector(7 downto 0);
+        block_size, r : in integer range 1 to 8;
+        shift_o    : out std_logic_vector(7 downto 0)
     );
-end component shifter;
+end entity shifter;
 
 signal sig_tag_sz       : std_logic_vector(3 downto 0);
 signal sig_record_sz    : std_logic_vector(5 downto 0);

@@ -24,29 +24,29 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity shifter is
-    generic (
-        w : integer := 8
-    );
     port (
-        r       : in  integer range 0 to w;
-        s_b     : in  std_logic_vector(w-1 downto 0);
-        shift_o : out std_logic_vector(w-1 downto 0)
+        s_b        : in  std_logic_vector(7 downto 0);
+        block_size, r : in integer range 1 to 8;
+        shift_o    : out std_logic_vector(7 downto 0)
     );
 end entity shifter;
-
 architecture Behavioral of shifter is
-    signal modulo : integer range 0 to w;
+    signal block_end, modulo : integer range 0 to 8;
 begin
-    modulo <= r mod w;
-    process(modulo) begin
-        if (modulo = 1) then
-            shift_o <= s_b(w - 2 downto 0) & s_b(w - 1);
-        elsif (modulo = 0) then
+    --shift_o(8 - block_size downto 0) <= (OTHERS => '0');
+    modulo <= r mod block_size;
+    block_end <= 8 - block_size;
+    process(block_size, modulo, s_b) begin
+        if (block_size = 1) then --bo change as there is only 1 bit
             shift_o <= s_b;
-        elsif (modulo = w - 1) then
-            shift_o <= s_b(0) & s_b(w - 1 downto 1);
         else
-            shift_o <= s_b(w - 1 - modulo downto 0) & s_b(w - 1 downto w - modulo);
+            if (modulo = 1) then
+                shift_o(7 downto block_end) <= s_b(6 downto block_end) & s_b(7);
+            elsif (modulo = block_size - 1) then
+                shift_o(7 downto block_end) <= s_b(block_end) & s_b(7 downto block_end + 1);
+            else
+                shift_o(7 downto block_end) <= s_b(7 - modulo downto block_size) & s_b(7 downto 7 - modulo + 1);
+            end if;
         end if;
     end process;
     --shift_o <= std_logic_vector(unsigned(s_b) rol modulo);
