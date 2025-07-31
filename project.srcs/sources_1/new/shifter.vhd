@@ -63,7 +63,9 @@ begin
     --case: rotate by 4 block size 
     block_size <= to_integer(unsigned(block_size_in));
     r <= to_integer(unsigned(r_in));
-    modulo <= r mod block_size;  --modulo = 4
+    with block_size select
+    modulo <= r mod 15 when 0,
+              r mod block_size when others;
     
     block_end <= 8 - block_size; --it is 1
     process(block_size, modulo, s_b) begin
