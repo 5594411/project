@@ -83,19 +83,19 @@ begin
         end if;
     end process;
     
-    process(shift_select, s_b, block_a, block_b, block_c, block_d)
+    process(shift_select, shift_o, block_a, block_b, block_c, block_d)
     begin
         case shift_select is
             when "00" =>
-                shift_a <= s_b; shift_b <= block_b; shift_c <= block_c; shift_d <= block_d;
+                shift_a <= shift_o ; shift_b <= block_b; shift_c <= block_c; shift_d <= block_d;
             when "01" =>
-                shift_a <= block_a; shift_b <= s_b; shift_c <= block_c; shift_d <= block_d;
+                shift_a <= block_a; shift_b <= shift_o; shift_c <= block_c; shift_d <= block_d;
             when "10" =>
-                shift_a <= block_a; shift_b <= block_b; shift_c <= s_b; shift_d <= block_d;
+                shift_a <= block_a; shift_b <= block_b; shift_c <= shift_o; shift_d <= block_d;
             when "11" =>
-                shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= s_b;
+                shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= shift_o;
             when others =>
-                shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= s_b;
+                shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= shift_o;
         end case;
     end process;
 end architecture Behavioral;

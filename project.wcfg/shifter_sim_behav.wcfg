@@ -11,45 +11,53 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,002.001 ns"></ZoomEndTime>
-      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
+      <ZoomEndTime time="484.854 ns"></ZoomEndTime>
+      <Cursor1Time time="235.244 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="533"></NameColumnWidth>
-      <ValueColumnWidth column_width="251"></ValueColumnWidth>
+      <NameColumnWidth column_width="240"></NameColumnWidth>
+      <ValueColumnWidth column_width="206"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="14" />
+   <WVObjectSize size="19" />
    <wvobject fp_name="/shifter_sim/sig_block_a" type="array">
       <obj_property name="ElementShortName">sig_block_a[7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_block_a[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/shifter_sim/sig_block_b" type="array">
       <obj_property name="ElementShortName">sig_block_b[7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_block_b[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/shifter_sim/sig_block_c" type="array">
       <obj_property name="ElementShortName">sig_block_c[7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_block_c[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/shifter_sim/sig_block_d" type="array">
       <obj_property name="ElementShortName">sig_block_d[7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_block_d[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/shifter_sim/sig_shift_a" type="array">
       <obj_property name="ElementShortName">sig_shift_a[7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_shift_a[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/shifter_sim/sig_shift_b" type="array">
       <obj_property name="ElementShortName">sig_shift_b[7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_shift_b[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/shifter_sim/sig_shift_c" type="array">
       <obj_property name="ElementShortName">sig_shift_c[7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_shift_c[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/shifter_sim/sig_shift_d" type="array">
       <obj_property name="ElementShortName">sig_shift_d[7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_shift_d[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/shifter_sim/sig_shift_select" type="array">
       <obj_property name="ElementShortName">sig_shift_select[1:0]</obj_property>
@@ -74,5 +82,27 @@
    <wvobject fp_name="/shifter_sim/ClockPeriod" type="other">
       <obj_property name="ElementShortName">ClockPeriod</obj_property>
       <obj_property name="ObjectShortName">ClockPeriod</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shifter_sim/UUT/modulo" type="other">
+      <obj_property name="ElementShortName">modulo</obj_property>
+      <obj_property name="ObjectShortName">modulo</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shifter_sim/UUT/s_b" type="array">
+      <obj_property name="ElementShortName">s_b[7:0]</obj_property>
+      <obj_property name="ObjectShortName">s_b[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shifter_sim/UUT/block_end" type="other">
+      <obj_property name="ElementShortName">block_end</obj_property>
+      <obj_property name="ObjectShortName">block_end</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shifter_sim/UUT/shift_o" type="array">
+      <obj_property name="ElementShortName">shift_o[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_o[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/shifter_sim/UUT/shift_a" type="array">
+      <obj_property name="ElementShortName">shift_a[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_a[7:0]</obj_property>
    </wvobject>
 </wave_config>
