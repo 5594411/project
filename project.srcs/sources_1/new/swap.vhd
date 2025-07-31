@@ -7,8 +7,8 @@ entity swap is
         enable : in std_logic;
         block_x         : in  std_logic_vector(7 downto 0);
         block_y         : in  std_logic_vector(7 downto 0);
-        px         : in  std_logic_vector(3 downto 0);
-        py         : in  std_logic_vector(3 downto 0);
+        px         : in  std_logic_vector(2 downto 0);
+        py         : in  std_logic_vector(2 downto 0);
         s          : in  std_logic_vector(3 downto 0);
         bx_swapped : out std_logic_vector(7 downto 0);
         by_swapped : out std_logic_vector(7 downto 0));

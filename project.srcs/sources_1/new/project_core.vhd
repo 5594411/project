@@ -4,6 +4,12 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity project is
+    generic (
+        NUM_CANDIDATE: Integer := 1;
+--        save the last column as sum for specfic candidate
+        NUM_DISTRICT: Integer := 1;
+        NUM_TALLY: Integer := 8
+    );
     port ( 
            btnR   : in  std_logic;
            clk    : in  std_logic;
@@ -12,15 +18,6 @@ entity project is
 end project;
 
 architecture structural of project is
-
-component data_memory is
-    port ( reset        : in  std_logic;
-           clk          : in  std_logic;
-           write_enable : in  std_logic;
-           write_data   : in  std_logic_vector(15 downto 0);
-           addr_in      : in  std_logic_vector(3 downto 0);
-           data_out     : out std_logic_vector(15 downto 0) );
-end component;
 
 component mux_4to2 is
     generic ( WIDTH : integer := 32 );
@@ -132,6 +129,58 @@ component swap is
         by_swapped : out std_logic_vector(7 downto 0));
 end component;
 
+component control_unit is
+    port ( cal_tag     : in  std_logic_vector(3 downto 0);
+           rec_tag     : in  std_logic_vector(3 downto 0);
+           mem_read  : out std_logic;
+           mem_write    : out std_logic);
+end component;
+
+component adder_8b is
+    generic (
+        NUM_TALLY: Integer := 8
+    );
+    port ( src_a     : in  std_logic_vector(NUM_TALLY - 1 downto 0);
+           src_b     : in  std_logic_vector(NUM_TALLY - 1 downto 0);
+           sum       : out std_logic_vector(NUM_TALLY - 1 downto 0);
+           carry_out : out std_logic );
+end component;
+
+component mux_2to1_8b is
+    generic (
+        NUM_TALLY: Integer := 8
+    );
+    port ( mux_select : in  std_logic;
+           data_a     : in  std_logic_vector(NUM_TALLY - 1 downto 0);
+           data_b     : in  std_logic_vector(NUM_TALLY - 1 downto 0);
+           data_out   : out std_logic_vector(NUM_TALLY - 1 downto 0) );
+end component;
+
+component tally_table is
+    generic (
+        NUM_CANDIDATE: Integer := 1;
+--        save the last column as sum for specfic candidate
+        NUM_DISTRICT: Integer := 1;
+        NUM_TALLY: Integer := 8
+    );
+    port ( reset        : in  std_logic;
+           clk          : in  std_logic;
+           
+           read_enable: in std_logic;
+           candidate_r: in  std_logic_vector(NUM_CANDIDATE downto 0);
+           district_r: in  std_logic_vector(NUM_DISTRICT downto 0);
+           read_data: out std_logic_vector(NUM_TALLY - 1 downto 0);
+           read_sum: out std_logic_vector(NUM_TALLY - 1 downto 0);
+           
+           write_enable : in  std_logic;
+           write_data   : in  std_logic_vector(NUM_TALLY - 1 downto 0);
+           write_sum: in std_logic_vector(NUM_TALLY - 1 downto 0);
+           candidate_w: in  std_logic_vector(NUM_CANDIDATE downto 0);
+           district_w: in  std_logic_vector(NUM_DISTRICT downto 0);
+           data_out     : out std_logic_vector(NUM_TALLY - 1 downto 0);
+           sum_out: out std_logic_vector(NUM_TALLY - 1 downto 0) );
+end component;
+
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
 
@@ -189,6 +238,40 @@ signal sig_block_0, sig_block_1 : std_logic_vector(7 downto 0);
 signal sig_block_2, sig_block_3 : std_logic_vector(7 downto 0);
 signal sig_swaped_block_1, sig_swaped_block_2 : std_logic_vector(7 downto 0);
 
+--for read and write stage
+signal reset: std_logic;
+signal sig_num_candidate: integer := NUM_CANDIDATE;
+signal sig_num_district: integer := NUM_DISTRICT;
+signal sig_num_tally: integer := NUM_TALLY;
+
+signal sig_mem_write: std_logic;
+signal sig_mem_read: std_logic;
+signal sig_rec_tag: std_logic_vector(3 downto 0);
+signal sig_cal_tag: std_logic_vector(3 downto 0);
+
+signal sig_write_data_carry_out: std_logic;
+signal sig_write_sum_carry_out: std_logic;
+signal ex_write_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
+signal ex_write_sum    : std_logic_vector(NUM_TALLY - 1 downto 0);
+
+signal mux_select_candidate: std_logic;
+signal mux_select_district: std_logic;
+signal ex_read_data    : std_logic_vector(NUM_TALLY - 1 downto 0);
+signal ex_read_sum     : std_logic_vector(NUM_TALLY - 1 downto 0);
+
+signal sig_candidate_r  : std_logic_vector(NUM_CANDIDATE downto 0);
+signal sig_candidate_w  : std_logic_vector(NUM_DISTRICT downto 0);
+signal sig_district_r   : std_logic_vector(NUM_CANDIDATE downto 0);
+signal sig_district_w   : std_logic_vector(NUM_DISTRICT downto 0);
+signal sig_read_data    : std_logic_vector(NUM_TALLY - 1 downto 0);
+signal sig_read_sum     : std_logic_vector(NUM_TALLY - 1 downto 0);
+signal sig_write_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
+signal sig_write_sum    : std_logic_vector(NUM_TALLY - 1 downto 0);
+signal sig_data_out: std_logic_vector(NUM_TALLY - 1 downto 0);
+signal sig_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
+
+signal mem_data_out: std_logic_vector(NUM_TALLY - 1 downto 0);
+signal mem_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -288,12 +371,109 @@ begin
           din => sw,
           dout => led);
 
-    data_memory_mod: data_memory
+    sig_candidate_r <= sig_record(13 downto 12);
+    sig_district_r <= sig_record(15 downto 14);       
+    
+    ctl_unit: control_unit
         port map (
-           clk => clk,
-           reset => btnR,
-           write_enable => btnR,
-           write_data => sw,
-           addr_in => sw,
-           data_out => led);
+            cal_tag => sig_cal_tag,
+            rec_tag => sig_rec_tag,
+            mem_read => sig_mem_read,
+            mem_write => sig_mem_write
+        );
+        
+    mux_select_candidate <= '1' when (sig_candidate_r = sig_candidate_w) else '0';
+    mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w ) else '0';
+    
+    mux_2to1_candidate: mux_2to1_8b
+    generic map (
+            NUM_TALLY => sig_num_tally
+        )
+    port map (
+        mux_select => mux_select_candidate,
+        data_a => sig_read_sum,
+        data_b => mem_sum_out,
+        data_out => ex_read_sum
+    );
+    
+    mux_2to1_district: mux_2to1_8b
+    generic map (
+            NUM_TALLY => sig_num_tally
+        )
+    port map (
+        mux_select => mux_select_district,
+        data_a => sig_read_data,
+        data_b => mem_data_out,
+        data_out => ex_read_data
+    );
+    
+    alu_write_data : adder_8b 
+    generic map (
+            NUM_TALLY => sig_num_tally
+        )
+    port map ( src_a     => ex_read_data,
+               src_b     => sig_record(11 downto 4),
+               sum       => ex_write_data,
+               carry_out => sig_write_data_carry_out );
+    
+    alu_write_sum : adder_8b 
+    generic map (
+            NUM_TALLY => sig_num_tally
+        )
+    port map ( src_a     => ex_read_sum,
+               src_b     => sig_record(11 downto 4),
+               sum       => ex_write_sum,
+               carry_out => sig_write_sum_carry_out );
+    
+    process(clk, reset)
+    begin
+        if (reset = '1') then
+            sig_write_data <= (others=>'0');
+            sig_write_sum <= (others=>'0');
+            sig_candidate_w <= (others=>'0');
+            sig_district_w <= (others=>'0');
+        elsif (rising_edge(clk)) then
+            sig_write_data <= ex_write_data;
+            sig_write_sum <= ex_write_sum;
+            sig_candidate_w <= sig_candidate_r;
+            sig_district_w <= sig_district_r;
+        end if;
+         
+    end process;
+        
+    
+    data_memory: tally_table
+        generic map (
+            NUM_CANDIDATE => sig_num_candidate,
+            NUM_DISTRICT => sig_num_district,
+            NUM_TALLY => sig_num_tally
+        )
+        port map ( 
+            reset        => reset,
+            clk          => clk,
+            read_enable  => sig_mem_read,
+            candidate_r  => sig_candidate_r,
+            district_r   => sig_district_r,
+            read_data    => sig_read_data,
+            read_sum     => sig_read_sum,
+            write_enable => sig_mem_write,
+            write_data   => sig_write_data,
+            write_sum    => sig_write_sum,
+            candidate_w  => sig_candidate_w,
+            district_w   => sig_district_w,
+            data_out     => sig_data_out,
+            sum_out      => sig_sum_out  
+        );
+        
+    process(clk, reset)
+    begin
+        if (reset = '1') then
+            mem_data_out <= (others=>'0');
+            mem_sum_out <= (others=>'0');
+        elsif (rising_edge(clk)) then
+            mem_data_out <= sig_data_out;
+            mem_sum_out <= sig_sum_out;
+        end if;
+         
+    end process;
 end structural;
