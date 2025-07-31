@@ -55,14 +55,30 @@ begin
         sig_shift_select <= "00";
         sig_block_size_in <= "0111";
         sig_r_in <= "0100";
-        wait for 20 ns;
-        sig_block_a <= "00101110";
-        sig_block_b <= "10000000";
+        
+        wait for 20 ns; --tested
+        sig_block_a <= "00101110"; --01100101
+        sig_block_b <= "00000011";
         sig_block_c <= "10000000";
         sig_block_d <= "10000000";
         sig_shift_select <= "00";
         sig_block_size_in <= "0111";
         sig_r_in <= "0100";
+        
+        wait for 20 ns; --tested
+        sig_shift_select <= "01";
+        sig_r_in <= "0110";
+        sig_block_size_in <= "0111";
+        
+        wait for 20 ns; --tested
+        sig_block_size_in <= "1000";
+        sig_shift_select <= "11";
+        sig_r_in <= "0010";
+        
+        wait for 20 ns; --tested
+        sig_block_size_in <= "0001";
+        sig_shift_select <= "10";
+        
         wait;
     end process stimulus;
 end Behavioral;

@@ -45,7 +45,7 @@ architecture Behavioral of shifter is
     );
     end component;
 
-    signal block_end, modulo, block_size, r : integer range 0 to 8;
+    signal block_start, modulo, block_size, r : integer range 0 to 8;
     signal s_b, shift_o                     : std_logic_vector(7 downto 0);
 begin
     --pick the one to shift
@@ -67,18 +67,18 @@ begin
     modulo <= r mod 15 when 0,
               r mod block_size when others;
     
-    block_end <= 8 - block_size; --it is 1
+    block_start <= block_size - 1; --it is 1
     process(block_size, modulo, s_b) begin
         if (block_size = 1) then --bo change as there is only 1 bit
             shift_o <= s_b;
         else
             if (modulo = 1) then
-                shift_o(7 downto block_end) <= s_b(6 downto block_end) & s_b(7);
+                shift_o(block_start downto 0) <= s_b(block_start - 1 downto 0) & s_b(block_start);
             elsif (modulo = block_size - 1) then
-                shift_o(7 downto block_end) <= s_b(block_end) & s_b(7 downto block_end + 1);
+                shift_o(block_start downto 0) <= s_b(0) & s_b(block_start downto 1);
             else
                 --7 downto 1 is 3 downto 1 & 7 downto 4
-                shift_o(7 downto block_end) <= s_b(7 - modulo downto block_end) & s_b(7 downto 7 - modulo + 1);
+                shift_o(block_start downto 0) <= s_b(block_start - modulo downto 0) & s_b(block_start downto block_start - modulo + 1);
             end if;
         end if;
     end process;
