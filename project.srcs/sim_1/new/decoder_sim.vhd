@@ -27,11 +27,11 @@ begin
     
     stimulus: process begin
         btnR <= '1';
-        sw <= "0000111100001111";
+        sw <= "0100001110011000";
         
         wait for 50 ns;
         btnR <= '1';
-        sw <= "0000000011111111";
+        sw <= "0100001110011000";
         wait;
     end process stimulus;
 end Behavioral;

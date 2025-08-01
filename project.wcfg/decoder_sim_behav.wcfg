@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="423.201 ns"></ZoomEndTime>
-      <Cursor1Time time="0.014 ns"></Cursor1Time>
+      <ZoomStartTime time="35.660 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,192.868 ns"></ZoomEndTime>
+      <Cursor1Time time="487.660 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="240"></NameColumnWidth>
-      <ValueColumnWidth column_width="198"></ValueColumnWidth>
+      <ValueColumnWidth column_width="166"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="5" />
+   <WVObjectSize size="21" />
    <wvobject fp_name="/decoder_sim/btnR" type="logic">
       <obj_property name="ElementShortName">btnR</obj_property>
       <obj_property name="ObjectShortName">btnR</obj_property>
@@ -37,8 +37,115 @@
       <obj_property name="ObjectShortName">led[15:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/decoder_sim/ClockPeriod" type="other">
-      <obj_property name="ElementShortName">ClockPeriod</obj_property>
-      <obj_property name="ObjectShortName">ClockPeriod</obj_property>
+   <wvobject fp_name="/decoder_sim/UUT/bp1/block_3" type="array">
+      <obj_property name="ElementShortName">block_3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">block_3[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/bp1/block_2" type="array">
+      <obj_property name="ElementShortName">block_2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">block_2[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/bp1/block_1" type="array">
+      <obj_property name="ElementShortName">block_1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">block_1[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/bp1/block_0" type="array">
+      <obj_property name="ElementShortName">block_0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">block_0[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FFFF00</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/flip1/A3_out" type="array">
+      <obj_property name="ElementShortName">A3_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A3_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/flip1/A2_out" type="array">
+      <obj_property name="ElementShortName">A2_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A2_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/flip1/A1_out" type="array">
+      <obj_property name="ElementShortName">A1_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A1_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/flip1/A0_out" type="array">
+      <obj_property name="ElementShortName">A0_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A0_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#FF0000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/mux1/data_out_x" type="array">
+      <obj_property name="ElementShortName">data_out_x[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out_x[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#800080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/mux1/data_out_y" type="array">
+      <obj_property name="ElementShortName">data_out_y[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out_y[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#800080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/swap1/bx_swapped" type="array">
+      <obj_property name="ElementShortName">bx_swapped[7:0]</obj_property>
+      <obj_property name="ObjectShortName">bx_swapped[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/swap1/by_swapped" type="array">
+      <obj_property name="ElementShortName">by_swapped[7:0]</obj_property>
+      <obj_property name="ObjectShortName">by_swapped[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#00FFFF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/shift1/shift_3" type="array">
+      <obj_property name="ElementShortName">shift_3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_3[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/shift1/shift_2" type="array">
+      <obj_property name="ElementShortName">shift_2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_2[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/shift1/shift_1" type="array">
+      <obj_property name="ElementShortName">shift_1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_1[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/shift1/shift_0" type="array">
+      <obj_property name="ElementShortName">shift_0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_0[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/xor1/xor_out" type="array">
+      <obj_property name="ElementShortName">xor_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">xor_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#0000FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
 </wave_config>

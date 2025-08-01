@@ -36,7 +36,7 @@ begin
             tag_len := to_integer(unsigned(tag_sz));
             rec_len := to_integer(unsigned(record_sz));
 
-            pos      := 0;
+            pos := 0;
             for blk in 0 to 3 loop
                 blk_tmp := (others => '0');
                 if (pos < rec_len) then
@@ -50,16 +50,16 @@ begin
                 end if;
                 pos := pos + tag_len;
                 if (blk=3) then
-                    block_0 <= blk_tmp;
+                    block_3 <= blk_tmp;
                 end if;
                 if (blk=2) then
-                    block_1 <= blk_tmp;
-                end if;
-                if (blk=1) then
                     block_2 <= blk_tmp;
                 end if;
+                if (blk=1) then
+                    block_1 <= blk_tmp;
+                end if;
                 if (blk=0) then
-                    block_3 <= blk_tmp;
+                    block_0 <= blk_tmp;
                 end if;
             end loop;
         end if;

@@ -4,10 +4,10 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity shifter is
     port (
-        block_a, block_b, block_c, block_d : in std_logic_vector(7 downto 0);
+        block_0, block_1, block_2, block_3 : in std_logic_vector(7 downto 0);
         shift_select, r_in : in std_logic_vector(1 downto 0);
         block_size_in : in std_logic_vector(3 downto 0);
-        shift_a, shift_b, shift_c, shift_d : out std_logic_vector(7 downto 0)
+        shift_0, shift_1, shift_2, shift_3 : out std_logic_vector(7 downto 0)
     );
 end entity shifter;
 architecture Behavioral of shifter is
@@ -30,10 +30,10 @@ begin
     mux1 : mux_4to1
     generic map ( WIDTH => 8 )
     port map (
-        data_0 => block_a,
-        data_1 => block_b,
-        data_2 => block_c,
-        data_3 => block_d,
+        data_0 => block_0,
+        data_1 => block_1,
+        data_2 => block_2,
+        data_3 => block_3,
         block_x => shift_select,
         data_out => s_b
     );
@@ -46,34 +46,38 @@ begin
               r mod block_size when others;
     
     block_start <= block_size - 1; --it is 1
-    process(block_size, modulo, s_b) begin
+    process (block_size, modulo, s_b)
+    begin
         if (block_size = 1) then --bo change as there is only 1 bit
             shift_o <= s_b;
         else
             if (modulo = 1) then
-                shift_o(block_start downto 0) <= s_b(block_start - 1 downto 0) & s_b(block_start);
+                shift_o(block_start downto 0) <= (s_b(block_start - 1 downto 0) & s_b(block_start));
+                shift_o(7 downto block_size) <= ( others => '0');
             elsif (modulo = block_size - 1) then
                 shift_o(block_start downto 0) <= s_b(0) & s_b(block_start downto 1);
+                shift_o(7 downto block_size) <= ( others => '0');
             else
                 --7 downto 1 is 3 downto 1 & 7 downto 4
                 shift_o(block_start downto 0) <= s_b(block_start - modulo downto 0) & s_b(block_start downto block_start - modulo + 1);
+                shift_o(7 downto block_size) <= ( others => '0');
             end if;
         end if;
     end process;
     
-    process(shift_select, shift_o, block_a, block_b, block_c, block_d)
+    process(shift_select, shift_o, block_0, block_1, block_2, block_3)
     begin
         case shift_select is
             when "00" =>
-                shift_a <= shift_o ; shift_b <= block_b; shift_c <= block_c; shift_d <= block_d;
+                shift_0 <= shift_o ; shift_1 <= block_1; shift_2 <= block_2; shift_3 <= block_3;
             when "01" =>
-                shift_a <= block_a; shift_b <= shift_o; shift_c <= block_c; shift_d <= block_d;
+                shift_0 <= block_0; shift_1 <= shift_o; shift_2 <= block_2; shift_3 <= block_3;
             when "10" =>
-                shift_a <= block_a; shift_b <= block_b; shift_c <= shift_o; shift_d <= block_d;
+                shift_0 <= block_0; shift_1 <= block_1; shift_2 <= shift_o; shift_3 <= block_3;
             when "11" =>
-                shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= shift_o;
+                shift_0 <= block_0; shift_1 <= block_1; shift_2 <= block_2; shift_3 <= shift_o;
             when others =>
-                shift_a <= block_a; shift_b <= block_b; shift_c <= block_c; shift_d <= shift_o;
+                shift_0 <= block_0; shift_1 <= block_1; shift_2 <= block_2; shift_3 <= shift_o;
         end case;
     end process;
 end architecture Behavioral;
