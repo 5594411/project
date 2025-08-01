@@ -4,7 +4,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity flip_blocks is
     Port (
-        tag_size : in integer range 1 to 8;
+        tag_size : in std_logic_vector(3 downto 0);
         bf       : in std_logic_vector(1 downto 0);  -- block to flip: 00, 01, 10, 11
         A0_in    : in std_logic_vector(7 downto 0);
         A1_in    : in std_logic_vector(7 downto 0);
@@ -34,21 +34,23 @@ architecture Behavioral of flip_blocks is
 
 begin
     process(tag_size, bf, A0_in, A1_in, A2_in, A3_in)
+        variable int_tag_size : integer;
     begin
         A0_out <= A0_in;
         A1_out <= A1_in;
         A2_out <= A2_in;
         A3_out <= A3_in;
+        int_tag_size := to_integer(unsigned(tag_size));
 
         case bf is
             when "00" =>
-                A0_out <= flip_bits(A0_in, tag_size);
+                A0_out <= flip_bits(A0_in, int_tag_size);
             when "01" =>
-                A1_out <= flip_bits(A1_in, tag_size);
+                A1_out <= flip_bits(A1_in, int_tag_size);
             when "10" =>
-                A2_out <= flip_bits(A2_in, tag_size);
+                A2_out <= flip_bits(A2_in, int_tag_size);
             when "11" =>
-                A3_out <= flip_bits(A3_in, tag_size);
+                A3_out <= flip_bits(A3_in, int_tag_size);
             when others =>
                 null;  
         end case;

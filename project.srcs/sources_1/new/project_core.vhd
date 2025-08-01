@@ -122,9 +122,10 @@ component swap is
     port (
         block_x         : in  std_logic_vector(7 downto 0);
         block_y         : in  std_logic_vector(7 downto 0);
-        px         : in  std_logic_vector(3 downto 0);
-        py         : in  std_logic_vector(3 downto 0);
+        px         : in  std_logic_vector(2 downto 0);
+        py         : in  std_logic_vector(2 downto 0);
         s          : in  std_logic_vector(3 downto 0);
+        tag_size : in std_logic_vector(3 downto 0);
         bx_swapped : out std_logic_vector(7 downto 0);
         by_swapped : out std_logic_vector(7 downto 0));
 end component;
@@ -356,9 +357,10 @@ begin
     swap1 : swap
     port map( block_x => sig_block_x,
               block_y => sig_block_y,
-              px => "0001",
-              py => "0001",
+              px => "001",
+              py => "001",
               s => "0001",
+              tag_size => sig_tag_sz,
               bx_swapped => sig_swaped_block_1,
               by_swapped => sig_swaped_block_2);
     
