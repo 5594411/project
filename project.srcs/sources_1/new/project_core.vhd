@@ -314,6 +314,7 @@ begin
                block_3 => sig_block_shift_3_out,
                xor_out => final_record);
     
+    reset <= btnR;
 --    sig_tag_size <= conv_integer(sig_tag_sz); 
     sig_candidate_r <= sig_record(sig_tag_size + sig_num_tally + sig_num_candidate - 1 downto sig_tag_size + sig_num_tally);
     sig_district_r <= sig_record(sig_tag_size + sig_num_tally + sig_num_candidate + sig_num_district - 1 downto sig_tag_size + sig_num_tally + sig_num_candidate);    
@@ -324,6 +325,7 @@ begin
         )
         port map (
             cal_tag => final_record,
+--            rec_tag => "00001001",
             rec_tag => sig_record(sig_tag_size - 1 downto 0),
             mem_read => sig_mem_read
         );
@@ -370,25 +372,11 @@ begin
                src_b     => sig_record(sig_tag_size + sig_num_tally - 1 downto sig_tag_size),
                sum       => ex_write_sum,
                carry_out => sig_write_sum_carry_out );
-    
-    process(clk, reset)
-    begin
-        if (reset = '1') then
-            sig_write_data <= (others=>'0');
-            sig_write_sum <= (others=>'0');
-            sig_candidate_w <= (others=>'0');
-            sig_district_w <= (others=>'0');
-            sig_mem_write <= '0';
-        elsif (rising_edge(clk)) then
-            sig_write_data <= ex_write_data;
-            sig_write_sum <= ex_write_sum;
-            sig_candidate_w <= sig_candidate_r;
-            sig_district_w <= sig_district_r;
-            sig_mem_write <= sig_mem_read;
-        end if;
-         
-    end process;
-        
+    sig_write_data <= ex_write_data when reset = '0' else (others=>'0');
+    sig_write_sum <= ex_write_sum when reset = '0' else (others=>'0');
+    sig_candidate_w <= sig_candidate_r when reset = '0' else (others=>'0');
+    sig_district_w <= sig_district_r when reset = '0' else (others=>'0');
+    sig_mem_write <= sig_mem_read when reset = '0' else '0';
     
     data_memory: tally_table
         generic map (
@@ -413,15 +401,6 @@ begin
             sum_out      => sig_sum_out  
         );
         
-    process(clk, reset)
-    begin
-        if (reset = '1') then
-            mem_data_out <= (others=>'0');
-            mem_sum_out <= (others=>'0');
-        elsif (rising_edge(clk)) then
-            mem_data_out <= sig_data_out;
-            mem_sum_out <= sig_sum_out;
-        end if;
-         
-    end process;
+        mem_data_out <= sig_data_out when reset = '0' else (others=>'0');
+        mem_sum_out <= sig_sum_out when reset = '0' else (others=>'0');
 end structural;
