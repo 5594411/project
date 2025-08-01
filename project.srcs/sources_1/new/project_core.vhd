@@ -5,10 +5,11 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity project is
     generic (
-        NUM_CANDIDATE: Integer := 1;
+        NUM_CANDIDATE: Integer := 2;
 --        save the last column as sum for specfic candidate
-        NUM_DISTRICT: Integer := 1;
-        NUM_TALLY: Integer := 8
+        NUM_DISTRICT: Integer := 2;
+        NUM_TALLY: Integer := 8;
+        TAG_SIZE: Integer := 8
     );
     port ( 
            btnR   : in  std_logic;
@@ -20,10 +21,12 @@ end project;
 architecture structural of project is
 
 component control_unit is
-    port ( cal_tag     : in  std_logic_vector(3 downto 0);
-           rec_tag     : in  std_logic_vector(3 downto 0);
-           mem_read  : out std_logic;
-           mem_write    : out std_logic);
+    generic (
+        TAG_SIZE: integer := 8
+    );
+    port ( cal_tag     : in  std_logic_vector(TAG_SIZE - 1 downto 0);
+           rec_tag     : in  std_logic_vector(TAG_SIZE - 1 downto 0);
+           mem_read  : out std_logic);
 end component;
 
 component adder_8b is
@@ -48,25 +51,25 @@ end component;
 
 component tally_table is
     generic (
-        NUM_CANDIDATE: Integer := 1;
+        NUM_CANDIDATE: Integer := 2;
 --        save the last column as sum for specfic candidate
-        NUM_DISTRICT: Integer := 1;
+        NUM_DISTRICT: Integer := 2;
         NUM_TALLY: Integer := 8
     );
     port ( reset        : in  std_logic;
            clk          : in  std_logic;
            
            read_enable: in std_logic;
-           candidate_r: in  std_logic_vector(NUM_CANDIDATE downto 0);
-           district_r: in  std_logic_vector(NUM_DISTRICT downto 0);
+           candidate_r: in  std_logic_vector(NUM_CANDIDATE - 1 downto 0);
+           district_r: in  std_logic_vector(NUM_DISTRICT - 1 downto 0);
            read_data: out std_logic_vector(NUM_TALLY - 1 downto 0);
            read_sum: out std_logic_vector(NUM_TALLY - 1 downto 0);
            
            write_enable : in  std_logic;
            write_data   : in  std_logic_vector(NUM_TALLY - 1 downto 0);
            write_sum: in std_logic_vector(NUM_TALLY - 1 downto 0);
-           candidate_w: in  std_logic_vector(NUM_CANDIDATE downto 0);
-           district_w: in  std_logic_vector(NUM_DISTRICT downto 0);
+           candidate_w: in  std_logic_vector(NUM_CANDIDATE - 1 downto 0);
+           district_w: in  std_logic_vector(NUM_DISTRICT - 1 downto 0);
            data_out     : out std_logic_vector(NUM_TALLY - 1 downto 0);
            sum_out: out std_logic_vector(NUM_TALLY - 1 downto 0) );
 end component;
@@ -130,14 +133,13 @@ signal sig_swaped_block_1, sig_swaped_block_2 : std_logic_vector(7 downto 0);
 
 --for read and write stage
 signal reset: std_logic;
+signal sig_tag_size: integer := TAG_SIZE;
 signal sig_num_candidate: integer := NUM_CANDIDATE;
 signal sig_num_district: integer := NUM_DISTRICT;
 signal sig_num_tally: integer := NUM_TALLY;
 
 signal sig_mem_write: std_logic;
 signal sig_mem_read: std_logic;
-signal sig_rec_tag: std_logic_vector(3 downto 0);
-signal sig_cal_tag: std_logic_vector(3 downto 0);
 
 signal sig_write_data_carry_out: std_logic;
 signal sig_write_sum_carry_out: std_logic;
@@ -149,10 +151,10 @@ signal mux_select_district: std_logic;
 signal ex_read_data    : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal ex_read_sum     : std_logic_vector(NUM_TALLY - 1 downto 0);
 
-signal sig_candidate_r  : std_logic_vector(NUM_CANDIDATE downto 0);
-signal sig_candidate_w  : std_logic_vector(NUM_DISTRICT downto 0);
-signal sig_district_r   : std_logic_vector(NUM_CANDIDATE downto 0);
-signal sig_district_w   : std_logic_vector(NUM_DISTRICT downto 0);
+signal sig_candidate_r  : std_logic_vector(NUM_CANDIDATE - 1 downto 0);
+signal sig_candidate_w  : std_logic_vector(NUM_DISTRICT - 1 downto 0);
+signal sig_district_r   : std_logic_vector(NUM_CANDIDATE - 1 downto 0);
+signal sig_district_w   : std_logic_vector(NUM_DISTRICT - 1 downto 0);
 signal sig_read_data    : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal sig_read_sum     : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal sig_write_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
@@ -169,9 +171,14 @@ begin
     -- tag size <= 8 
     -- tag size >= record size/4
     -- record size < 32
-    sig_tag_sz <= "0111";
-    sig_record_sz <= "010100";
-    sig_record <= "00000000000001010101010101010101";
+--    sig_tag_sz <= "0111";
+--    sig_record_sz <= "010100";
+--    sig_record <= "00000000000001010101010101010101";
+--    sig_tag_sz <= "0100";
+--    sig_record_sz <= "010000";
+--    sig_record(15 downto 0) <= sw;
+--    sig_record(31 downto 16) <= "0000000000000000";
+--    secret_key <= "1110100001011001";
     sig_tag_sz <= "0100";
     sig_record_sz <= "010000";
     sig_record(15 downto 0) <= sw;
@@ -306,16 +313,19 @@ begin
                block_2 => sig_block_shift_2_out,
                block_3 => sig_block_shift_3_out,
                xor_out => final_record);
-
-    sig_candidate_r <= sig_record(13 downto 12);
-    sig_district_r <= sig_record(15 downto 14);       
+    
+--    sig_tag_size <= conv_integer(sig_tag_sz); 
+    sig_candidate_r <= sig_record(sig_tag_size + sig_num_tally + sig_num_candidate - 1 downto sig_tag_size + sig_num_tally);
+    sig_district_r <= sig_record(sig_tag_size + sig_num_tally + sig_num_candidate + sig_num_district - 1 downto sig_tag_size + sig_num_tally + sig_num_candidate);    
     
     ctl_unit: control_unit
+        generic map (
+            TAG_SIZE => sig_tag_size
+        )
         port map (
-            cal_tag => sig_cal_tag,
-            rec_tag => sig_rec_tag,
-            mem_read => sig_mem_read,
-            mem_write => sig_mem_write
+            cal_tag => final_record,
+            rec_tag => sig_record(sig_tag_size - 1 downto 0),
+            mem_read => sig_mem_read
         );
         
     mux_select_candidate <= '1' when (sig_candidate_r = sig_candidate_w) else '0';
@@ -348,7 +358,7 @@ begin
             NUM_TALLY => sig_num_tally
         )
     port map ( src_a     => ex_read_data,
-               src_b     => sig_record(11 downto 4),
+               src_b     => sig_record(sig_tag_size + sig_num_tally - 1 downto sig_tag_size),
                sum       => ex_write_data,
                carry_out => sig_write_data_carry_out );
     
@@ -357,7 +367,7 @@ begin
             NUM_TALLY => sig_num_tally
         )
     port map ( src_a     => ex_read_sum,
-               src_b     => sig_record(11 downto 4),
+               src_b     => sig_record(sig_tag_size + sig_num_tally - 1 downto sig_tag_size),
                sum       => ex_write_sum,
                carry_out => sig_write_sum_carry_out );
     
@@ -368,11 +378,13 @@ begin
             sig_write_sum <= (others=>'0');
             sig_candidate_w <= (others=>'0');
             sig_district_w <= (others=>'0');
+            sig_mem_write <= '0';
         elsif (rising_edge(clk)) then
             sig_write_data <= ex_write_data;
             sig_write_sum <= ex_write_sum;
             sig_candidate_w <= sig_candidate_r;
             sig_district_w <= sig_district_r;
+            sig_mem_write <= sig_mem_read;
         end if;
          
     end process;

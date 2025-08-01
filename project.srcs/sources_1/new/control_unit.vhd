@@ -32,10 +32,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity control_unit is
-    port ( cal_tag     : in  std_logic_vector(3 downto 0);
-           rec_tag     : in  std_logic_vector(3 downto 0);
-           mem_read  : out std_logic;
-           mem_write    : out std_logic);
+    generic (
+        TAG_SIZE: integer := 8
+    );
+    port ( cal_tag     : in  std_logic_vector(TAG_SIZE - 1 downto 0);
+           rec_tag     : in  std_logic_vector(TAG_SIZE - 1 downto 0);
+           mem_read  : out std_logic);
 end control_unit;
 
 architecture behavioural of control_unit is
@@ -43,6 +45,5 @@ architecture behavioural of control_unit is
 begin
 
     mem_read <= '1' when cal_tag = rec_tag else '0';
-    mem_write <= '1' when cal_tag = rec_tag else '0';
 
 end behavioural;

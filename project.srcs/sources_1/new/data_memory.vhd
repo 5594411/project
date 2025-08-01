@@ -5,32 +5,32 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity tally_table is
     generic (
-        NUM_CANDIDATE: Integer := 1;
+        NUM_CANDIDATE: Integer := 2;
 --        save the last column as sum for specfic candidate
-        NUM_DISTRICT: Integer := 1;
+        NUM_DISTRICT: Integer := 2;
         NUM_TALLY: Integer := 8
     );
     port ( reset        : in  std_logic;
            clk          : in  std_logic;
-           
+--           FOR read stage
            read_enable: in std_logic;
-           candidate_r: in  std_logic_vector(NUM_CANDIDATE downto 0);
-           district_r: in  std_logic_vector(NUM_DISTRICT downto 0);
+           candidate_r: in  std_logic_vector(NUM_CANDIDATE - 1 downto 0);
+           district_r: in  std_logic_vector(NUM_DISTRICT - 1 downto 0);
            read_data: out std_logic_vector(NUM_TALLY - 1 downto 0);
            read_sum: out std_logic_vector(NUM_TALLY - 1 downto 0);
-           
+--           For write stage
            write_enable : in  std_logic;
            write_data   : in  std_logic_vector(NUM_TALLY - 1 downto 0);
            write_sum: in std_logic_vector(NUM_TALLY - 1 downto 0);
-           candidate_w: in  std_logic_vector(NUM_CANDIDATE downto 0);
-           district_w: in  std_logic_vector(NUM_DISTRICT downto 0);
+           candidate_w: in  std_logic_vector(NUM_CANDIDATE - 1 downto 0);
+           district_w: in  std_logic_vector(NUM_DISTRICT - 1 downto 0);
            data_out     : out std_logic_vector(NUM_TALLY - 1 downto 0);
            sum_out: out std_logic_vector(NUM_TALLY - 1 downto 0) );
 end tally_table;
 
 architecture behavioral of tally_table is
 --default sum is 16bits
-type mem_array is array(0 to NUM_CANDIDATE, 0 to NUM_DISTRICT + 1) of std_logic_vector(NUM_TALLY - 1 downto 0);
+type mem_array is array(0 to NUM_CANDIDATE - 1, 0 to NUM_DISTRICT) of std_logic_vector(NUM_TALLY - 1 downto 0);
 signal sig_data_mem : mem_array;
 signal var_candidate_r    : integer;
 signal var_district_r     : integer;
@@ -58,8 +58,8 @@ begin
         var_write_sum  := conv_integer(write_sum);
         
         if (reset = '1') then
-            for i in 0 to NUM_CANDIDATE-1 loop
-                for j in 0 to NUM_DISTRICT-1 loop
+            for i in 0 to NUM_CANDIDATE - 1 loop
+                for j in 0 to NUM_DISTRICT - 1 loop
                     var_data_mem(i, j) := (others=>'0');
                 end loop;
             end loop;
@@ -71,14 +71,14 @@ begin
        
         -- continuous read of the memory location given by var_addr 
         data_out <= var_data_mem(var_candidate_w, var_district_w);
-        sum_out <= var_data_mem(var_candidate_w, 2**NUM_DISTRICT + 1);
+        sum_out <= var_data_mem(var_candidate_w, 2**(NUM_DISTRICT - 1) + 1);
  
         -- the following are probe signals (for simulation purpose) 
         sig_data_mem <= var_data_mem;
 
     end process;
     
-    read_data <= sig_data_mem(var_candidate_r, var_district_r);
-    read_sum <= sig_data_mem(var_candidate_r, 2**NUM_DISTRICT + 1);
+    read_data <= sig_data_mem(var_candidate_r, var_district_r) when read_enable = '1' else (others=>'0');
+    read_sum <= sig_data_mem(var_candidate_r, 2**(NUM_DISTRICT - 1) + 1) when read_enable = '1' else (others=>'0');
   
 end behavioral;

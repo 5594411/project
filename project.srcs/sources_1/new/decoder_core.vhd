@@ -3,10 +3,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity decoder_core is
     generic (
-        NUM_CANDIDATE: Integer := 1;
+        NUM_CANDIDATE: Integer := 2;
 --        save the last column as sum for specfic candidate
-        NUM_DISTRICT: Integer := 1;
-        NUM_TALLY: Integer := 8
+        NUM_DISTRICT: Integer := 2;
+        NUM_TALLY: Integer := 8;
+        TAG_SIZE: Integer := 4
     );
     port ( 
            btnR   : in  std_logic;
