@@ -1,7 +1,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
-entity decode_core is
+entity decoder_core is
     generic (
         NUM_CANDIDATE: Integer := 1;
 --        save the last column as sum for specfic candidate
@@ -13,9 +13,9 @@ entity decode_core is
            clk    : in  std_logic;
            sw     : in  std_logic_vector(15 downto 0);
            led    : out  std_logic_vector(15 downto 0) );
-end decode_core;
+end decoder_core;
 
-architecture Behavioral of decode_core is
+architecture Behavioral of decoder_core is
 
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
@@ -109,15 +109,16 @@ signal sig_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
 signal mem_data_out: std_logic_vector(NUM_TALLY - 1 downto 0);
 signal mem_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
 
-signal secret_key: std_logic_vector(31 downto 0);
+signal secret_key: std_logic_vector(15 downto 0);
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
     -- record size < 32
-    sig_tag_sz <= "0111";
-    sig_record_sz <= "010100";
-    sig_record <= "00000000000001010101010101010101";
-    secret_key <= "00000000000001010101010101010101";
+    sig_tag_sz <= "1000";
+    sig_record_sz <= "010000";
+    sig_record(15 downto 0) <= sw;
+    sig_record(31 downto 16) <= "0000000000000000";
+    secret_key <= "1110100001011001";
     
     bp1: entity work.block_partitioner
     port map( clk          => clk,              
@@ -144,7 +145,7 @@ begin
               
    flip1: entity work.flip_blocks
    port map ( tag_size => sig_tag_sz,
-              bf => "00",
+              bf => secret_key(1 downto 0),
               A0_in => sig_block_bp_0,
               A1_in => sig_block_bp_1,
               A2_in => sig_block_bp_2,
@@ -155,37 +156,35 @@ begin
               A3_out => sig_block_flip_3);
    
   flip_swp: entity work.block_pipe_reg
-    port map( clk          => clk,
-              record_in    => sig_record_flip,
-              block_0      => sig_block_flip_0,
-              block_1      => sig_block_flip_1,
-              block_2      => sig_block_flip_2,
-              block_3      => sig_block_flip_3,
-              block_0_out  => sig_block_flip_0_out,
-              block_1_out  => sig_block_flip_1_out,
-              block_2_out  => sig_block_flip_2_out,
-              block_3_out  => sig_block_flip_3_out,
-              record_out   => sig_record_swp); 
+    port map( clk => clk,
+              record_in => sig_record_flip,
+              block_0 => sig_block_flip_0,
+              block_1 => sig_block_flip_1,
+              block_2 => sig_block_flip_2,
+              block_3 => sig_block_flip_3,
+              block_0_out => sig_block_flip_0_out,
+              block_1_out => sig_block_flip_1_out,
+              block_2_out => sig_block_flip_2_out,
+              block_3_out => sig_block_flip_3_out,
+              record_out => sig_record_swp); 
     
     mux1 : entity work.mux_4to2
     generic map ( WIDTH => 8 )
-    port map (
-        data_0 => sig_block_0,
-        data_1 => sig_block_1,
-        data_2 => sig_block_2,
-        data_3 => sig_block_3,
-        block_x => "01",
-        block_y => "00",
-        data_out_x => sig_block_x,
-        data_out_y => sig_block_y
-    );
+    port map ( data_0 => sig_block_0,
+               data_1 => sig_block_1,
+               data_2 => sig_block_2,
+               data_3 => sig_block_3,
+               block_x => secret_key(3 downto 2),
+               block_y => secret_key(5 downto 4),
+               data_out_x => sig_block_x,
+               data_out_y => sig_block_y);
 
     swap1 : entity work.swap
     port map( block_x => sig_block_x,
               block_y => sig_block_y,
-              px => "001",
-              py => "001",
-              s => "0001",
+              px => secret_key(7 downto 6),
+              py => secret_key(9 downto 8),
+              s => secret_key(11 downto 10),
               tag_size => sig_tag_sz,
               bx_swapped => sig_swaped_block_1,
               by_swapped => sig_swaped_block_2);
@@ -209,9 +208,9 @@ begin
         block_b => sig_block_swp_1_out,
         block_c => sig_block_swp_2_out,
         block_d => sig_block_swp_3_out,
-        shift_select => "00",
+        shift_select => secret_key(15 downto 14),
         block_size_in => "0010",
-        r_in => "0010",
+        r_in => secret_key(13 downto 12),
         shift_a => sig_block_shift_0,
         shift_b => sig_block_shift_1,
         shift_c => sig_block_shift_2,
@@ -230,8 +229,7 @@ begin
               block_3_out  => sig_block_shift_3_out,
               record_out   => sig_record_shift);
     
-
-    sig_candidate_r <= sig_record(13 downto 12);
-    sig_district_r <= sig_record(15 downto 14);       
+    led(15 downto 8) <= sig_block_shift_1_out;
+    led(7 downto 0) <= sig_block_shift_0_out;
 
 end Behavioral;

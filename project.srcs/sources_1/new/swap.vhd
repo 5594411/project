@@ -5,9 +5,9 @@ use IEEE.NUMERIC_STD.ALL;
 entity swap is
     port ( block_x : in  std_logic_vector(7 downto 0);
            block_y : in  std_logic_vector(7 downto 0);
-           px : in  std_logic_vector(2 downto 0);
-           py : in  std_logic_vector(2 downto 0);
-           s : in  std_logic_vector(3 downto 0);
+           px : in  std_logic_vector(1 downto 0);
+           py : in  std_logic_vector(1 downto 0);
+           s : in  std_logic_vector(1 downto 0);
            tag_size : in std_logic_vector(3 downto 0);
            bx_swapped : out std_logic_vector(7 downto 0);
            by_swapped : out std_logic_vector(7 downto 0));

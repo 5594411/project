@@ -9,9 +9,9 @@ architecture Behavioral of shifter_sim is
     component shifter is
     port (
         block_a, block_b        : in std_logic_vector(7 downto 0);
-        shift_select            : in std_logic_vector(1 downto 0);
+        shift_select, r_in           : in std_logic_vector(1 downto 0);
         block_c, block_d        : in  std_logic_vector(7 downto 0); --s_b
-        block_size_in, r_in     : in std_logic_vector(3 downto 0);
+        block_size_in    : in std_logic_vector(3 downto 0);
         shift_a, shift_b, shift_c, shift_d : out std_logic_vector(7 downto 0)
     );
 end component;
@@ -54,7 +54,7 @@ begin
         sig_block_d <= "00000000";
         sig_shift_select <= "00";
         sig_block_size_in <= "0111";
-        sig_r_in <= "0100";
+        sig_r_in <= "01";
         
         wait for 20 ns; --tested
         sig_block_a <= "00101110"; --01100101
@@ -63,17 +63,17 @@ begin
         sig_block_d <= "10000000";
         sig_shift_select <= "00";
         sig_block_size_in <= "0111";
-        sig_r_in <= "0100";
+        sig_r_in <= "10";
         
         wait for 20 ns; --tested
         sig_shift_select <= "01";
-        sig_r_in <= "0110";
+        sig_r_in <= "11";
         sig_block_size_in <= "0111";
         
         wait for 20 ns; --tested
         sig_block_size_in <= "1000";
         sig_shift_select <= "11";
-        sig_r_in <= "0010";
+        sig_r_in <= "01";
         
         wait for 20 ns; --tested
         sig_block_size_in <= "0001";

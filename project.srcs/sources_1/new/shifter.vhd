@@ -5,8 +5,8 @@ use IEEE.NUMERIC_STD.ALL;
 entity shifter is
     port (
         block_a, block_b, block_c, block_d : in std_logic_vector(7 downto 0);
-        shift_select            : in std_logic_vector(1 downto 0);
-        block_size_in, r_in     : in std_logic_vector(3 downto 0);
+        shift_select, r_in : in std_logic_vector(1 downto 0);
+        block_size_in : in std_logic_vector(3 downto 0);
         shift_a, shift_b, shift_c, shift_d : out std_logic_vector(7 downto 0)
     );
 end entity shifter;
