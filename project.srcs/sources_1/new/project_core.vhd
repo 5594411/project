@@ -19,117 +19,6 @@ end project;
 
 architecture structural of project is
 
-component mux_4to2 is
-    generic ( WIDTH : integer := 32 );
-    Port (
-        data_0 : in  std_logic_vector(WIDTH - 1 downto 0);
-        data_1 : in  std_logic_vector(WIDTH - 1 downto 0);
-        data_2 : in  std_logic_vector(WIDTH - 1 downto 0);
-        data_3 : in  std_logic_vector(WIDTH - 1 downto 0);
-        block_x : in  std_logic_vector(1 downto 0);
-        block_y : in  std_logic_vector(1 downto 0);
-        data_out_x : out std_logic_vector(WIDTH - 1 downto 0);
-        data_out_y : out std_logic_vector(WIDTH - 1 downto 0)
-    );
-end component;
-
-component block_partitioner is
-
-    port ( clk          : in  std_logic;
-           tag_sz       : in  std_logic_vector(3 downto 0);
-           record_sz    : in  std_logic_vector(5 downto 0);
-           record_in    : in  std_logic_vector(31 downto 0);
-           block_0      : out std_logic_vector(7 downto 0);
-           block_1      : out std_logic_vector(7 downto 0);
-           block_2      : out std_logic_vector(7 downto 0);
-           block_3      : out std_logic_vector(7 downto 0));
-           
-end component;
-
-component bp_flip_pipe_reg is
-    port ( clk          : in  std_logic;
-           record_in   : in  std_logic_vector(31 downto 0);
-           block_0      : in std_logic_vector(7 downto 0);
-           block_1      : in std_logic_vector(7 downto 0);
-           block_2      : in std_logic_vector(7 downto 0);
-           block_3      : in std_logic_vector(7 downto 0);
-           block_0_out  : out std_logic_vector(7 downto 0);
-           block_1_out  : out std_logic_vector(7 downto 0);
-           block_2_out  : out std_logic_vector(7 downto 0);
-           block_3_out  : out std_logic_vector(7 downto 0);
-           record_out   : out  std_logic_vector(31 downto 0));          
-end component;
-
-component flip_swp_pipe_reg is
-    port ( clk          : in  std_logic;
-           record_in    : in  std_logic_vector(31 downto 0);
-           block_0      : in std_logic_vector(7 downto 0);
-           block_1      : in std_logic_vector(7 downto 0);
-           block_2      : in std_logic_vector(7 downto 0);
-           block_3      : in std_logic_vector(7 downto 0);
-           block_0_out  : out std_logic_vector(7 downto 0);
-           block_1_out  : out std_logic_vector(7 downto 0);
-           block_2_out  : out std_logic_vector(7 downto 0);
-           block_3_out  : out std_logic_vector(7 downto 0);
-           record_out   : out  std_logic_vector(31 downto 0));         
-end component;
-
-component swp_shift_pipe_reg is
-    port ( clk          : in  std_logic;
-           record_in    : in  std_logic_vector(31 downto 0);
-           block_0      : in std_logic_vector(7 downto 0);
-           block_1      : in std_logic_vector(7 downto 0);
-           block_2      : in std_logic_vector(7 downto 0);
-           block_3      : in std_logic_vector(7 downto 0);
-           block_0_out  : out std_logic_vector(7 downto 0);
-           block_1_out  : out std_logic_vector(7 downto 0);
-           block_2_out  : out std_logic_vector(7 downto 0);
-           block_3_out  : out std_logic_vector(7 downto 0);
-           record_out   : out  std_logic_vector(31 downto 0));          
-end component;
-
-component shift_mem_pipe_reg is
-    port ( clk          : in  std_logic;
-           record_in    : in  std_logic_vector(31 downto 0);
-           block_0      : in std_logic_vector(7 downto 0);
-           block_1      : in std_logic_vector(7 downto 0);
-           block_2      : in std_logic_vector(7 downto 0);
-           block_3      : in std_logic_vector(7 downto 0);
-           block_0_out  : out std_logic_vector(7 downto 0);
-           block_1_out  : out std_logic_vector(7 downto 0);
-           block_2_out  : out std_logic_vector(7 downto 0);
-           block_3_out  : out std_logic_vector(7 downto 0);
-           record_out   : out  std_logic_vector(31 downto 0));        
-end component;
-
-component shifter is
-    port (
-        block_a, block_b        : in std_logic_vector(7 downto 0);
-        shift_select            : in std_logic_vector(1 downto 0);
-        block_c, block_d        : in  std_logic_vector(7 downto 0); --s_b
-        block_size_in, r_in     : in std_logic_vector(3 downto 0);
-        shift_a, shift_b, shift_c, shift_d : out std_logic_vector(7 downto 0)
-    );
-end component;
-
-component xor_mod is
-    Port ( block_a, block_b,
-           block_c, block_d : in STD_LOGIC_VECTOR (7 downto 0);
-           xor_out          : out STD_LOGIC_VECTOR(7 downto 0));
-end component;
-
-component swap is
-    port (
-        block_x         : in  std_logic_vector(7 downto 0);
-        block_y         : in  std_logic_vector(7 downto 0);
-        px         : in  std_logic_vector(2 downto 0);
-        py         : in  std_logic_vector(2 downto 0);
-        s          : in  std_logic_vector(3 downto 0);
-        tag_size : in std_logic_vector(3 downto 0);
-        bx_swapped : out std_logic_vector(7 downto 0);
-        by_swapped : out std_logic_vector(7 downto 0));
-end component;
-
 component control_unit is
     port ( cal_tag     : in  std_logic_vector(3 downto 0);
            rec_tag     : in  std_logic_vector(3 downto 0);
@@ -273,6 +162,9 @@ signal sig_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
 
 signal mem_data_out: std_logic_vector(NUM_TALLY - 1 downto 0);
 signal mem_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
+
+signal secret_key: std_logic_vector(15 downto 0);
+signal final_record: std_logic_vector(7 downto 0);
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -280,17 +172,23 @@ begin
     sig_tag_sz <= "0111";
     sig_record_sz <= "010100";
     sig_record <= "00000000000001010101010101010101";
-    bp1: block_partitioner
+    sig_tag_sz <= "0100";
+    sig_record_sz <= "010000";
+    sig_record(15 downto 0) <= sw;
+    sig_record(31 downto 16) <= "0000000000000000";
+    secret_key <= "1110100001011001";
+    
+    bp1: entity work.block_partitioner
     port map( clk          => clk,              
               tag_sz       => sig_tag_sz,
               record_sz    => sig_record_sz,
               record_in    => sig_record,
-              block_0      => sig_block_0,
-              block_1      => sig_block_1,
-              block_2      => sig_block_2,
-              block_3      => sig_block_3);
+              block_0      => sig_block_bp_0,
+              block_1      => sig_block_bp_1,
+              block_2      => sig_block_bp_2,
+              block_3      => sig_block_bp_3);
 
-    bp_flip: bp_flip_pipe_reg
+    bp_flip: entity work.block_pipe_reg
     port map( clk          => clk,
               record_in    => sig_record_bp,
               block_0      => sig_block_bp_0,
@@ -303,20 +201,67 @@ begin
               block_3_out  => sig_block_bp_3_out,
               record_out   => sig_record_flip); 
               
-    flip_swp: flip_swp_pipe_reg
-    port map( clk          => clk,
-              record_in    => sig_record_flip,
-              block_0      => sig_block_flip_0,
-              block_1      => sig_block_flip_1,
-              block_2      => sig_block_flip_2,
-              block_3      => sig_block_flip_3,
-              block_0_out  => sig_block_flip_0_out,
-              block_1_out  => sig_block_flip_1_out,
-              block_2_out  => sig_block_flip_2_out,
-              block_3_out  => sig_block_flip_3_out,
-              record_out   => sig_record_swp); 
+   flip1: entity work.flip_blocks
+   port map ( tag_size => sig_tag_sz,
+              bf => secret_key(1 downto 0),
+              A0_in => sig_block_bp_0_out,
+              A1_in => sig_block_bp_1_out,
+              A2_in => sig_block_bp_2_out,
+              A3_in => sig_block_bp_3_out,
+              A0_out => sig_block_flip_0,
+              A1_out => sig_block_flip_1,
+              A2_out => sig_block_flip_2,
+              A3_out => sig_block_flip_3);
+   
+    flip_swp: entity work.block_pipe_reg
+    port map( clk => clk,
+              record_in => sig_record_flip,
+              block_0 => sig_block_flip_0,
+              block_1 => sig_block_flip_1,
+              block_2 => sig_block_flip_2,
+              block_3 => sig_block_flip_3,
+              block_0_out => sig_block_flip_0_out,
+              block_1_out => sig_block_flip_1_out,
+              block_2_out => sig_block_flip_2_out,
+              block_3_out => sig_block_flip_3_out,
+              record_out => sig_record_swp); 
+    
+    mux1 : entity work.mux_4to2
+    generic map ( WIDTH => 8 )
+    port map ( data_0 => sig_block_flip_0_out,
+               data_1 => sig_block_flip_1_out,
+               data_2 => sig_block_flip_2_out,
+               data_3 => sig_block_flip_3_out,
+               block_x => secret_key(3 downto 2),
+               block_y => secret_key(5 downto 4),
+               data_out_x => sig_block_x,
+               data_out_y => sig_block_y);
+
+    swap1 : entity work.swap
+    port map( block_x => sig_block_x,
+              block_y => sig_block_y,
+              px => secret_key(7 downto 6),
+              py => secret_key(9 downto 8),
+              s => secret_key(11 downto 10),
+              tag_size => sig_tag_sz,
+              bx_swapped => sig_swaped_block_x,
+              by_swapped => sig_swaped_block_y);
               
-    swp_shift: swp_shift_pipe_reg
+    mux2 : entity work.mux_6to4
+    port map ( data_0 => sig_block_flip_0_out,
+               data_1 => sig_block_flip_1_out,
+               data_2 => sig_block_flip_2_out,
+               data_3 => sig_block_flip_3_out,
+               data_x => sig_swaped_block_x,
+               data_y => sig_swaped_block_y,
+               block_x => secret_key(3 downto 2),
+               block_y => secret_key(5 downto 4),
+               data_0_out => sig_block_swp_0,
+               data_1_out => sig_block_swp_1,
+               data_2_out => sig_block_swp_2,
+               data_3_out => sig_block_swp_3);
+   
+    swp_shift: entity work.block_pipe_reg
     port map( clk          => clk,
               record_in    => sig_record_swp,
               block_0      => sig_block_swp_0,
@@ -328,7 +273,21 @@ begin
               block_2_out  => sig_block_swp_2_out,
               block_3_out  => sig_block_swp_3_out,
               record_out   => sig_record_shift);
-    shift_mem: shift_mem_pipe_reg
+
+    shift1: entity work.shifter
+    port map( block_0 => sig_block_swp_0_out,
+              block_1 => sig_block_swp_1_out,
+              block_2 => sig_block_swp_2_out,
+              block_3 => sig_block_swp_3_out,
+              shift_select => secret_key(15 downto 14),
+              block_size_in => sig_tag_sz,
+              r_in => secret_key(13 downto 12),
+              shift_0 => sig_block_shift_0,
+              shift_1 => sig_block_shift_1,
+              shift_2 => sig_block_shift_2,
+              shift_3 => sig_block_shift_3);
+            
+    shift_mem: entity work.block_pipe_reg
     port map( clk          => clk,
               record_in    => sig_record_shift,
               block_0      => sig_block_shift_0,
@@ -341,37 +300,12 @@ begin
               block_3_out  => sig_block_shift_3_out,
               record_out   => sig_record_shift);
     
-    mux1 : mux_4to2
-    generic map ( WIDTH => 8 )
-    port map (
-        data_0 => sig_block_0,
-        data_1 => sig_block_1,
-        data_2 => sig_block_2,
-        data_3 => sig_block_3,
-        block_x => "01",
-        block_y => "00",
-        data_out_x => sig_block_x,
-        data_out_y => sig_block_y
-    );
-
-    swap1 : swap
-    port map( block_x => sig_block_x,
-              block_y => sig_block_y,
-              px => "001",
-              py => "001",
-              s => "0001",
-              tag_size => sig_tag_sz,
-              bx_swapped => sig_swaped_block_1,
-              by_swapped => sig_swaped_block_2);
-    
-    pipe_reg: entity work.pipe_reg
-        GENERIC MAP (width => 35)
-        port map (
-          clk => clk,
-          reset => btnR,
-          stall => btnR,
-          din => sw,
-          dout => led);
+    xor1: entity work.xor_mod
+    port map ( block_0 => sig_block_shift_0_out,
+               block_1 => sig_block_shift_1_out,
+               block_2 => sig_block_shift_2_out,
+               block_3 => sig_block_shift_3_out,
+               xor_out => final_record);
 
     sig_candidate_r <= sig_record(13 downto 12);
     sig_district_r <= sig_record(15 downto 14);       

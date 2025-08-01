@@ -244,9 +244,6 @@ begin
                block_1 => sig_block_shift_1_out,
                block_2 => sig_block_shift_2_out,
                block_3 => sig_block_shift_3_out,
-               xor_out =>  final_record);
-               
-    led(7 downto 0) <= final_record;
-    led(15 downto 8) <= "00000000";
+               xor_out => final_record);
 
 end Behavioral;
