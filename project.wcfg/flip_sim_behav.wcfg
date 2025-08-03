@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="flip_sim_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="flip_sim" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="167.601 ns"></ZoomEndTime>
+      <Cursor1Time time="56.400 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="163"></NameColumnWidth>
+      <ValueColumnWidth column_width="163"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="11" />
+   <wvobject fp_name="/flip_sim/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/tag_size" type="array">
+      <obj_property name="ElementShortName">tag_size[3:0]</obj_property>
+      <obj_property name="ObjectShortName">tag_size[3:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/bf" type="array">
+      <obj_property name="ElementShortName">bf[1:0]</obj_property>
+      <obj_property name="ObjectShortName">bf[1:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/block_0" type="array">
+      <obj_property name="ElementShortName">block_0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">block_0[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/block_1" type="array">
+      <obj_property name="ElementShortName">block_1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">block_1[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/block_2" type="array">
+      <obj_property name="ElementShortName">block_2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">block_2[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/block_3" type="array">
+      <obj_property name="ElementShortName">block_3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">block_3[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/UUT/A0_out" type="array">
+      <obj_property name="ElementShortName">A0_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A0_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/UUT/A1_out" type="array">
+      <obj_property name="ElementShortName">A1_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A1_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/UUT/A2_out" type="array">
+      <obj_property name="ElementShortName">A2_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A2_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/flip_sim/UUT/A3_out" type="array">
+      <obj_property name="ElementShortName">A3_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A3_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+</wave_config>

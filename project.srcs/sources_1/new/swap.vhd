@@ -25,6 +25,7 @@ begin
     begin
         temp_bx := block_x;
         temp_by := block_y;
+        int_tag_size := to_integer(unsigned(tag_size));
         
         if (int_tag_size = 0) then
             divisor := 8;
