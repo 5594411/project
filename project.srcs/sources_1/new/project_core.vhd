@@ -166,7 +166,8 @@ signal mem_data_out: std_logic_vector(NUM_TALLY - 1 downto 0);
 signal mem_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
 
 signal secret_key: std_logic_vector(15 downto 0);
-signal final_record: std_logic_vector(7 downto 0);
+signal final_tag: std_logic_vector(7 downto 0);
+signal sig_tag: std_logic_vector(7 downto 0);
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -312,7 +313,13 @@ begin
                block_1 => sig_block_shift_1_out,
                block_2 => sig_block_shift_2_out,
                block_3 => sig_block_shift_3_out,
-               xor_out => final_record);
+               xor_out => final_tag);
+    
+    record_reg: entity work.pipe_reg
+    generic map ( WIDTH => 8 )
+    port map (clk => clk,
+              din => final_tag,
+              dout => sig_tag);
     
     reset <= btnR;
 --    sig_tag_size <= conv_integer(sig_tag_sz); 
@@ -324,7 +331,7 @@ begin
             TAG_SIZE => sig_tag_size
         )
         port map (
-            cal_tag => final_record,
+            cal_tag => sig_tag,
 --            rec_tag => "00001001",
             rec_tag => sig_record(sig_tag_size - 1 downto 0),
             mem_read => sig_mem_read

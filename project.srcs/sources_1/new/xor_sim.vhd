@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 07/27/2025 02:31:18 PM
+-- Create Date: 08/03/2025 10:48:11 AM
 -- Design Name: 
--- Module Name: stack - Behavioral
+-- Module Name: xor_sim - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,11 +31,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity stack is
+entity xor_sim is
 --  Port ( );
-end stack;
+end xor_sim;
 
-architecture Behavioral of stack is
+architecture Behavioral of xor_sim is
 
 begin
 

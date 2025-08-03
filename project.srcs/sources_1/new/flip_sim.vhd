@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 07/27/2025 02:27:30 PM
+-- Create Date: 08/03/2025 10:48:11 AM
 -- Design Name: 
--- Module Name: parity - Behavioral
+-- Module Name: flip_sim - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -31,11 +31,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity parity is
+entity flip_sim is
 --  Port ( );
-end parity;
+end flip_sim;
 
-architecture Behavioral of parity is
+architecture Behavioral of flip_sim is
 
 begin
 
