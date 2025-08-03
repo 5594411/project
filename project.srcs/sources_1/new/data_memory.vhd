@@ -30,7 +30,7 @@ end tally_table;
 
 architecture behavioral of tally_table is
 --default sum is 16bits
-type mem_array is array(0 to 2**(NUM_CANDIDATE - 1) - 1, 0 to 2 **(NUM_DISTRICT - 1)) of std_logic_vector(NUM_TALLY - 1 downto 0);
+type mem_array is array(0 to 2**NUM_CANDIDATE - 1, 0 to 2 **NUM_DISTRICT) of std_logic_vector(NUM_TALLY - 1 downto 0);
 signal sig_data_mem : mem_array;
 signal var_candidate_r    : integer;
 signal var_district_r     : integer;
@@ -58,20 +58,20 @@ begin
         var_write_sum  := conv_integer(write_sum);
         
         if (reset = '1') then
-            for i in 0 to 2**(NUM_CANDIDATE - 1) - 1 loop
-                for j in 0 to 2 **(NUM_DISTRICT - 1) loop
+            for i in 0 to 2**NUM_CANDIDATE - 1 loop
+                for j in 0 to 2 **NUM_DISTRICT loop
                     var_data_mem(i, j) := (others=>'0');
                 end loop;
             end loop;
         elsif (rising_edge(clk) and write_enable = '1') then
             -- memory writes on the falling clock edge
             var_data_mem(var_candidate_w, var_district_w) := write_data;
-            var_data_mem(var_candidate_w, 2**(NUM_DISTRICT - 1)) := write_sum;
+            var_data_mem(var_candidate_w, 2**NUM_DISTRICT) := write_sum;
         end if;
        
         -- continuous read of the memory location given by var_addr 
         data_out <= var_data_mem(var_candidate_w, var_district_w);
-        sum_out <= var_data_mem(var_candidate_w, 2**(NUM_DISTRICT - 1));
+        sum_out <= var_data_mem(var_candidate_w, 2**NUM_DISTRICT);
  
         -- the following are probe signals (for simulation purpose) 
         sig_data_mem <= var_data_mem;
@@ -79,6 +79,6 @@ begin
     end process;
     
     read_data <= sig_data_mem(var_candidate_r, var_district_r) when read_enable = '1' else (others=>'0');
-    read_sum <= sig_data_mem(var_candidate_r, 2**(NUM_DISTRICT - 1)) when read_enable = '1' else (others=>'0');
+    read_sum <= sig_data_mem(var_candidate_r, 2**NUM_DISTRICT) when read_enable = '1' else (others=>'0');
   
 end behavioral;

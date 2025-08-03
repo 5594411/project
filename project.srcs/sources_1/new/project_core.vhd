@@ -325,7 +325,8 @@ begin
 --    sig_tag_size <= conv_integer(sig_tag_sz); 
     sig_candidate_r <= sig_record(sig_tag_size + sig_num_tally + sig_num_candidate - 1 downto sig_tag_size + sig_num_tally);
     sig_district_r <= sig_record(sig_tag_size + sig_num_tally + sig_num_candidate + sig_num_district - 1 downto sig_tag_size + sig_num_tally + sig_num_candidate);    
-    
+--    sig_candidate_r <= "01";
+--    sig_district_r <= "01";
     ctl_unit: control_unit
         generic map (
             TAG_SIZE => sig_tag_size
