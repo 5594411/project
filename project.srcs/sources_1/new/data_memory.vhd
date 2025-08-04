@@ -68,15 +68,14 @@ begin
             var_data_mem(var_candidate_w, var_district_w) := write_data;
             var_data_mem(var_candidate_w, 2**NUM_DISTRICT) := write_sum;
         end if;
-       
-        -- continuous read of the memory location given by var_addr 
-        data_out <= var_data_mem(var_candidate_w, var_district_w);
-        sum_out <= var_data_mem(var_candidate_w, 2**NUM_DISTRICT);
  
         -- the following are probe signals (for simulation purpose) 
         sig_data_mem <= var_data_mem;
 
     end process;
+    
+    data_out <= write_data when write_enable = '1' else (others=>'0');
+    sum_out <= write_sum when write_enable = '1' else (others=>'0');
     
     read_data <= sig_data_mem(var_candidate_r, var_district_r) when read_enable = '1' else (others=>'0');
     read_sum <= sig_data_mem(var_candidate_r, 2**NUM_DISTRICT) when read_enable = '1' else (others=>'0');
