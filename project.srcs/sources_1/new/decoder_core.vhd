@@ -8,7 +8,8 @@ entity decoder_core is
     port ( clk    : in  std_logic;
            decoder_key : in std_logic_vector(15 downto 0);
            record_in     : in  std_logic_vector(31 downto 0);
-           tag_out    : out  std_logic_vector(7 downto 0));
+           expect_tag : in std_logic_vector(7 downto 0);
+           tag_match   : out  std_logic);
 end decoder_core;
 
 architecture Behavioral of decoder_core is
@@ -66,7 +67,8 @@ signal sig_swaped_block_x : std_logic_vector(7 downto 0);
 signal sig_swaped_block_y : std_logic_vector(7 downto 0);
 
 signal secret_key: std_logic_vector(15 downto 0);
-signal final_tag: std_logic_vector(7 downto 0);
+signal final_tag, final_expect_tag : std_logic_vector(7 downto 0);
+signal expect_tag_flip, expect_tag_swap, expect_tag_shift, expect_tag_xor : std_logic_vector(7 downto 0);
 begin
     sig_tag_sz <= std_logic_vector(to_unsigned(TAG_SIZE, 4));
     sig_record_sz <= std_logic_vector(to_unsigned(RECORD_SIZE, 6));
@@ -93,7 +95,9 @@ begin
               block_1_out  => sig_block_bp_1_out,
               block_2_out  => sig_block_bp_2_out,
               block_3_out  => sig_block_bp_3_out,
-              record_out   => sig_record_flip); 
+              record_out   => sig_record_flip,
+              expect_tag => expect_tag,
+              expect_tag_out => expect_tag_flip ); 
               
    flip1: entity work.flip_blocks
    port map ( tag_size => sig_tag_sz,
@@ -118,7 +122,9 @@ begin
               block_1_out => sig_block_flip_1_out,
               block_2_out => sig_block_flip_2_out,
               block_3_out => sig_block_flip_3_out,
-              record_out => sig_record_swp); 
+              record_out => sig_record_swp,
+              expect_tag => expect_tag_flip,
+              expect_tag_out => expect_tag_swap ); 
     
     mux1 : entity work.mux_4to2
     generic map ( WIDTH => 8 )
@@ -166,7 +172,9 @@ begin
               block_1_out  => sig_block_swp_1_out,
               block_2_out  => sig_block_swp_2_out,
               block_3_out  => sig_block_swp_3_out,
-              record_out   => sig_record_shift);
+              record_out   => sig_record_shift,
+              expect_tag => expect_tag_swap,
+              expect_tag_out => expect_tag_shift );
 
     shift1: entity work.shifter
     port map( block_0 => sig_block_swp_0_out,
@@ -192,7 +200,9 @@ begin
               block_1_out  => sig_block_shift_1_out,
               block_2_out  => sig_block_shift_2_out,
               block_3_out  => sig_block_shift_3_out,
-              record_out   => sig_record_shift);
+              record_out   => sig_record_shift,
+              expect_tag => expect_tag_shift,
+              expect_tag_out => expect_tag_xor );
     
     xor1: entity work.xor_mod
     port map ( block_0 => sig_block_shift_0_out,
@@ -200,10 +210,12 @@ begin
                block_2 => sig_block_shift_2_out,
                block_3 => sig_block_shift_3_out,
                xor_out => final_tag);
-
+     
     record_reg: entity work.pipe_reg
     generic map ( WIDTH => 8 )
     port map (clk => clk,
-              din => final_tag,
-              dout => tag_out);
+              din => expect_tag_xor,
+              dout => final_expect_tag);
+    
+    tag_match <= '1' when (final_tag = final_expect_tag) else '0';
 end Behavioral;

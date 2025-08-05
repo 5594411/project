@@ -65,7 +65,7 @@ begin
         btnC <= '1';
         sw <= "0100001110011000";
         wait for 50 ns;
-        btnR <= '1';
+        btnR <= '0';
         btnC <= '0';
         sw <= "0100001110011000";
         wait;

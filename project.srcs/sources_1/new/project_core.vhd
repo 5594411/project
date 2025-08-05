@@ -138,16 +138,24 @@ signal rec_out_idtd             : std_logic_vector(31 downto 0);
 signal tag_out_idtd             : std_logic_vector(7 downto 0);
 
 signal tag_match          : std_logic;
+signal decoder_record_in : std_logic_vector(31 downto 0);
+component record_queue is
+    port ( reset        : in  std_logic;
+           clk          : in  std_logic;
+           push_en      : in  std_logic;
+           record_in : in std_logic_vector(15 downto 0);
+           btnC : in std_logic;
+           record_out   : out std_logic_vector(31 downto 0);
+           tag_out      : out std_logic_vector(7 downto 0));
+end component;
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
     -- record size < 32
     sig_tag_sz <= "0100";
     sig_record_sz <= "010000";
-    sig_record(15 downto 0) <= sw;
-    sig_record(31 downto 16) <= "0000000000000000";
     secret_key <= "1110100001011001";
-    reset <= btnC;
+    reset <= btnR;
     sig_one_4b <= "0001";
     
     pc : entity work.program_counter
@@ -182,7 +190,6 @@ begin
                push_en => sig_push_en,
                key_en => sig_key_en,
                mem_read => sig_mem_read );
-                
 
     reg_file : entity work.register_file 
     port map ( reset           => reset, 
@@ -196,11 +203,13 @@ begin
                key_en           => sig_key_en);
                
     
-    rec_q : entity work.record_queue
+    rec_q : record_queue
     port map(
         reset =>reset,
-        clk => clk, 
-        push_en     => sig_push_en,
+        clk => clk,
+        push_en  => sig_push_en,
+        record_in => sw,
+        btnC => btnC,
         record_out => rec_out,
         tag_out => tag_out
     );
@@ -219,16 +228,18 @@ begin
               tag_in => tag_out,
               tag_out => tag_out_idtd );
     
+    decoder_record_in(RECORD_SIZE - 1 downto 0) <= rec_out_idtd(RECORD_SIZE + 8 - 1 downto 8);
+    decoder_record_in(31 downto RECORD_SIZE) <= (others => '0');
     decoder1: entity work.decoder_core
     generic map ( TAG_SIZE => TAG_SIZE,
                   RECORD_SIZE => RECORD_SIZE)
     port map ( clk => clk,
                decoder_key => decoder_key,
-               record_in => sig_record,
-               tag_out => sig_tag);
-    
+               record_in => decoder_record_in,
+               expect_tag => tag_out_idtd,
+               tag_match => tag_match);
+ 
     -- compare tag_out_idtd with sig_tag
-    tag_match <= '1' when (sig_tag = tag_out_idtd) else '0';
     mux_select_candidate <= '1' when (sig_candidate_r = sig_candidate_w) else '0';
     mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w ) else '0';
     

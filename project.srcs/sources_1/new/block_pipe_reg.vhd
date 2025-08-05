@@ -12,7 +12,9 @@ entity block_pipe_reg is
            block_0_out : out std_logic_vector(7 downto 0);
            block_1_out : out std_logic_vector(7 downto 0);
            block_2_out : out std_logic_vector(7 downto 0);
-           block_3_out : out std_logic_vector(7 downto 0)
+           block_3_out : out std_logic_vector(7 downto 0);
+           expect_tag : in std_logic_vector(7 downto 0);
+           expect_tag_out : out std_logic_vector(7 downto 0)
 );
 end block_pipe_reg;
 
@@ -27,6 +29,7 @@ begin
             block_1_out <= block_1;
             block_2_out <= block_2;
             block_3_out <= block_3;
+            expect_tag_out <= expect_tag;
         end if;
     end process;
 end Behavioral;
