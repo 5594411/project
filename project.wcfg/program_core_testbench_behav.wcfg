@@ -11,12 +11,12 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="928.489 ns"></ZoomEndTime>
+      <ZoomEndTime time="165.501 ns"></ZoomEndTime>
       <Cursor1Time time="52.509 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="247"></NameColumnWidth>
-      <ValueColumnWidth column_width="248"></ValueColumnWidth>
+      <ValueColumnWidth column_width="243"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="37" />
    <wvobject fp_name="/program_core_testbench/NUM_CANDIDATE" type="other">
@@ -50,6 +50,10 @@
    <wvobject fp_name="/program_core_testbench/led" type="array">
       <obj_property name="ElementShortName">led[15:0]</obj_property>
       <obj_property name="ObjectShortName">led[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/tag_match" type="logic">
+      <obj_property name="ElementShortName">tag_match</obj_property>
+      <obj_property name="ObjectShortName">tag_match</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/read_enable" type="logic">
       <obj_property name="ElementShortName">read_enable</obj_property>
@@ -158,10 +162,6 @@
    <wvobject fp_name="/program_core_testbench/UUT/alu_write_sum/sum" type="array">
       <obj_property name="ElementShortName">sum[7:0]</obj_property>
       <obj_property name="ObjectShortName">sum[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/record_reg/dout" type="array">
-      <obj_property name="ElementShortName">dout[7:0]</obj_property>
-      <obj_property name="ObjectShortName">dout[7:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/record_in" type="array">
       <obj_property name="ElementShortName">record_in[31:0]</obj_property>
