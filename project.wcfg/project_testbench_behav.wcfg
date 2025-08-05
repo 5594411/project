@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="165.730 ns"></ZoomStartTime>
-      <ZoomEndTime time="390.270 ns"></ZoomEndTime>
-      <Cursor1Time time="910.633 ns"></Cursor1Time>
+      <ZoomStartTime time="654.166 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,069.167 ns"></ZoomEndTime>
+      <Cursor1Time time="689.566 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="247"></NameColumnWidth>
-      <ValueColumnWidth column_width="240"></ValueColumnWidth>
+      <ValueColumnWidth column_width="232"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="28" />
+   <WVObjectSize size="33" />
    <wvobject fp_name="/program_core_testbench/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -108,41 +108,74 @@
       <obj_property name="ObjectShortName">sig_block_bp_0[7:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/xor1/xor_out" type="array">
-      <obj_property name="ElementShortName">xor_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">xor_out[7:0]</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/flip1/A3_out" type="array">
+      <obj_property name="ElementShortName">A3_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A3_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/xor1/xor_out" type="array">
-      <obj_property name="ElementShortName">xor_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">xor_out[7:0]</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/flip1/A2_out" type="array">
+      <obj_property name="ElementShortName">A2_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A2_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/tag_out" type="array">
-      <obj_property name="ElementShortName">tag_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">tag_out[7:0]</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/flip1/A1_out" type="array">
+      <obj_property name="ElementShortName">A1_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">A1_out[7:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/flip1/A0_out" type="array">
       <obj_property name="ElementShortName">A0_out[7:0]</obj_property>
       <obj_property name="ObjectShortName">A0_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/flip1/A1_out" type="array">
-      <obj_property name="ElementShortName">A1_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">A1_out[7:0]</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/mux1/data_out_x" type="array">
+      <obj_property name="ElementShortName">data_out_x[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out_x[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/flip1/A2_out" type="array">
-      <obj_property name="ElementShortName">A2_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">A2_out[7:0]</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/mux1/data_out_y" type="array">
+      <obj_property name="ElementShortName">data_out_y[7:0]</obj_property>
+      <obj_property name="ObjectShortName">data_out_y[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/flip1/A3_out" type="array">
-      <obj_property name="ElementShortName">A3_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">A3_out[7:0]</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/swap1/bx_swapped" type="array">
+      <obj_property name="ElementShortName">bx_swapped[7:0]</obj_property>
+      <obj_property name="ObjectShortName">bx_swapped[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/swap1/by_swapped" type="array">
+      <obj_property name="ElementShortName">by_swapped[7:0]</obj_property>
+      <obj_property name="ObjectShortName">by_swapped[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/shift1/shift_3" type="array">
+      <obj_property name="ElementShortName">shift_3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_3[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/shift1/shift_2" type="array">
+      <obj_property name="ElementShortName">shift_2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_2[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/shift1/shift_1" type="array">
+      <obj_property name="ElementShortName">shift_1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_1[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/shift1/shift_0" type="array">
+      <obj_property name="ElementShortName">shift_0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">shift_0[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/xor1/xor_out" type="array">
       <obj_property name="ElementShortName">xor_out[7:0]</obj_property>
       <obj_property name="ObjectShortName">xor_out[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/xor1/xor_out" type="array">
-      <obj_property name="ElementShortName">xor_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">xor_out[7:0]</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/decoder_key" type="array">
+      <obj_property name="ElementShortName">decoder_key[15:0]</obj_property>
+      <obj_property name="ObjectShortName">decoder_key[15:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
 </wave_config>

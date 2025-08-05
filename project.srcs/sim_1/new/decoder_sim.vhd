@@ -30,7 +30,7 @@ begin
     
     stimulus: process begin
         btnR <= '1';
-        record_in(15 downto 0) <= "0100001110011000";
+        record_in(15 downto 0) <= "0001000110101111";
         wait;
     end process stimulus;
 end Behavioral;

@@ -184,7 +184,7 @@ begin
     port map ( reset           => reset, 
                clk             => clk,
                old_key         => sig_old_key,
-               new_key         =>  sig_insn(15 downto 0),
+               new_key         => sig_insn(15 downto 0),
                write_enable    => sig_reg_write,
                write_register  => sig_write_register,
                write_data      => sig_write_data,
@@ -203,7 +203,8 @@ begin
    
     idtd : entity work.id_td_pipe_reg
     port map( clk => clk, 
-              sk_in => sig_old_key, 
+              -- sk_in => sig_old_key, 
+              sk_in => secret_key,
               sk_out => decoder_key,
               mem_read_in => sig_mem_read, 
               mem_read_out => mem_read_idtd, 
@@ -221,7 +222,8 @@ begin
                decoder_key => decoder_key,
                record_in => sig_record,
                tag_out => sig_tag);
-        
+    
+    -- compare tag_out_idtd with sig_tag
     mux_select_candidate <= '1' when (sig_candidate_r = sig_candidate_w) else '0';
     mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w ) else '0';
     
