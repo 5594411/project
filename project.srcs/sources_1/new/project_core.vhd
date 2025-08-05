@@ -13,79 +13,13 @@ entity project is
     );
     port ( 
            btnR   : in  std_logic;
+           btnC   : in  std_logic;
            clk    : in  std_logic;
            sw     : in  std_logic_vector(15 downto 0);
            led    : out  std_logic_vector(15 downto 0) );
 end project;
 
 architecture structural of project is
-
-component program_counter is
-    port ( reset    : in  std_logic;
-           clk      : in  std_logic;
-           addr_in  : in  std_logic_vector(3 downto 0);
-           addr_out : out std_logic_vector(3 downto 0);
-           enable   : in std_logic );
-end component;
-component adder_4b is
-    port ( src_a     : in  std_logic_vector(3 downto 0);
-           src_b     : in  std_logic_vector(3 downto 0);
-           sum       : out std_logic_vector(3 downto 0);
-           carry_out : out std_logic );
-end component;
-component instruction_memory is
-    Port ( reset : in STD_LOGIC;
-           clk : in STD_LOGIC;
-           addr_in : in STD_LOGIC_VECTOR (3 downto 0);
-           insn_out : out STD_LOGIC_VECTOR (31 downto 0));
-end component;
-component control_unit is
-    port (
-        opcode       : in  std_logic_vector(3 downto 0);
-        reg_write    : out std_logic;
-        push_en : out std_logic;
-        key_en       : out std_logic;
-        mem_read     : out std_logic
-    );
-end component;
-component register_file is
-    port ( reset           : in  std_logic;
-           clk             : in  std_logic;
-           old_key         : out  std_logic_vector(15 downto 0);
-           new_key         : in  std_logic_vector(15 downto 0);
-           write_enable    : in  std_logic;
-           write_register  : in  std_logic_vector(1 downto 0);
-           write_data      : in  std_logic_vector(31 downto 0);
-           stall           : in std_logic; 
-           key_en           : in std_logic);
-end component;
-component record_queue is
-    port ( reset        : in  std_logic;
-           clk          : in  std_logic;
-           push_en      : in  std_logic;
-           record_out   : out std_logic_vector(31 downto 0);
-           tag_out      : out std_logic_vector(7 downto 0));
-           -- record_in : in std_logic_vector(31 downto 0);
-end component;
-component id_td_pipe_reg is
-    port ( clk                  : in  std_logic;
-           sk_in                : in  std_logic_vector(15 downto 0);
-           sk_out               : out  std_logic_vector(15 downto 0);
-           mem_read_in          : in  std_logic;
-           mem_read_out         : out std_logic;
-           register_write_in    : in  std_logic;
-           register_write_out   : out std_logic;
-           record_in            : in std_logic_vector(31 downto 0);
-           record_out           : out std_logic_vector(31 downto 0);
-           tag_in               : in std_logic_vector(7 downto 0);
-           tag_out               : out std_logic_vector(7 downto 0)); 
-end component;
-component if_id_pipe_reg is
-    port ( clk          : in  std_logic;
-           insn_in      : in  std_logic_vector(31 downto 0);
-           insn_out     : out  std_logic_vector(31 downto 0));
-end component;
-
 
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
@@ -208,34 +142,36 @@ begin
     sig_record(15 downto 0) <= sw;
     sig_record(31 downto 16) <= "0000000000000000";
     secret_key <= "1110100001011001";
+    reset <= btnC;
+    sig_one_4b <= "0001";
     
-    pc : program_counter
+    pc : entity work.program_counter
     port map ( reset    => reset,
                clk      => clk,
                addr_in  => sig_next_pc,
                addr_out => sig_curr_pc,
                enable => '1' ); 
 
-    next_pc : adder_4b 
+    next_pc : entity work.adder_4b 
     port map ( src_a     => sig_curr_pc, 
                src_b     => sig_one_4b,
                sum       => sig_next_pc,   
                carry_out => sig_pc_carry_out );
     
-    insn_mem : instruction_memory 
+    insn_mem : entity work.instruction_memory 
     port map ( reset    => reset,
                clk      => clk,
                addr_in  => sig_curr_pc,
                insn_out => sig_insn );
                
                
-     ifid : if_id_pipe_reg
+     ifid : entity work.if_id_pipe_reg
      port map( clk => clk, 
                insn_in => sig_insn,
                insn_out => sig_insn_ifid );
 
 
-    ctrl_unit : control_unit 
+    ctrl_unit : entity work.control_unit 
     port map ( opcode     => sig_insn(31 downto 28),
                reg_write  => sig_reg_write,
                push_en => sig_push_en,
@@ -243,7 +179,7 @@ begin
                mem_read => sig_mem_read );
                 
 
-    reg_file : register_file 
+    reg_file : entity work.register_file 
     port map ( reset           => reset, 
                clk             => clk,
                old_key         => sig_old_key,
@@ -255,7 +191,7 @@ begin
                key_en           => sig_key_en);
                
     
-    rec_q : record_queue
+    rec_q : entity work.record_queue
     port map(
         reset =>reset,
         clk => clk, 
@@ -264,32 +200,24 @@ begin
         tag_out => tag_out
     );
    
-    idtd : id_td_pipe_reg port map(
-        clk => clk, 
-        sk_in => sig_old_key, 
-        sk_out => decoder_key,
-        mem_read_in => sig_mem_read, 
-        mem_read_out => mem_read_idtd, 
-        register_write_in => sig_reg_write, 
-        register_write_out => reg_write_idtd,
-        record_in => rec_out,
-        record_out=> rec_out_idtd,
-        tag_in => tag_out,
-        tag_out => tag_out_idtd
-    
-    );
+    idtd : entity work.id_td_pipe_reg
+    port map( clk => clk, 
+              sk_in => sig_old_key, 
+              sk_out => decoder_key,
+              mem_read_in => sig_mem_read, 
+              mem_read_out => mem_read_idtd, 
+              register_write_in => sig_reg_write, 
+              register_write_out => reg_write_idtd,
+              record_in => rec_out,
+              record_out=> rec_out_idtd,
+              tag_in => tag_out,
+              tag_out => tag_out_idtd );
     
     decoder1: entity work.decoder_core
     port map ( clk => clk,
                decoder_key => decoder_key,
                record_in => sig_record,
                tag_out => sig_tag);
-    
-    record_reg: entity work.pipe_reg
-    generic map ( WIDTH => TAG_SIZE )
-    port map (clk => clk,
-              din => final_tag,
-              dout => sig_tag);
         
     mux_select_candidate <= '1' when (sig_candidate_r = sig_candidate_w) else '0';
     mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w ) else '0';

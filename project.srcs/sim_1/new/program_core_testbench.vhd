@@ -30,7 +30,7 @@ architecture Behavioral of program_core_testbench is
     constant NUM_DISTRICT: Integer := 2;
     constant NUM_TALLY: Integer := 8;
     constant TAG_SIZE: Integer := 8;
-    signal btnR : std_logic;
+    signal btnR, btnC : std_logic;
     signal clk : std_logic;
     signal sw : std_logic_vector(15 downto 0);
     signal led : std_logic_vector(15 downto 0);
@@ -46,6 +46,7 @@ begin
     )
     port map( clk => clk,
               btnR => btnR,
+              btnC => btnC,
               sw => sw,
               led => led);
 
@@ -59,10 +60,11 @@ begin
     
     stimulus: process begin
         btnR <= '1';
+        btnC <= '1';
         sw <= "0100001110011000";
-            
         wait for 50 ns;
-        btnR <= '0';
+        btnR <= '1';
+        btnC <= '0';
         sw <= "0100001110011000";
         wait;
     end process stimulus;

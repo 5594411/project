@@ -63,7 +63,7 @@ signal sig_swaped_block_x : std_logic_vector(7 downto 0);
 signal sig_swaped_block_y : std_logic_vector(7 downto 0);
 
 signal secret_key: std_logic_vector(15 downto 0);
-signal final_record: std_logic_vector(7 downto 0);
+signal final_tag: std_logic_vector(7 downto 0);
 begin
     sig_tag_sz <= "0100";
     sig_record_sz <= "010000";
@@ -196,6 +196,11 @@ begin
                block_1 => sig_block_shift_1_out,
                block_2 => sig_block_shift_2_out,
                block_3 => sig_block_shift_3_out,
-               xor_out => tag_out);
+               xor_out => final_tag);
 
+    record_reg: entity work.pipe_reg
+    generic map ( WIDTH => 8 )
+    port map (clk => clk,
+              din => final_tag,
+              dout => tag_out);
 end Behavioral;

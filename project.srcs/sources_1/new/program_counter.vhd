@@ -47,13 +47,12 @@ end program_counter;
 architecture behavioral of program_counter is
 begin
 
-    update_process: process ( reset, 
-                              clk ) is
+    update_process: process ( reset, clk ) is
     begin
        if (reset = '1') then
            addr_out <= (others => '0'); 
        elsif (rising_edge(clk) and enable='1') then 
-           addr_out <= addr_in; 
+           addr_out <= addr_in;
        end if;
     end process;
 end behavioral;
