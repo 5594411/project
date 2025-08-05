@@ -2,7 +2,7 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date: 2025/07/30 21:47:17
+-- Create Date: 04.08.2025 00:05:41
 -- Design Name: 
 -- Module Name: control_unit - Behavioral
 -- Project Name: 
@@ -32,18 +32,30 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity control_unit is
-    generic (
-        TAG_SIZE: integer := 8
+    port (
+        opcode       : in  std_logic_vector(3 downto 0);
+        reg_write    : out std_logic;
+        push_en : out std_logic;
+        key_en       : out std_logic;
+        mem_read     : out std_logic
     );
-    port ( cal_tag     : in  std_logic_vector(TAG_SIZE - 1 downto 0);
-           rec_tag     : in  std_logic_vector(TAG_SIZE - 1 downto 0);
-           mem_read  : out std_logic);
 end control_unit;
 
 architecture behavioural of control_unit is
 
+    constant OP_SET_SECRET_KEY  : std_logic_vector(3 downto 0) := "0001";
+   -- constant OP_SET_TAG_SIZE    : std_logic_vector(3 downto 0) := "0001";
+   -- constant OP_SET_RECORD_SIZE : std_logic_vector(3 downto 0) := "0010";
+    constant OP_PUSH_REC_TAG    : std_logic_vector(3 downto 0) := "0011";
+    constant OP_LOAD_CAND_TALLY : std_logic_vector(3 downto 0) := "0100";
+
 begin
-
-    mem_read <= '1' when cal_tag = rec_tag else '0';
-
+    reg_write <= '1' when opcode = OP_LOAD_CAND_TALLY else
+                '0';
+    mem_read <= '1' when opcode = OP_LOAD_CAND_TALLY else
+                '0';
+    key_en <= '1' when opcode = OP_SET_SECRET_KEY else
+                '0';
+    push_en <= '1' when opcode = OP_PUSH_REC_TAG else
+                    '0';
 end behavioural;

@@ -2,18 +2,9 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity decoder_core is
-    generic (
-        NUM_CANDIDATE: Integer := 2;
---        save the last column as sum for specfic candidate
-        NUM_DISTRICT: Integer := 2;
-        NUM_TALLY: Integer := 8;
-        TAG_SIZE: Integer := 4
-    );
-    port ( 
-           btnR   : in  std_logic;
-           clk    : in  std_logic;
-           sw     : in  std_logic_vector(15 downto 0);
-           led    : out  std_logic_vector(15 downto 0) );
+    port ( clk    : in  std_logic;
+           record_in     : in  std_logic_vector(31 downto 0);
+           tag_out    : out  std_logic_vector(7 downto 0));
 end decoder_core;
 
 architecture Behavioral of decoder_core is
@@ -21,7 +12,6 @@ architecture Behavioral of decoder_core is
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
 
-signal sig_record          : std_logic_vector(31 downto 0);
 signal sig_block_bp_0      : std_logic_vector(7 downto 0);
 signal sig_block_bp_1      : std_logic_vector(7 downto 0);
 signal sig_block_bp_2      : std_logic_vector(7 downto 0);
@@ -71,58 +61,18 @@ signal sig_block_y : std_logic_vector(7 downto 0);
 signal sig_swaped_block_x : std_logic_vector(7 downto 0);
 signal sig_swaped_block_y : std_logic_vector(7 downto 0);
 
---for read and write stage
-signal reset: std_logic;
-signal sig_num_candidate: integer := NUM_CANDIDATE;
-signal sig_num_district: integer := NUM_DISTRICT;
-signal sig_num_tally: integer := NUM_TALLY;
-
-signal sig_mem_write: std_logic;
-signal sig_mem_read: std_logic;
-signal sig_rec_tag: std_logic_vector(3 downto 0);
-signal sig_cal_tag: std_logic_vector(3 downto 0);
-
-signal sig_write_data_carry_out: std_logic;
-signal sig_write_sum_carry_out: std_logic;
-signal ex_write_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
-signal ex_write_sum    : std_logic_vector(NUM_TALLY - 1 downto 0);
-
-signal mux_select_candidate: std_logic;
-signal mux_select_district: std_logic;
-signal ex_read_data    : std_logic_vector(NUM_TALLY - 1 downto 0);
-signal ex_read_sum     : std_logic_vector(NUM_TALLY - 1 downto 0);
-
-signal sig_candidate_r  : std_logic_vector(NUM_CANDIDATE downto 0);
-signal sig_candidate_w  : std_logic_vector(NUM_DISTRICT downto 0);
-signal sig_district_r   : std_logic_vector(NUM_CANDIDATE downto 0);
-signal sig_district_w   : std_logic_vector(NUM_DISTRICT downto 0);
-signal sig_read_data    : std_logic_vector(NUM_TALLY - 1 downto 0);
-signal sig_read_sum     : std_logic_vector(NUM_TALLY - 1 downto 0);
-signal sig_write_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
-signal sig_write_sum    : std_logic_vector(NUM_TALLY - 1 downto 0);
-signal sig_data_out: std_logic_vector(NUM_TALLY - 1 downto 0);
-signal sig_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
-
-signal mem_data_out: std_logic_vector(NUM_TALLY - 1 downto 0);
-signal mem_sum_out: std_logic_vector(NUM_TALLY - 1 downto 0);
-
 signal secret_key: std_logic_vector(15 downto 0);
 signal final_record: std_logic_vector(7 downto 0);
 begin
-    -- tag size <= 8 
-    -- tag size >= record size/4
-    -- record size < 32
     sig_tag_sz <= "0100";
     sig_record_sz <= "010000";
-    sig_record(15 downto 0) <= sw;
-    sig_record(31 downto 16) <= "0000000000000000";
     secret_key <= "1110100001011001";
     
     bp1: entity work.block_partitioner
     port map( clk          => clk,              
               tag_sz       => sig_tag_sz,
               record_sz    => sig_record_sz,
-              record_in    => sig_record,
+              record_in    => record_in,
               block_0      => sig_block_bp_0,
               block_1      => sig_block_bp_1,
               block_2      => sig_block_bp_2,
@@ -245,6 +195,6 @@ begin
                block_1 => sig_block_shift_1_out,
                block_2 => sig_block_shift_2_out,
                block_3 => sig_block_shift_3_out,
-               xor_out => final_record);
+               xor_out => tag_out);
 
 end Behavioral;

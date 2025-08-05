@@ -21,11 +21,12 @@ begin
         variable temp_bit : std_logic;
         variable int_tag_size, divisor : integer range 0 to 8;
         variable id_x, id_y : integer;
-
+        variable s_range : integer;
     begin
         temp_bx := block_x;
         temp_by := block_y;
         int_tag_size := to_integer(unsigned(tag_size));
+        s_range := to_integer(unsigned(s));
         
         if (int_tag_size = 0) then
             divisor := 8;
@@ -33,7 +34,8 @@ begin
             divisor := int_tag_size;
         end if;
 
-        for i in 0 to to_integer(unsigned(s)) - 1 loop
+        for i in 0 to 8 loop
+            exit when i = s_range;
             id_x := (to_integer(unsigned(px)) + i) mod divisor;
             id_y := (to_integer(unsigned(py)) + i) mod divisor;
             
