@@ -1,7 +1,10 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use ieee.numeric_std.all;
 
 entity decoder_core is
+    generic ( TAG_SIZE: integer := 4;
+              RECORD_SIZE: integer := 16 );
     port ( clk    : in  std_logic;
            decoder_key : in std_logic_vector(15 downto 0);
            record_in     : in  std_logic_vector(31 downto 0);
@@ -65,8 +68,8 @@ signal sig_swaped_block_y : std_logic_vector(7 downto 0);
 signal secret_key: std_logic_vector(15 downto 0);
 signal final_tag: std_logic_vector(7 downto 0);
 begin
-    sig_tag_sz <= "0100";
-    sig_record_sz <= "010000";
+    sig_tag_sz <= std_logic_vector(to_unsigned(TAG_SIZE, 4));
+    sig_record_sz <= std_logic_vector(to_unsigned(RECORD_SIZE, 6));
     secret_key <= decoder_key;
     
     bp1: entity work.block_partitioner

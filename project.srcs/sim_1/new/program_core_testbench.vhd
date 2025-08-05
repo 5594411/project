@@ -26,10 +26,11 @@ entity program_core_testbench is
 end program_core_testbench;
 
 architecture Behavioral of program_core_testbench is
-    constant NUM_CANDIDATE: Integer := 2;
-    constant NUM_DISTRICT: Integer := 2;
-    constant NUM_TALLY: Integer := 8;
-    constant TAG_SIZE: Integer := 8;
+    constant NUM_CANDIDATE: integer := 2;
+    constant NUM_DISTRICT: integer := 2;
+    constant NUM_TALLY: integer := 8;
+    constant TAG_SIZE: integer := 4;
+    constant RECORD_SIZE: integer := 16;
     signal btnR, btnC : std_logic;
     signal clk : std_logic;
     signal sw : std_logic_vector(15 downto 0);
@@ -42,7 +43,8 @@ begin
 --        save the last column as sum for specfic candidate
         NUM_DISTRICT => NUM_DISTRICT,
         NUM_TALLY => NUM_TALLY,
-        TAG_SIZE => TAG_SIZE
+        TAG_SIZE => TAG_SIZE,
+        RECORD_SIZE => RECORD_SIZE
     )
     port map( clk => clk,
               btnR => btnR,

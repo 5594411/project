@@ -5,11 +5,12 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity project is
     generic (
-        NUM_CANDIDATE: Integer := 4;
+        NUM_CANDIDATE: integer := 4;
 --        save the last column as sum for specfic candidate
-        NUM_DISTRICT: Integer := 2;
-        NUM_TALLY: Integer := 8;
-        TAG_SIZE: Integer := 8
+        NUM_DISTRICT: integer := 2;
+        NUM_TALLY: integer := 8;
+        TAG_SIZE: integer := 4;
+        RECORD_SIZE : integer := 16
     );
     port ( 
            btnR   : in  std_logic;
@@ -214,6 +215,8 @@ begin
               tag_out => tag_out_idtd );
     
     decoder1: entity work.decoder_core
+    generic map ( TAG_SIZE => TAG_SIZE,
+                  RECORD_SIZE => RECORD_SIZE)
     port map ( clk => clk,
                decoder_key => decoder_key,
                record_in => sig_record,
