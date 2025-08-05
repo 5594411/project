@@ -3,6 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity decoder_core is
     port ( clk    : in  std_logic;
+           decoder_key : in std_logic_vector(15 downto 0);
            record_in     : in  std_logic_vector(31 downto 0);
            tag_out    : out  std_logic_vector(7 downto 0));
 end decoder_core;
@@ -66,7 +67,7 @@ signal final_record: std_logic_vector(7 downto 0);
 begin
     sig_tag_sz <= "0100";
     sig_record_sz <= "010000";
-    secret_key <= "1110100001011001";
+    secret_key <= decoder_key;
     
     bp1: entity work.block_partitioner
     port map( clk          => clk,              

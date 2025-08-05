@@ -26,10 +26,10 @@ entity program_core_testbench is
 end program_core_testbench;
 
 architecture Behavioral of program_core_testbench is
-    signal NUM_CANDIDATE: Integer := 2;
-    signal NUM_DISTRICT: Integer := 2;
-    signal NUM_TALLY: Integer := 8;
-    signal TAG_SIZE: Integer := 8;
+    constant NUM_CANDIDATE: Integer := 2;
+    constant NUM_DISTRICT: Integer := 2;
+    constant NUM_TALLY: Integer := 8;
+    constant TAG_SIZE: Integer := 8;
     signal btnR : std_logic;
     signal clk : std_logic;
     signal sw : std_logic_vector(15 downto 0);
@@ -60,7 +60,7 @@ begin
     stimulus: process begin
         btnR <= '1';
         sw <= "0100001110011000";
-        
+            
         wait for 50 ns;
         btnR <= '0';
         sw <= "0100001110011000";

@@ -14,6 +14,7 @@ begin
     record_in(31 downto 16) <= (others => '0');
     UUT : entity work.decoder_core
     port map( clk => clk,
+              decoder_key => "1110100001011001",
               record_in => record_in,
               tag_out => tag_out);
 

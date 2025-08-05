@@ -11,14 +11,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="909.319 ns"></ZoomEndTime>
-      <Cursor1Time time="10.000 ns"></Cursor1Time>
+      <ZoomEndTime time="928.489 ns"></ZoomEndTime>
+      <Cursor1Time time="52.509 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="109"></NameColumnWidth>
-      <ValueColumnWidth column_width="72"></ValueColumnWidth>
+      <NameColumnWidth column_width="247"></NameColumnWidth>
+      <ValueColumnWidth column_width="248"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="39" />
+   <WVObjectSize size="37" />
    <wvobject fp_name="/program_core_testbench/NUM_CANDIDATE" type="other">
       <obj_property name="ElementShortName">NUM_CANDIDATE</obj_property>
       <obj_property name="ObjectShortName">NUM_CANDIDATE</obj_property>
@@ -50,22 +50,6 @@
    <wvobject fp_name="/program_core_testbench/led" type="array">
       <obj_property name="ElementShortName">led[15:0]</obj_property>
       <obj_property name="ObjectShortName">led[15:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/ctl_unit/cal_tag" type="array">
-      <obj_property name="ElementShortName">cal_tag[7:0]</obj_property>
-      <obj_property name="ObjectShortName">cal_tag[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/ctl_unit/rec_tag" type="array">
-      <obj_property name="ElementShortName">rec_tag[7:0]</obj_property>
-      <obj_property name="ObjectShortName">rec_tag[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/ctl_unit/mem_read" type="logic">
-      <obj_property name="ElementShortName">mem_read</obj_property>
-      <obj_property name="ObjectShortName">mem_read</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/ctl_unit/TAG_SIZE" type="other">
-      <obj_property name="ElementShortName">TAG_SIZE</obj_property>
-      <obj_property name="ObjectShortName">TAG_SIZE</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/read_enable" type="logic">
       <obj_property name="ElementShortName">read_enable</obj_property>
@@ -116,8 +100,8 @@
       <obj_property name="ObjectShortName">sum_out[7:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/sig_data_mem" type="array">
-      <obj_property name="ElementShortName">sig_data_mem[0:1,0:2][7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_data_mem[0:1,0:2][7:0]</obj_property>
+      <obj_property name="ElementShortName">sig_data_mem[0:3,0:4][7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_data_mem[0:3,0:4][7:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/mux_2to1_candidate/mux_select" type="logic">
       <obj_property name="ElementShortName">mux_select</obj_property>
@@ -174,5 +158,14 @@
    <wvobject fp_name="/program_core_testbench/UUT/alu_write_sum/sum" type="array">
       <obj_property name="ElementShortName">sum[7:0]</obj_property>
       <obj_property name="ObjectShortName">sum[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/record_reg/dout" type="array">
+      <obj_property name="ElementShortName">dout[7:0]</obj_property>
+      <obj_property name="ObjectShortName">dout[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/record_in" type="array">
+      <obj_property name="ElementShortName">record_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">record_in[31:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
 </wave_config>
