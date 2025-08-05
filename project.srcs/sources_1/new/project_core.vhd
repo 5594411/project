@@ -134,6 +134,8 @@ signal mem_read_idtd            : std_logic;
 signal reg_write_idtd           : std_logic;
 signal rec_out_idtd             : std_logic_vector(31 downto 0);
 signal tag_out_idtd             : std_logic_vector(7 downto 0);
+
+signal tag_match          : std_logic;
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -224,6 +226,7 @@ begin
                tag_out => sig_tag);
     
     -- compare tag_out_idtd with sig_tag
+    tag_match <= '1' when (sig_tag = tag_out_idtd) else '0';
     mux_select_candidate <= '1' when (sig_candidate_r = sig_candidate_w) else '0';
     mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w ) else '0';
     
@@ -258,7 +261,7 @@ begin
             sig_write_sum <= (others=>'0');
             sig_candidate_w <= (others=>'0');
             sig_district_w <= (others=>'0');
-            sig_mem_write <= '0';
+            sig_mem_write <= tag_match;
         elsif (rising_edge(clk)) then
             sig_write_data(7 downto 0) <= ex_write_data;
             sig_write_sum <= ex_write_sum;
