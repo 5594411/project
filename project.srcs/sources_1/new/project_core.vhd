@@ -152,6 +152,23 @@ component record_queue is
            tag_out      : out std_logic_vector(7 downto 0));
 end component;
 
+component binarytobcd is
+    generic (
+        BIN_WIDTH  : natural := 8;   -- e.g. 8-bit tally
+        DIGITS     : natural := 3    -- how many decimal digits?
+    );
+    port (
+        bin_in   : in  std_logic_vector(BIN_WIDTH-1 downto 0);
+        bcd_out  : out std_logic_vector(DIGITS*4-1 downto 0)
+        -- { digit(DIGITS-1), …, digit(1), digit(0) }
+    );
+end component;
+
+component sev_seg_dec IS
+    PORT ( nbl : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+           hex : OUT STD_LOGIC_VECTOR(0 TO 6));
+END component;
+
 -- Display signals
 signal bcd_digits : std_logic_vector(11 downto 0);
 signal d3, d2, d1, d0 : std_logic_vector(3 downto 0);
@@ -336,7 +353,7 @@ begin
         end if;
     end process;
      
-    b2bcd : entity work.binarytobcd
+    b2bcd : binarytobcd
     generic map( BIN_WIDTH => 8,
                  DIGITS => 3)
     port map( bin_in  => sig_data_out,
@@ -355,7 +372,7 @@ begin
                        d3 when others;     -- show blank/zero on AN3
 
   -- instantiate your seven-segment BCD→seg decoder
-    u_sevseg : entity work.sev_seg_dec
+    u_sevseg : sev_seg_dec
         port map(
             nbl => current_nibble,
             hex => seg
@@ -368,5 +385,4 @@ begin
 
   -- always turn decimal point off
     dp <= '1';
-        
 end structural;

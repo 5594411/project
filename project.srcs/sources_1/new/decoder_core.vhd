@@ -217,5 +217,5 @@ begin
               din => expect_tag_xor,
               dout => final_expect_tag);
     
-    tag_match <= '1' when (final_tag = final_expect_tag) else '0';
+    tag_match <= '1' when (final_tag = final_expect_tag AND final_tag /= "UUUUUUUU" AND final_expect_tag /= "UUUUUUUU") else '0';
 end Behavioral;

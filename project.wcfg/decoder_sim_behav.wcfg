@@ -10,32 +10,18 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="35.660 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,192.868 ns"></ZoomEndTime>
-      <Cursor1Time time="487.660 ns"></Cursor1Time>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,212.314 ns"></ZoomEndTime>
+      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="240"></NameColumnWidth>
-      <ValueColumnWidth column_width="166"></ValueColumnWidth>
+      <ValueColumnWidth column_width="158"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="21" />
-   <wvobject fp_name="/decoder_sim/btnR" type="logic">
-      <obj_property name="ElementShortName">btnR</obj_property>
-      <obj_property name="ObjectShortName">btnR</obj_property>
-   </wvobject>
+   <WVObjectSize size="19" />
    <wvobject fp_name="/decoder_sim/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
-   </wvobject>
-   <wvobject fp_name="/decoder_sim/sw" type="array">
-      <obj_property name="ElementShortName">sw[15:0]</obj_property>
-      <obj_property name="ObjectShortName">sw[15:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/decoder_sim/led" type="array">
-      <obj_property name="ElementShortName">led[15:0]</obj_property>
-      <obj_property name="ObjectShortName">led[15:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/decoder_sim/UUT/bp1/block_3" type="array">
       <obj_property name="ElementShortName">block_3[7:0]</obj_property>
@@ -147,5 +133,9 @@
       <obj_property name="Radix">BINARYRADIX</obj_property>
       <obj_property name="CustomSignalColor">#0000FF</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
+   </wvobject>
+   <wvobject fp_name="/decoder_sim/UUT/tag_match" type="logic">
+      <obj_property name="ElementShortName">tag_match</obj_property>
+      <obj_property name="ObjectShortName">tag_match</obj_property>
    </wvobject>
 </wave_config>
