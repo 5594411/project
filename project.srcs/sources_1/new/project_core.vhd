@@ -2,13 +2,14 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 entity project is
     generic (
-        NUM_CANDIDATE: integer := 2;
+        NUM_CANDIDATE: integer := 2; -- Bits for canidates
 --        save the last column as sum for specfic candidate
         NUM_DISTRICT: integer := 2;
-        NUM_TALLY: integer := 8;
+        NUM_TALLY: integer := 8; -- Bits for size of the tally
         TAG_SIZE: integer := 4;
         RECORD_SIZE : integer := 12
     );
@@ -27,6 +28,16 @@ entity project is
 end project;
 
 architecture structural of project is
+
+component record_queue is
+    port ( reset        : in  std_logic;
+           clk          : in  std_logic;
+           push_en      : in  std_logic;
+           record_in : in std_logic_vector(15 downto 0);
+           btnC : in std_logic;
+           record_out   : out std_logic_vector(31 downto 0);
+           tag_out      : out std_logic_vector(7 downto 0));
+end component;
 
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
@@ -146,39 +157,12 @@ signal tag_out_idtd             : std_logic_vector(7 downto 0);
 signal tag_match          : std_logic;
 signal decoder_record_in : std_logic_vector(31 downto 0);
 
-signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
-component record_queue is
-    port ( reset        : in  std_logic;
-           clk          : in  std_logic;
-           push_en      : in  std_logic;
-           record_in : in std_logic_vector(15 downto 0);
-           btnC : in std_logic;
-           record_out   : out std_logic_vector(31 downto 0);
-           tag_out      : out std_logic_vector(7 downto 0));
-end component;
-
-component binarytobcd is
-    generic (
-        BIN_WIDTH  : natural := 8;   -- e.g. 8-bit tally
-        DIGITS     : natural := 3    -- how many decimal digits?
-    );
-    port (
-        bin_in   : in  std_logic_vector(BIN_WIDTH-1 downto 0);
-        bcd_out  : out std_logic_vector(DIGITS*4-1 downto 0)
-        -- { digit(DIGITS-1), …, digit(1), digit(0) }
-    );
-end component;
-
-component sev_seg_dec IS
-    PORT ( nbl : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-           hex : OUT STD_LOGIC_VECTOR(0 TO 6));
-END component;
-
 -- Display signals
-signal bcd_digits : std_logic_vector(11 downto 0);
-signal d3, d2, d1, d0 : std_logic_vector(3 downto 0);
-signal current_nibble : std_logic_vector(3 downto 0);
-signal clk_div : std_logic_vector(19 downto 0);
+signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
+signal clk_divider    : std_logic_vector(15 downto 0);
+signal display_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
+
+
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -348,44 +332,65 @@ begin
     mem_data_out <= sig_data_out when reset = '0' else (others=>'0');
     mem_sum_out <= sig_sum_out when reset = '0' else (others=>'0');
     led(7 downto 0) <= mem_sum_out;
-        
+    
+    -- Mux that chooses between the memory outputs and sends into final data
+    display_mux: entity work.mux_4to1_8b
+        generic map
+        (
+            NUM_TALLY => NUM_TALLY
+        )
+        port map 
+        (
+            btnU => btnU,
+            btnR => btnR,
+            btnD => btnD,
+            btnL => btnL,
+            dataA => c0,
+            dataB => c1,
+            dataC => c2,
+            dataD => c3,
+            data_out => display_data
+        );
+    
+    -- Asynch display process after data memory -> convert binary to bcd
     process(clk)
     begin
         if rising_edge(clk) then
-            clk_div <= clk_div + 1;
+            clk_divider <= clk_divider + 1;
+        case clk_divider(15 downto 14) is
+            when "00" => 
+                an <= "1110"; 
+                display_data <= std_logic_vector(to_unsigned(to_integer(result) mod  10, 8));
+            when "01" => 
+                an <= "1101"; 
+                display_data <= std_logic_vector(to_unsigned((to_integer(result) / 10) mod 10, 8));
+            when "10" => 
+                an <= "1011"; 
+                display_data <= std_logic_vector(to_unsigned(to_integer(result) / 100,    8));
+            when others => 
+                an <= "0111"; 
+                display_data <= (others => '0');
+            end case;
         end if;
     end process;
-     
-    b2bcd : binarytobcd
-    generic map( BIN_WIDTH => 8,
-                 DIGITS => 3)
-    port map( bin_in  => sig_data_out,
-              bcd_out => bcd_digits );
 
-    -- assign the three BCD nibbles plus blank leading digit
-    d3 <= "0000";                            -- blank thousands
-    d2 <= bcd_digits(11 downto 8);           -- hundreds
-    d1 <= bcd_digits(7  downto 4);           -- tens
-    d0 <= bcd_digits(3  downto 0);           -- units
+    -- BCD to 7-segment
+    process(display_data)
+    begin
+        case display_data is
+            when "0000" => seg <= "1000000";
+            when "0001" => seg <= "1111001";
+            when "0010" => seg <= "0100100";
+            when "0011" => seg <= "0110000";
+            when "0100" => seg <= "0011001";
+            when "0101" => seg <= "0010010";
+            when "0110" => seg <= "0000010";
+            when "0111" => seg <= "1111000";
+            when "1000" => seg <= "0000000";
+            when "1001" => seg <= "0010000";
+            when others => seg <= "1111111";  -- Blank
+        end case;
+    end process;
 
-    with clk_div(19 downto 18) select
-    current_nibble <= d0 when "00",       -- show units on AN0
-                       d1 when "01",       -- show tens on AN1
-                       d2 when "10",       -- show hundreds on AN2
-                       d3 when others;     -- show blank/zero on AN3
 
-  -- instantiate your seven-segment BCD→seg decoder
-    u_sevseg : sev_seg_dec
-        port map(
-            nbl => current_nibble,
-            hex => seg
-        );
-
-    an(0) <= not (clk_div(19) or clk_div(18));  -- digit 0
-    an(1) <= not (clk_div(19) or not clk_div(18));
-    an(2) <= not (not clk_div(19) or clk_div(18));
-    an(3) <= not (not clk_div(19) or not clk_div(18));
-
-  -- always turn decimal point off
-    dp <= '1';
 end structural;
