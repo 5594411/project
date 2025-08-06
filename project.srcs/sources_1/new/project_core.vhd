@@ -399,47 +399,27 @@ begin
             data_out => temp_data
         );
     
-    -- Asynch display process after data memory -> convert binary to bcd
     result <= to_integer(unsigned(temp_data));
     
-    process(clk)
-    begin
-        if rising_edge(clk) then
-            clk_divider <= clk_divider + 1;
-        case clk_divider(15 downto 14) is
-            when "00" => 
-                an <= "1110"; 
-                display_data <= std_logic_vector(to_unsigned(result mod  10, 8));
-            when "01" => 
-                an <= "1101"; 
-                display_data <= std_logic_vector(to_unsigned(result / 10 mod 10, 8));
-            when "10" => 
-                an <= "1011"; 
-                display_data <= std_logic_vector(to_unsigned(result / 100, 8));
-            when others => 
-                an <= "0111"; 
-                display_data <= (others => '0');
-            end case;
-        end if;
-    end process;
+    -- Asynch display process after data memory -> convert binary to bcd
+    bintocbd : entity work.anode_display
+        port map
+        (
+            clk          => clk,
+            result       => result,
+            an           => an,
+            display_data => display_data
+        );
 
     -- BCD to 7-segment
-    process(display_data)
-    begin
-        case display_data is
-            when "00000000" => seg <= "1000000";
-            when "00000001" => seg <= "1111001";
-            when "00000010" => seg <= "0100100";
-            when "00000011" => seg <= "0110000";
-            when "00000100" => seg <= "0011001";
-            when "00000101" => seg <= "0010010";
-            when "00000110" => seg <= "0000010";
-            when "00000111" => seg <= "1111000";
-            when "00001000" => seg <= "0000000";
-            when "00001001" => seg <= "0010000";
-            when others => seg <= "1111111";  -- Blank
-        end case;
-    end process;
+    seven_seg_disp : entity work.sev_seg_decoder
+        port map
+        (
+            display_data => display_data,
+            seg          => seg
+        );
+    
+    dp <= '1';
 
 
 end structural;
