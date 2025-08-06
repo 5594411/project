@@ -29,16 +29,6 @@ end project;
 
 architecture structural of project is
 
-component record_queue is
-    port ( reset        : in  std_logic;
-           clk          : in  std_logic;
-           push_en      : in  std_logic;
-           record_in : in std_logic_vector(15 downto 0);
-           btnC : in std_logic;
-           record_out   : out std_logic_vector(31 downto 0);
-           tag_out      : out std_logic_vector(7 downto 0));
-end component;
-
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
 
@@ -160,8 +150,7 @@ signal decoder_record_in : std_logic_vector(31 downto 0);
 -- Display signals
 signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal clk_divider    : std_logic_vector(15 downto 0);
-signal display_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
-
+signal display_data, result   : std_logic_vector(NUM_TALLY - 1 downto 0);
 
 begin
     -- tag size <= 8 
@@ -218,7 +207,7 @@ begin
                key_en           => sig_key_en);
                
     
-    rec_q : record_queue
+    rec_q : entity work.record_queue
     port map(
         reset =>reset,
         clk => clk,
@@ -326,12 +315,12 @@ begin
             candidate_w  => sig_candidate_w,
             district_w   => sig_district_w,
             data_out     => sig_data_out,
-            sum_out      => sig_sum_out  
+            sum_out      => sig_sum_out,
+            c0 => c0,
+            c1 => c1,
+            c2 => c2,
+            c3 => c3
         );
-        
-    mem_data_out <= sig_data_out when reset = '0' else (others=>'0');
-    mem_sum_out <= sig_sum_out when reset = '0' else (others=>'0');
-    led(7 downto 0) <= mem_sum_out;
     
     -- Mux that chooses between the memory outputs and sends into final data
     display_mux: entity work.mux_4to1_8b
@@ -349,7 +338,7 @@ begin
             dataB => c1,
             dataC => c2,
             dataD => c3,
-            data_out => display_data
+            data_out => result
         );
     
     -- Asynch display process after data memory -> convert binary to bcd

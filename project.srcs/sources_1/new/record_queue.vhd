@@ -12,7 +12,6 @@ entity record_queue is
            record_out   : out std_logic_vector(31 downto 0);
            tag_out      : out std_logic_vector(7 downto 0));
 end record_queue;
-signal tag : std_logic_vector(7 downto 0);
 architecture behavioral of record_queue is
 
 type queue_array is array(0 to 4) of std_logic_vector(39 downto 0);
