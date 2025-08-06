@@ -17,7 +17,10 @@ entity project is
            btnC   : in  std_logic;
            clk    : in  std_logic;
            sw     : in  std_logic_vector(15 downto 0);
-           led    : out  std_logic_vector(15 downto 0) );
+           led    : out  std_logic_vector(15 downto 0);
+           an : out std_logic_vector(4 downto 0);
+           dp : out std_logic;
+           seg : out std_logic_vector(6 downto 0) );
 end project;
 
 architecture structural of project is
@@ -148,6 +151,12 @@ component record_queue is
            record_out   : out std_logic_vector(31 downto 0);
            tag_out      : out std_logic_vector(7 downto 0));
 end component;
+
+-- Display signals
+signal bcd_digits : std_logic_vector(11 downto 0);
+signal d3, d2, d1, d0 : std_logic_vector(3 downto 0);
+signal current_nibble : std_logic_vector(3 downto 0);
+signal clk_div : std_logic_vector(19 downto 0);
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -316,7 +325,48 @@ begin
             sum_out      => sig_sum_out  
         );
         
-        mem_data_out <= sig_data_out when reset = '0' else (others=>'0');
-        mem_sum_out <= sig_sum_out when reset = '0' else (others=>'0');
-        led(7 downto 0) <= mem_sum_out;
+    mem_data_out <= sig_data_out when reset = '0' else (others=>'0');
+    mem_sum_out <= sig_sum_out when reset = '0' else (others=>'0');
+    led(7 downto 0) <= mem_sum_out;
+        
+    process(clk)
+    begin
+        if rising_edge(clk) then
+            clk_div <= clk_div + 1;
+        end if;
+    end process;
+     
+    b2bcd : entity work.binarytobcd
+    generic map( BIN_WIDTH => 8,
+                 DIGITS => 3)
+    port map( bin_in  => sig_data_out,
+              bcd_out => bcd_digits );
+
+    -- assign the three BCD nibbles plus blank leading digit
+    d3 <= "0000";                            -- blank thousands
+    d2 <= bcd_digits(11 downto 8);           -- hundreds
+    d1 <= bcd_digits(7  downto 4);           -- tens
+    d0 <= bcd_digits(3  downto 0);           -- units
+
+    with clk_div(19 downto 18) select
+    current_nibble <= d0 when "00",       -- show units on AN0
+                       d1 when "01",       -- show tens on AN1
+                       d2 when "10",       -- show hundreds on AN2
+                       d3 when others;     -- show blank/zero on AN3
+
+  -- instantiate your seven-segment BCD→seg decoder
+    u_sevseg : entity work.sev_seg_dec
+        port map(
+            nbl => current_nibble,
+            hex => seg
+        );
+
+    an(0) <= not (clk_div(19) or clk_div(18));  -- digit 0
+    an(1) <= not (clk_div(19) or not clk_div(18));
+    an(2) <= not (not clk_div(19) or clk_div(18));
+    an(3) <= not (not clk_div(19) or not clk_div(18));
+
+  -- always turn decimal point off
+    dp <= '1';
+        
 end structural;
