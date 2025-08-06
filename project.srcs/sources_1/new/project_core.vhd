@@ -10,7 +10,7 @@ entity project is
         NUM_DISTRICT: integer := 2;
         NUM_TALLY: integer := 8;
         TAG_SIZE: integer := 4;
-        RECORD_SIZE : integer := 16
+        RECORD_SIZE : integer := 12
     );
     port ( 
            btnR   : in  std_logic;
@@ -240,7 +240,6 @@ begin
         clk => clk,
         push_en  => sig_push_en,
         record_in => sw,
-        btnC => btnC,
         record_out => rec_out,
         tag_out => tag_out
     );
@@ -258,16 +257,13 @@ begin
               record_out=> rec_out_idtd,
               tag_in => tag_out,
               tag_out => tag_out_idtd );
-    
-    decoder_record_in(RECORD_SIZE - 1 downto 0) <= rec_out_idtd(RECORD_SIZE + 8 - 1 downto 8);
-    decoder_record_in(31 downto RECORD_SIZE) <= (others => '0');
 
     decoder1: entity work.decoder_core
     generic map ( TAG_SIZE => TAG_SIZE,
                   RECORD_SIZE => RECORD_SIZE)
     port map ( clk => clk,
                decoder_key => decoder_key,
-               record_in => decoder_record_in,
+               record_in => rec_out_idtd,
                record_out => sig_record,
                expect_tag => tag_out_idtd,
                tag_match => tag_match);
@@ -277,8 +273,8 @@ begin
     mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w ) else '0';
     
     sig_mem_write_for_memory <= tag_match;
-    sig_candidate_r <= sig_record(NUM_CANDIDATE + NUM_TALLY + TAG_SIZE - 1 downto NUM_TALLY + TAG_SIZE);
-    sig_district_r <= sig_record(NUM_DISTRICT + NUM_CANDIDATE + NUM_TALLY + TAG_SIZE - 1 downto NUM_CANDIDATE + NUM_TALLY + TAG_SIZE);
+    sig_candidate_r <= sig_record(NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_TALLY);
+    sig_district_r <= sig_record(NUM_DISTRICT + NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_CANDIDATE + NUM_TALLY);
     
     mux_2to1_candidate: entity work.mux_2to1_8b
     port map ( mux_select => mux_select_candidate,
