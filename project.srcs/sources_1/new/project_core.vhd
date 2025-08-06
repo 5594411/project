@@ -121,7 +121,7 @@ signal sig_num_candidate: integer := NUM_CANDIDATE;
 signal sig_num_district: integer := NUM_DISTRICT;
 signal sig_num_tally: integer := NUM_TALLY;
 
-signal sig_mem_write_for_memory: std_logic;
+signal sig_mem_read_for_memory: std_logic;
 signal sig_mem_write: std_logic;
 
 signal sig_write_data_carry_out: std_logic;
@@ -271,9 +271,9 @@ begin
  
     -- compare tag_out_idtd with sig_tag
     mux_select_candidate <= '1' when (sig_candidate_r = sig_candidate_w) else '0';
-    mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w ) else '0';
+    mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w) else '0';
     
-    sig_mem_write_for_memory <= tag_match;
+    sig_mem_read_for_memory <= tag_match;
     sig_candidate_r <= sig_record(NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_TALLY);
     sig_district_r <= sig_record(NUM_DISTRICT + NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_CANDIDATE + NUM_TALLY);
     
@@ -308,20 +308,20 @@ begin
             sig_write_sum <= (others=>'0');
             sig_candidate_w <= (others=>'0');
             sig_district_w <= (others=>'0');
-            sig_mem_write <= tag_match;
+            sig_mem_write <= '0';
         elsif (rising_edge(clk)) then
             sig_write_data_for_memory  <= ex_write_data;
             sig_write_sum <= ex_write_sum;
             sig_candidate_w <= sig_candidate_r;
             sig_district_w <= sig_district_r;
-            sig_mem_write <= sig_mem_write_for_memory;
+            sig_mem_write <= sig_mem_read_for_memory;
         end if;
     end process;
 --    sig_write_data_for_memory  <= ex_write_data when reset = '0' else (others=>'0');
 --    sig_write_sum <= ex_write_sum when reset = '0' else (others=>'0');
 --    sig_candidate_w <= sig_candidate_r when reset = '0' else (others=>'0');
 --    sig_district_w <= sig_district_r when reset = '0' else (others=>'0');
---    sig_mem_write <= sig_mem_write_for_memorywhen reset = '0' else '0';
+--    sig_mem_write <= sig_mem_read_for_memory when reset = '0' else '0';
     
     data_memory: entity work.tally_table
         generic map (
@@ -332,7 +332,7 @@ begin
         port map ( 
             reset        => reset,
             clk          => clk,
-            read_enable  => sig_mem_write_for_memory,
+            read_enable  => sig_mem_read_for_memory,
             candidate_r  => sig_candidate_r,
             district_r   => sig_district_r,
             read_data    => sig_read_data,
@@ -349,6 +349,9 @@ begin
             c2 => c2,
             c3 => c3
         );
+        
+    mem_data_out <= (others=>'0') when (reset = '1') else sig_data_out;
+    mem_sum_out <= (others=>'0') when (reset = '1') else sig_sum_out;
     
     -- Mux that chooses between the memory outputs and sends into final data
     display_mux: mux_4to1_8b

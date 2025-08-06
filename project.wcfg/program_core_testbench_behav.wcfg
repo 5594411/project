@@ -11,14 +11,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="165.501 ns"></ZoomEndTime>
-      <Cursor1Time time="52.509 ns"></Cursor1Time>
+      <ZoomEndTime time="543.864 ns"></ZoomEndTime>
+      <Cursor1Time time="0.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="247"></NameColumnWidth>
-      <ValueColumnWidth column_width="243"></ValueColumnWidth>
+      <ValueColumnWidth column_width="238"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="37" />
+   <WVObjectSize size="95" />
    <wvobject fp_name="/program_core_testbench/NUM_CANDIDATE" type="other">
       <obj_property name="ElementShortName">NUM_CANDIDATE</obj_property>
       <obj_property name="ObjectShortName">NUM_CANDIDATE</obj_property>
@@ -167,5 +167,237 @@
       <obj_property name="ElementShortName">record_in[31:0]</obj_property>
       <obj_property name="ObjectShortName">record_in[31:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/decoder_key" type="array">
+      <obj_property name="ElementShortName">decoder_key[15:0]</obj_property>
+      <obj_property name="ObjectShortName">decoder_key[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/record_in" type="array">
+      <obj_property name="ElementShortName">record_in[31:0]</obj_property>
+      <obj_property name="ObjectShortName">record_in[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/record_out" type="array">
+      <obj_property name="ElementShortName">record_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">record_out[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/expect_tag" type="array">
+      <obj_property name="ElementShortName">expect_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">expect_tag[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/tag_match" type="logic">
+      <obj_property name="ElementShortName">tag_match</obj_property>
+      <obj_property name="ObjectShortName">tag_match</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_tag_sz" type="array">
+      <obj_property name="ElementShortName">sig_tag_sz[3:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_tag_sz[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_sz" type="array">
+      <obj_property name="ElementShortName">sig_record_sz[5:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_record_sz[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_0" type="array">
+      <obj_property name="ElementShortName">sig_block_bp_0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_bp_0[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_1" type="array">
+      <obj_property name="ElementShortName">sig_block_bp_1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_bp_1[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_2" type="array">
+      <obj_property name="ElementShortName">sig_block_bp_2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_bp_2[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_3" type="array">
+      <obj_property name="ElementShortName">sig_block_bp_3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_bp_3[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_0_out" type="array">
+      <obj_property name="ElementShortName">sig_block_bp_0_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_bp_0_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_1_out" type="array">
+      <obj_property name="ElementShortName">sig_block_bp_1_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_bp_1_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_2_out" type="array">
+      <obj_property name="ElementShortName">sig_block_bp_2_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_bp_2_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_3_out" type="array">
+      <obj_property name="ElementShortName">sig_block_bp_3_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_bp_3_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_bp" type="array">
+      <obj_property name="ElementShortName">sig_record_bp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_record_bp[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_flip_0" type="array">
+      <obj_property name="ElementShortName">sig_block_flip_0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_flip_0[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_flip_1" type="array">
+      <obj_property name="ElementShortName">sig_block_flip_1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_flip_1[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_flip_2" type="array">
+      <obj_property name="ElementShortName">sig_block_flip_2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_flip_2[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_flip_3" type="array">
+      <obj_property name="ElementShortName">sig_block_flip_3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_flip_3[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_flip_0_out" type="array">
+      <obj_property name="ElementShortName">sig_block_flip_0_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_flip_0_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_flip_1_out" type="array">
+      <obj_property name="ElementShortName">sig_block_flip_1_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_flip_1_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_flip_2_out" type="array">
+      <obj_property name="ElementShortName">sig_block_flip_2_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_flip_2_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_flip_3_out" type="array">
+      <obj_property name="ElementShortName">sig_block_flip_3_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_flip_3_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_flip" type="array">
+      <obj_property name="ElementShortName">sig_record_flip[31:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_record_flip[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_swp_0" type="array">
+      <obj_property name="ElementShortName">sig_block_swp_0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_swp_0[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_swp_1" type="array">
+      <obj_property name="ElementShortName">sig_block_swp_1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_swp_1[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_swp_2" type="array">
+      <obj_property name="ElementShortName">sig_block_swp_2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_swp_2[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_swp_3" type="array">
+      <obj_property name="ElementShortName">sig_block_swp_3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_swp_3[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_swp_0_out" type="array">
+      <obj_property name="ElementShortName">sig_block_swp_0_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_swp_0_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_swp_1_out" type="array">
+      <obj_property name="ElementShortName">sig_block_swp_1_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_swp_1_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_swp_2_out" type="array">
+      <obj_property name="ElementShortName">sig_block_swp_2_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_swp_2_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_swp_3_out" type="array">
+      <obj_property name="ElementShortName">sig_block_swp_3_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_swp_3_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_swp" type="array">
+      <obj_property name="ElementShortName">sig_record_swp[31:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_record_swp[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_0" type="array">
+      <obj_property name="ElementShortName">sig_block_shift_0[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_shift_0[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_1" type="array">
+      <obj_property name="ElementShortName">sig_block_shift_1[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_shift_1[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_2" type="array">
+      <obj_property name="ElementShortName">sig_block_shift_2[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_shift_2[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_3" type="array">
+      <obj_property name="ElementShortName">sig_block_shift_3[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_shift_3[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_0_out" type="array">
+      <obj_property name="ElementShortName">sig_block_shift_0_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_shift_0_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_1_out" type="array">
+      <obj_property name="ElementShortName">sig_block_shift_1_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_shift_1_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_2_out" type="array">
+      <obj_property name="ElementShortName">sig_block_shift_2_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_shift_2_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_3_out" type="array">
+      <obj_property name="ElementShortName">sig_block_shift_3_out[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_shift_3_out[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_shift" type="array">
+      <obj_property name="ElementShortName">sig_record_shift[31:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_record_shift[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_x" type="array">
+      <obj_property name="ElementShortName">sig_block_x[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_x[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_y" type="array">
+      <obj_property name="ElementShortName">sig_block_y[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_block_y[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_swaped_block_x" type="array">
+      <obj_property name="ElementShortName">sig_swaped_block_x[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_swaped_block_x[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_swaped_block_y" type="array">
+      <obj_property name="ElementShortName">sig_swaped_block_y[7:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_swaped_block_y[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/secret_key" type="array">
+      <obj_property name="ElementShortName">secret_key[15:0]</obj_property>
+      <obj_property name="ObjectShortName">secret_key[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/final_tag" type="array">
+      <obj_property name="ElementShortName">final_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">final_tag[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/final_expect_tag" type="array">
+      <obj_property name="ElementShortName">final_expect_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">final_expect_tag[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/expect_tag_flip" type="array">
+      <obj_property name="ElementShortName">expect_tag_flip[7:0]</obj_property>
+      <obj_property name="ObjectShortName">expect_tag_flip[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/expect_tag_swap" type="array">
+      <obj_property name="ElementShortName">expect_tag_swap[7:0]</obj_property>
+      <obj_property name="ObjectShortName">expect_tag_swap[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/expect_tag_shift" type="array">
+      <obj_property name="ElementShortName">expect_tag_shift[7:0]</obj_property>
+      <obj_property name="ObjectShortName">expect_tag_shift[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/expect_tag_xor" type="array">
+      <obj_property name="ElementShortName">expect_tag_xor[7:0]</obj_property>
+      <obj_property name="ObjectShortName">expect_tag_xor[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_xor" type="array">
+      <obj_property name="ElementShortName">sig_record_xor[31:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_record_xor[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/TAG_SIZE" type="other">
+      <obj_property name="ElementShortName">TAG_SIZE</obj_property>
+      <obj_property name="ObjectShortName">TAG_SIZE</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/RECORD_SIZE" type="other">
+      <obj_property name="ElementShortName">RECORD_SIZE</obj_property>
+      <obj_property name="ObjectShortName">RECORD_SIZE</obj_property>
    </wvobject>
 </wave_config>

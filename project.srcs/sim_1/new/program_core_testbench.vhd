@@ -30,7 +30,7 @@ architecture Behavioral of program_core_testbench is
     constant NUM_DISTRICT: integer := 2;
     constant NUM_TALLY: integer := 8;
     constant TAG_SIZE: integer := 4;
-    constant RECORD_SIZE: integer := 16;
+    constant RECORD_SIZE: integer := 12;
     signal btnR, btnC : std_logic;
     signal clk : std_logic;
     signal sw : std_logic_vector(15 downto 0);

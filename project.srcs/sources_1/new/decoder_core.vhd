@@ -221,5 +221,5 @@ begin
               dout(7 downto 0) => final_expect_tag,
               dout (39 downto 8) => record_out);
 
-    tag_match <= '1' when (final_tag = final_expect_tag AND final_tag /= "UUUUUUUU" AND final_expect_tag /= "UUUUUUUU") else '0';
+    tag_match <= '1' when (final_tag = final_expect_tag AND not is_x(final_tag) AND not is_x(final_expect_tag)) else '0';
 end Behavioral;
