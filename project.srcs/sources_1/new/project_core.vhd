@@ -1,6 +1,5 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity project is
@@ -148,10 +147,7 @@ signal decoder_record_in : std_logic_vector(31 downto 0);
 
 -- Display signals
 signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
-signal clk_divider    : std_logic_vector(15 downto 0);
 signal display_data, temp_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
-signal result : integer range 0 to 1024;
-
 -- Debounced signals
 signal clean_btnC, clean_btnU, clean_btnR, clean_btnD, clean_btnL: std_logic;
 
@@ -399,24 +395,22 @@ begin
             data_out => temp_data
         );
     
-    result <= to_integer(unsigned(temp_data));
-    
     -- Asynch display process after data memory -> convert binary to bcd
     bintocbd : entity work.anode_display
         port map
         (
             clk          => clk,
-            result       => result,
+            data       => temp_data,
             an           => an,
             display_data => display_data
         );
 
     -- BCD to 7-segment
-    seven_seg_disp : entity work.sev_seg_decoder
+    seven_seg_disp : entity work.sev_seg_dec
         port map
         (
             display_data => display_data,
-            seg          => seg
+            seg  => seg
         );
     
     dp <= '1';
