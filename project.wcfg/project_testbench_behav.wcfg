@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,053.501 ns"></ZoomEndTime>
+      <ZoomStartTime time="823.750 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,035.251 ns"></ZoomEndTime>
       <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="247"></NameColumnWidth>
-      <ValueColumnWidth column_width="200"></ValueColumnWidth>
+      <ValueColumnWidth column_width="192"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="40" />
+   <WVObjectSize size="30" />
    <wvobject fp_name="/program_core_testbench/UUT/reset" type="logic">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
@@ -27,70 +27,30 @@
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/rec_q/record_out" type="array">
-      <obj_property name="ElementShortName">record_out[31:0]</obj_property>
-      <obj_property name="ObjectShortName">record_out[31:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/rec_q/tag_out" type="array">
-      <obj_property name="ElementShortName">tag_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">tag_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/idtd/sk_out" type="array">
-      <obj_property name="ElementShortName">sk_out[15:0]</obj_property>
-      <obj_property name="ObjectShortName">sk_out[15:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/idtd/mem_read_out" type="logic">
-      <obj_property name="ElementShortName">mem_read_out</obj_property>
-      <obj_property name="ObjectShortName">mem_read_out</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/idtd/register_write_out" type="logic">
-      <obj_property name="ElementShortName">register_write_out</obj_property>
-      <obj_property name="ObjectShortName">register_write_out</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/idtd/record_out" type="array">
-      <obj_property name="ElementShortName">record_out[31:0]</obj_property>
-      <obj_property name="ObjectShortName">record_out[31:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/sw" type="array">
-      <obj_property name="ElementShortName">sw[15:0]</obj_property>
-      <obj_property name="ObjectShortName">sw[15:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/record_in" type="array">
       <obj_property name="ElementShortName">record_in[31:0]</obj_property>
       <obj_property name="ObjectShortName">record_in[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/bp_flip/record_in" type="array">
-      <obj_property name="ElementShortName">record_in[31:0]</obj_property>
-      <obj_property name="ObjectShortName">record_in[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_flip" type="array">
-      <obj_property name="ElementShortName">sig_record_flip[31:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_record_flip[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_swp" type="array">
-      <obj_property name="ElementShortName">sig_record_swp[31:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_record_swp[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/final_tag" type="array">
-      <obj_property name="ElementShortName">final_tag[7:0]</obj_property>
-      <obj_property name="ObjectShortName">final_tag[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/expect_tag" type="array">
       <obj_property name="ElementShortName">expect_tag[7:0]</obj_property>
       <obj_property name="ObjectShortName">expect_tag[7:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_shift" type="array">
-      <obj_property name="ElementShortName">sig_record_shift[31:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_record_shift[31:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/record_out" type="array">
       <obj_property name="ElementShortName">record_out[31:0]</obj_property>
       <obj_property name="ObjectShortName">record_out[31:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/final_tag" type="array">
+      <obj_property name="ElementShortName">final_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">final_tag[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/final_expect_tag" type="array">
+      <obj_property name="ElementShortName">final_expect_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">final_expect_tag[7:0]</obj_property>
+      <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/tag_match" type="logic">
       <obj_property name="ElementShortName">tag_match</obj_property>
@@ -144,7 +104,6 @@
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/sig_data_mem" type="array">
       <obj_property name="ElementShortName">sig_data_mem[0:3,0:4][7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_data_mem[0:3,0:4][7:0]</obj_property>
-      <obj_property name="isExpanded"></obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/mux_2to1_candidate/data_out" type="array">
       <obj_property name="ElementShortName">data_out[7:0]</obj_property>
