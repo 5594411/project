@@ -27,35 +27,6 @@ entity project is
 end project;
 
 architecture structural of project is
-component mux_4to1_8b is
-generic 
-    (
-        NUM_TALLY: integer := 8
-    );
-    port 
-    (
-        btnU     : in std_logic;
-        btnR     : in std_logic;
-        btnD     : in std_logic;
-        btnL     : in std_logic;
-        dataA    : in std_logic_vector(NUM_TALLY - 1 downto 0);
-        dataB    : in std_logic_vector(NUM_TALLY - 1 downto 0);
-        dataC    : in std_logic_vector(NUM_TALLY - 1 downto 0);
-        dataD    : in std_logic_vector(NUM_TALLY - 1 downto 0);
-        data_out : out std_logic_vector(NUM_TALLY - 1 downto 0)
-    );
-end component;
-
-component record_queue is
-    generic ( SW_TAG_SIZE : integer := 4;
-              SW_RECORD_SIZE : integer := 12 );
-    port ( reset        : in  std_logic;
-           clk          : in  std_logic;
-           push_en      : in  std_logic;
-           record_in : in std_logic_vector(15 downto 0);
-           record_out   : out std_logic_vector(31 downto 0);
-           tag_out      : out std_logic_vector(7 downto 0));
-end component;
 
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
@@ -180,6 +151,10 @@ signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal clk_divider    : std_logic_vector(15 downto 0);
 signal display_data, temp_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal result : integer range 0 to 1024;
+
+-- Debounced signals
+signal clean_btnC, clean_btnU, clean_btnR, clean_btnD, clean_btnL: std_logic;
+
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -189,6 +164,47 @@ begin
     secret_key <= "1110100001011001";
     reset <= btnR;
     sig_one_4b <= "0001";
+    
+    -- Debouncers
+    dbncebtnC: entity work.debounce
+    port map 
+    (
+        clk => clk,
+        noisy_sig => btnC,
+        clean_sig => clean_btnC
+    );
+    
+    dbncebtnU: entity work.debounce
+    port map 
+    (
+        clk => clk,
+        noisy_sig => btnU,
+        clean_sig => clean_btnU
+    );
+
+    dbncebtnR: entity work.debounce
+    port map 
+    (
+        clk => clk,
+        noisy_sig => btnR,
+        clean_sig => clean_btnR
+    );
+  
+    dbncebtnD: entity work.debounce
+    port map 
+    (
+        clk => clk,
+        noisy_sig => btnD,
+        clean_sig => clean_btnD
+    );
+    
+    dbncebtnL: entity work.debounce
+    port map 
+    (
+        clk => clk,
+        noisy_sig => btnL,
+        clean_sig => clean_btnL
+    );
     
     pc : entity work.program_counter
     port map ( reset    => reset,
@@ -235,15 +251,20 @@ begin
                key_en           => sig_key_en);
                
     
-    rec_q : record_queue
+    rec_q : entity work.record_queue
     port map(
-        reset =>reset,
+        reset => reset,
         clk => clk,
-        push_en  => sig_push_en,
+        push_en  => clean_btnC, --sig_push_en,
         record_in => sw,
         record_out => rec_out,
         tag_out => tag_out
     );
+    
+    -- tag and record displayed onto LEDs
+    led(15 downto 4) <= rec_out(11 downto 0);
+    led(3 downto 0)  <= tag_out(3 downto 0);
+    
    
     idtd : entity work.id_td_pipe_reg
     port map( clk => clk, 
@@ -354,17 +375,23 @@ begin
     mem_sum_out <= (others=>'0') when (reset = '1') else sig_sum_out;
     
     -- Mux that chooses between the memory outputs and sends into final data
-    display_mux: mux_4to1_8b
+    
+--    c0 <= "10000000";
+--    c1 <= "11100000";
+--    c2 <= "11001100";
+--    c3 <= "00001110";
+    
+    display_mux: entity work.mux_4to1_8b
         generic map
         (
             NUM_TALLY => NUM_TALLY
         )
         port map 
         (
-            btnU => btnU,
-            btnR => btnR,
-            btnD => btnD,
-            btnL => btnL,
+            btnU => clean_btnU,
+            btnR => clean_btnR,
+            btnD => clean_btnD,
+            btnL => clean_btnL,
             dataA => c0,
             dataB => c1,
             dataC => c2,
@@ -374,6 +401,7 @@ begin
     
     -- Asynch display process after data memory -> convert binary to bcd
     result <= to_integer(unsigned(temp_data));
+    
     process(clk)
     begin
         if rising_edge(clk) then
