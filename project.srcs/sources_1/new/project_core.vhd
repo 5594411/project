@@ -160,7 +160,7 @@ signal decoder_record_in : std_logic_vector(31 downto 0);
 -- Display signals
 signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal clk_divider    : std_logic_vector(15 downto 0);
-signal display_data   : unsigned(NUM_TALLY - 1 downto 0);
+signal display_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
 
 
 begin
@@ -354,27 +354,26 @@ begin
             dataC => c2,
             dataD => c3,
             data_out => display_data
-        )
+        );
     
-    -- Asynch display process after data memory
+    -- Asynch display process after data memory -> convert binary to bcd
     process(clk)
     begin
         if rising_edge(clk) then
             clk_divider <= clk_divider + 1;
-
-            case clk_divider(15 downto 14) is
-                when "00" =>
-                    an <= "1110";   
-                    display_data <= to_unsigned(to_integer(result) mod 10, 4); -- convert binary to bcd
-                when "01" =>
-                    an <= "1101";
-                    display_data <= to_unsigned((to_integer(result) / 10) mod 10, 4); 
-                when "10" =>
-                    an <= "1011";
-                    display_data <= to_unsigned(to_integer(result) / 100, 4); 
-                when others =>
-                    an <= "0111";
-                    display_data <= "0000";
+        case clk_divider(15 downto 14) is
+            when "00" => 
+                an <= "1110"; 
+                display_data <= std_logic_vector(to_unsigned(to_integer(result) mod  10, 8));
+            when "01" => 
+                an <= "1101"; 
+                display_data <= std_logic_vector(to_unsigned((to_integer(result) / 10) mod 10, 8));
+            when "10" => 
+                an <= "1011"; 
+                display_data <= std_logic_vector(to_unsigned(to_integer(result) / 100,    8));
+            when others => 
+                an <= "0111"; 
+                display_data <= (others => '0');
             end case;
         end if;
     end process;
