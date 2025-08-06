@@ -28,10 +28,9 @@ begin
       if(reset='1') then
          record_out <= (others=>'0');
          tag_out <= (others=>'0');
-         var_1 := 1;
       else
         if (rising_edge(clk)) then
-          if (var_1 = 1 and push_en = '1') then
+          if (push_en = '1') then
                 record_out(SW_RECORD_SIZE - 1 downto 0) <= record_in(15 downto SW_TAG_SIZE);
                 record_out(31 downto SW_RECORD_SIZE) <= (others => '0');
                 tag_out(SW_TAG_SIZE - 1 downto 0) <= record_in(SW_TAG_SIZE - 1 downto 0);

@@ -26,6 +26,16 @@ entity project is
 end project;
 
 architecture structural of project is
+component anode_display is
+  Port ( clk : in std_logic;
+         data : in std_logic_vector(7 downto 0);
+         an : out std_logic_vector(3 downto 0);
+         display_data : out std_logic_vector(7 downto 0));
+end component;
+component sev_seg_dec IS
+    PORT ( display_data : in std_logic_vector(7 downto 0);
+           seg : OUT STD_LOGIC_VECTOR(0 TO 6));
+END component;
 
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
@@ -150,7 +160,7 @@ signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal display_data, temp_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
 -- Debounced signals
 signal clean_btnC, clean_btnU, clean_btnR, clean_btnD, clean_btnL: std_logic;
-
+signal test_data : std_logic_vector(NUM_TALLY - 1 downto 0);
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -158,7 +168,7 @@ begin
     sig_tag_sz <= "0100";
     sig_record_sz <= "010000";
     secret_key <= "1110100001011001";
-    reset <= btnR;
+    reset <= '0';
     sig_one_4b <= "0001";
     
     -- Debouncers
@@ -251,7 +261,8 @@ begin
     port map(
         reset => reset,
         clk => clk,
-        push_en  => clean_btnC, --sig_push_en,
+        --push_en  => btnC,
+        push_en  => clean_btnC,
         record_in => sw,
         record_out => rec_out,
         tag_out => tag_out
@@ -366,9 +377,9 @@ begin
             c2 => c2,
             c3 => c3
         );
-        
-    mem_data_out <= (others=>'0') when (reset = '1') else sig_data_out;
-    mem_sum_out <= (others=>'0') when (reset = '1') else sig_sum_out;
+
+    mem_data_out <= (others=>'0') when (reset = '1' OR is_x(sig_data_out)) else sig_data_out;
+    mem_sum_out <= (others=>'0') when (reset = '1' OR is_x(sig_sum_out)) else sig_sum_out;
     
     -- Mux that chooses between the memory outputs and sends into final data
     
@@ -394,9 +405,9 @@ begin
             dataD => c3,
             data_out => temp_data
         );
-    
+        
     -- Asynch display process after data memory -> convert binary to bcd
-    bintocbd : entity work.anode_display
+    bintocbd : anode_display
         port map
         (
             clk          => clk,
@@ -406,7 +417,7 @@ begin
         );
 
     -- BCD to 7-segment
-    seven_seg_disp : entity work.sev_seg_dec
+    seven_seg_disp : sev_seg_dec
         port map
         (
             display_data => display_data,

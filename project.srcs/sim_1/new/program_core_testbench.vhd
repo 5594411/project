@@ -47,7 +47,7 @@ begin
         RECORD_SIZE => RECORD_SIZE
     )
     port map( clk => clk,
-              btnR => btnR,
+              btnR => '1',
               btnC => btnC,
               btnL => '1',
               btnU => '1',
@@ -62,15 +62,37 @@ begin
             clk <= not clk;
         end loop;
     end process clck;
-    
+    -- tag is 1011
     stimulus: process begin
-        btnR <= '1';
         btnC <= '1';
         sw <= "1010100100101011";
         wait for 50 ns;
-        btnR <= '0';
         btnC <= '0';
         sw <= "1010100100101011";
+        wait for 50 ns;
+        btnC <= '1';
+        sw <= "1010100100101011";
+        wait for 50 ns;
+        btnC <= '0';
+        sw <= "1010100100101011";
+        wait for 50 ns;
+        btnC <= '1';
+        sw <= "0101010101001011";
+        wait for 50 ns;
+        btnC <= '0';
+        sw <= "0101010101001011";
+        wait for 50 ns;
+        btnC <= '1';
+        sw <= "0010101111101011";
+        wait for 50 ns;
+        btnC <= '0';
+        sw <= "0010101111101011";
+        wait for 50 ns;
+        btnC <= '1';
+        sw <= "0100001101011011";
+        wait for 50 ns;
+        btnC <= '0';
+        sw <= "0100001101011011";
         wait;
     end process stimulus;
 end Behavioral;
