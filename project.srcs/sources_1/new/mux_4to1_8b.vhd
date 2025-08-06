@@ -53,7 +53,7 @@ end mux_4to1_8b;
 architecture Behavioral of mux_4to1_8b is
 begin
 
-    process(btnU, btnR, btnD, btnL, dataA, dataB, dataC, dataD, data_out)
+    process(btnU, btnR, btnD, btnL, dataA, dataB, dataC, dataD)
     begin
         if btnU = '1' then
             data_out <= dataA;

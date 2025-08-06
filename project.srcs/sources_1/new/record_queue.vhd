@@ -22,7 +22,7 @@ signal sig_queue : queue_array :=(
 3  => "0000000000000000000000000000000000000000",
 4  => "0000000000000000000000000000000000000000");
 begin
-      queue_process: process (clk, push_en, btnC) is  
+      queue_process: process (clk, push_en) is  
       variable var_1 : integer :=0;
       begin
       if(reset='1') then

@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="122.740 ns"></ZoomStartTime>
-      <ZoomEndTime time="164.721 ns"></ZoomEndTime>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="1,053.501 ns"></ZoomEndTime>
       <Cursor1Time time="1,000.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="247"></NameColumnWidth>
-      <ValueColumnWidth column_width="208"></ValueColumnWidth>
+      <ValueColumnWidth column_width="200"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="38" />
+   <WVObjectSize size="40" />
    <wvobject fp_name="/program_core_testbench/UUT/reset" type="logic">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
@@ -75,6 +75,14 @@
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_swp" type="array">
       <obj_property name="ElementShortName">sig_record_swp[31:0]</obj_property>
       <obj_property name="ObjectShortName">sig_record_swp[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/final_tag" type="array">
+      <obj_property name="ElementShortName">final_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">final_tag[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/program_core_testbench/UUT/decoder1/expect_tag" type="array">
+      <obj_property name="ElementShortName">expect_tag[7:0]</obj_property>
+      <obj_property name="ObjectShortName">expect_tag[7:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_record_shift" type="array">
       <obj_property name="ElementShortName">sig_record_shift[31:0]</obj_property>

@@ -1,6 +1,5 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
@@ -22,12 +21,41 @@ entity project is
            clk    : in  std_logic;
            sw     : in  std_logic_vector(15 downto 0);
            led    : out  std_logic_vector(15 downto 0);
-           an : out std_logic_vector(4 downto 0);
+           an : out std_logic_vector(3 downto 0);
            dp : out std_logic;
            seg : out std_logic_vector(6 downto 0) );
 end project;
 
 architecture structural of project is
+component mux_4to1_8b is
+generic 
+    (
+        NUM_TALLY: integer := 8
+    );
+    port 
+    (
+        btnU     : in std_logic;
+        btnR     : in std_logic;
+        btnD     : in std_logic;
+        btnL     : in std_logic;
+        dataA    : in std_logic_vector(NUM_TALLY - 1 downto 0);
+        dataB    : in std_logic_vector(NUM_TALLY - 1 downto 0);
+        dataC    : in std_logic_vector(NUM_TALLY - 1 downto 0);
+        dataD    : in std_logic_vector(NUM_TALLY - 1 downto 0);
+        data_out : out std_logic_vector(NUM_TALLY - 1 downto 0)
+    );
+end component;
+
+component record_queue is
+    generic ( SW_TAG_SIZE : integer := 4;
+              SW_RECORD_SIZE : integer := 12 );
+    port ( reset        : in  std_logic;
+           clk          : in  std_logic;
+           push_en      : in  std_logic;
+           record_in : in std_logic_vector(15 downto 0);
+           record_out   : out std_logic_vector(31 downto 0);
+           tag_out      : out std_logic_vector(7 downto 0));
+end component;
 
 signal sig_tag_sz          : std_logic_vector(3 downto 0);
 signal sig_record_sz       : std_logic_vector(5 downto 0);
@@ -150,8 +178,8 @@ signal decoder_record_in : std_logic_vector(31 downto 0);
 -- Display signals
 signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal clk_divider    : std_logic_vector(15 downto 0);
-signal display_data, result   : std_logic_vector(NUM_TALLY - 1 downto 0);
-
+signal display_data, temp_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
+signal result : integer range 0 to 1024;
 begin
     -- tag size <= 8 
     -- tag size >= record size/4
@@ -207,7 +235,7 @@ begin
                key_en           => sig_key_en);
                
     
-    rec_q : entity work.record_queue
+    rec_q : record_queue
     port map(
         reset =>reset,
         clk => clk,
@@ -323,7 +351,7 @@ begin
         );
     
     -- Mux that chooses between the memory outputs and sends into final data
-    display_mux: entity work.mux_4to1_8b
+    display_mux: mux_4to1_8b
         generic map
         (
             NUM_TALLY => NUM_TALLY
@@ -338,10 +366,11 @@ begin
             dataB => c1,
             dataC => c2,
             dataD => c3,
-            data_out => result
+            data_out => temp_data
         );
     
     -- Asynch display process after data memory -> convert binary to bcd
+    result <= to_integer(unsigned(temp_data));
     process(clk)
     begin
         if rising_edge(clk) then
@@ -349,13 +378,13 @@ begin
         case clk_divider(15 downto 14) is
             when "00" => 
                 an <= "1110"; 
-                display_data <= std_logic_vector(to_unsigned(to_integer(result) mod  10, 8));
+                display_data <= std_logic_vector(to_unsigned(result mod  10, 8));
             when "01" => 
                 an <= "1101"; 
-                display_data <= std_logic_vector(to_unsigned((to_integer(result) / 10) mod 10, 8));
+                display_data <= std_logic_vector(to_unsigned(result / 10 mod 10, 8));
             when "10" => 
                 an <= "1011"; 
-                display_data <= std_logic_vector(to_unsigned(to_integer(result) / 100,    8));
+                display_data <= std_logic_vector(to_unsigned(result / 100, 8));
             when others => 
                 an <= "0111"; 
                 display_data <= (others => '0');
@@ -367,16 +396,16 @@ begin
     process(display_data)
     begin
         case display_data is
-            when "0000" => seg <= "1000000";
-            when "0001" => seg <= "1111001";
-            when "0010" => seg <= "0100100";
-            when "0011" => seg <= "0110000";
-            when "0100" => seg <= "0011001";
-            when "0101" => seg <= "0010010";
-            when "0110" => seg <= "0000010";
-            when "0111" => seg <= "1111000";
-            when "1000" => seg <= "0000000";
-            when "1001" => seg <= "0010000";
+            when "00000000" => seg <= "1000000";
+            when "00000001" => seg <= "1111001";
+            when "00000010" => seg <= "0100100";
+            when "00000011" => seg <= "0110000";
+            when "00000100" => seg <= "0011001";
+            when "00000101" => seg <= "0010010";
+            when "00000110" => seg <= "0000010";
+            when "00000111" => seg <= "1111000";
+            when "00001000" => seg <= "0000000";
+            when "00001001" => seg <= "0010000";
             when others => seg <= "1111111";  -- Blank
         end case;
     end process;
