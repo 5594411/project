@@ -3,6 +3,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity swap is
+    generic ( MAX_TAG_SIZE : integer := 8 );
     port ( block_x : in  std_logic_vector(7 downto 0);
            block_y : in  std_logic_vector(7 downto 0);
            px : in  std_logic_vector(1 downto 0);
@@ -29,12 +30,12 @@ begin
         s_range := to_integer(unsigned(s));
         
         if (int_tag_size = 0) then
-            divisor := 8;
+            divisor := MAX_TAG_SIZE;
         else
             divisor := int_tag_size;
         end if;
 
-        for i in 0 to 8 loop
+        for i in 0 to MAX_TAG_SIZE loop
             exit when i = s_range;
             id_x := (to_integer(unsigned(px)) + i) mod divisor;
             id_y := (to_integer(unsigned(py)) + i) mod divisor;

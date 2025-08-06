@@ -8,6 +8,7 @@ entity decoder_core is
     port ( clk    : in  std_logic;
            decoder_key : in std_logic_vector(15 downto 0);
            record_in     : in  std_logic_vector(31 downto 0);
+           record_out     : out  std_logic_vector(31 downto 0);
            expect_tag : in std_logic_vector(7 downto 0);
            tag_match   : out  std_logic);
 end decoder_core;
@@ -69,6 +70,7 @@ signal sig_swaped_block_y : std_logic_vector(7 downto 0);
 signal secret_key: std_logic_vector(15 downto 0);
 signal final_tag, final_expect_tag : std_logic_vector(7 downto 0);
 signal expect_tag_flip, expect_tag_swap, expect_tag_shift, expect_tag_xor : std_logic_vector(7 downto 0);
+signal sig_record_xor    : std_logic_vector(31 downto 0);
 begin
     sig_tag_sz <= std_logic_vector(to_unsigned(TAG_SIZE, 4));
     sig_record_sz <= std_logic_vector(to_unsigned(RECORD_SIZE, 6));
@@ -86,7 +88,7 @@ begin
 
     bp_flip: entity work.block_pipe_reg
     port map( clk          => clk,
-              record_in    => sig_record_bp,
+              record_in    => record_in,
               block_0      => sig_block_bp_0,
               block_1      => sig_block_bp_1,
               block_2      => sig_block_bp_2,
@@ -200,7 +202,7 @@ begin
               block_1_out  => sig_block_shift_1_out,
               block_2_out  => sig_block_shift_2_out,
               block_3_out  => sig_block_shift_3_out,
-              record_out   => sig_record_shift,
+              record_out   => sig_record_xor,
               expect_tag => expect_tag_shift,
               expect_tag_out => expect_tag_xor );
     
@@ -212,10 +214,12 @@ begin
                xor_out => final_tag);
      
     record_reg: entity work.pipe_reg
-    generic map ( WIDTH => 8 )
+    generic map ( WIDTH => 40 )
     port map (clk => clk,
-              din => expect_tag_xor,
-              dout => final_expect_tag);
-    
+              din(7 downto 0) => expect_tag_xor,
+              din(39 downto 8) => sig_record_xor,
+              dout(7 downto 0) => final_expect_tag,
+              dout (39 downto 8) => record_out);
+
     tag_match <= '1' when (final_tag = final_expect_tag AND final_tag /= "UUUUUUUU" AND final_expect_tag /= "UUUUUUUU") else '0';
 end Behavioral;

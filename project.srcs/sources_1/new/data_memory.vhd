@@ -25,7 +25,11 @@ entity tally_table is
            candidate_w: in  std_logic_vector(NUM_CANDIDATE - 1 downto 0);
            district_w: in  std_logic_vector(NUM_DISTRICT - 1 downto 0);
            data_out     : out std_logic_vector(NUM_TALLY - 1 downto 0);
-           sum_out: out std_logic_vector(NUM_TALLY - 1 downto 0) );
+           sum_out: out std_logic_vector(NUM_TALLY - 1 downto 0);
+           c0: out std_logic_vector(NUM_TALLY - 1 downto 0);
+           c1: out std_logic_vector(NUM_TALLY - 1 downto 0);
+           c2: out std_logic_vector(NUM_TALLY - 1 downto 0);
+           c3: out std_logic_vector(NUM_TALLY - 1 downto 0));
 end tally_table;
 
 architecture behavioral of tally_table is
@@ -79,5 +83,8 @@ begin
     
     read_data <= sig_data_mem(var_candidate_r, var_district_r) when read_enable = '1' else (others=>'0');
     read_sum <= sig_data_mem(var_candidate_r, 2**NUM_DISTRICT) when read_enable = '1' else (others=>'0');
-  
+    c0 <= sig_data_mem(0, 2**NUM_DISTRICT);
+    c1 <= sig_data_mem(1, 2**NUM_DISTRICT);
+    c2 <= sig_data_mem(2, 2**NUM_DISTRICT);
+    c3 <= sig_data_mem(3, 2**NUM_DISTRICT);
 end behavioral;

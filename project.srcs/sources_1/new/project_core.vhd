@@ -5,7 +5,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity project is
     generic (
-        NUM_CANDIDATE: integer := 4;
+        NUM_CANDIDATE: integer := 2;
 --        save the last column as sum for specfic candidate
         NUM_DISTRICT: integer := 2;
         NUM_TALLY: integer := 8;
@@ -15,6 +15,9 @@ entity project is
     port ( 
            btnR   : in  std_logic;
            btnC   : in  std_logic;
+           btnL : in std_logic;
+           btnU : in std_logic;
+           btnD : in std_logic;
            clk    : in  std_logic;
            sw     : in  std_logic_vector(15 downto 0);
            led    : out  std_logic_vector(15 downto 0);
@@ -142,6 +145,8 @@ signal tag_out_idtd             : std_logic_vector(7 downto 0);
 
 signal tag_match          : std_logic;
 signal decoder_record_in : std_logic_vector(31 downto 0);
+
+signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
 component record_queue is
     port ( reset        : in  std_logic;
            clk          : in  std_logic;
@@ -256,12 +261,14 @@ begin
     
     decoder_record_in(RECORD_SIZE - 1 downto 0) <= rec_out_idtd(RECORD_SIZE + 8 - 1 downto 8);
     decoder_record_in(31 downto RECORD_SIZE) <= (others => '0');
+
     decoder1: entity work.decoder_core
     generic map ( TAG_SIZE => TAG_SIZE,
                   RECORD_SIZE => RECORD_SIZE)
     port map ( clk => clk,
                decoder_key => decoder_key,
                record_in => decoder_record_in,
+               record_out => sig_record,
                expect_tag => tag_out_idtd,
                tag_match => tag_match);
  
@@ -270,8 +277,8 @@ begin
     mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w ) else '0';
     
     sig_mem_write_for_memory <= tag_match;
-    sig_candidate_r <= sig_record(NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_TALLY);
-    sig_district_r <= sig_record(NUM_DISTRICT + NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_CANDIDATE + NUM_TALLY);
+    sig_candidate_r <= sig_record(NUM_CANDIDATE + NUM_TALLY + TAG_SIZE - 1 downto NUM_TALLY + TAG_SIZE);
+    sig_district_r <= sig_record(NUM_DISTRICT + NUM_CANDIDATE + NUM_TALLY + TAG_SIZE - 1 downto NUM_CANDIDATE + NUM_TALLY + TAG_SIZE);
     
     mux_2to1_candidate: entity work.mux_2to1_8b
     port map ( mux_select => mux_select_candidate,

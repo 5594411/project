@@ -49,6 +49,9 @@ begin
     port map( clk => clk,
               btnR => btnR,
               btnC => btnC,
+              btnL => '1',
+              btnU => '1',
+              btnD => '1',
               sw => sw,
               led => led);
 
