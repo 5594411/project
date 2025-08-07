@@ -54,6 +54,8 @@ begin
     variable var_write_sum: integer;
     variable var_candidate_w    : integer;
     variable var_district_w     : integer;
+    variable var_read_candidate : std_logic_vector(NUM_TALLY - 1 downto 0);
+    variable var_read_district : std_logic_vector(NUM_TALLY - 1 downto 0);
   
     begin
         var_candidate_w := conv_integer(candidate_w);
@@ -69,8 +71,16 @@ begin
             end loop;
         elsif (rising_edge(clk) and write_enable = '1') then
             -- memory writes on the falling clock edge
-            var_data_mem(var_candidate_w, var_district_w) := write_data;
-            var_data_mem(var_candidate_w, 2**NUM_DISTRICT) := write_sum;
+            var_read_district := var_data_mem(var_candidate_w, var_district_w);
+            var_read_candidate  := var_data_mem(var_candidate_w, 2**NUM_DISTRICT);
+            if (is_x(var_read_district)) then
+                var_read_district := (others => '0');
+            end if;
+            if (is_x(var_read_candidate)) then
+                var_read_candidate := (others => '0');
+            end if;
+            var_data_mem(var_candidate_w, var_district_w) := var_read_district + write_data;
+            var_data_mem(var_candidate_w, 2**NUM_DISTRICT) := var_read_candidate + write_sum;
         end if;
  
         -- the following are probe signals (for simulation purpose) 

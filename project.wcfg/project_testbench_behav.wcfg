@@ -10,15 +10,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="643.500 ns"></ZoomStartTime>
-      <ZoomEndTime time="1,071.301 ns"></ZoomEndTime>
-      <Cursor1Time time="1,000.000 ns"></Cursor1Time>
+      <ZoomStartTime time="99.230 ns"></ZoomStartTime>
+      <ZoomEndTime time="347.231 ns"></ZoomEndTime>
+      <Cursor1Time time="394.230 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
-      <NameColumnWidth column_width="247"></NameColumnWidth>
-      <ValueColumnWidth column_width="168"></ValueColumnWidth>
+      <NameColumnWidth column_width="271"></NameColumnWidth>
+      <ValueColumnWidth column_width="159"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="39" />
+   <WVObjectSize size="22" />
    <wvobject fp_name="/program_core_testbench/UUT/reset" type="logic">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
@@ -51,46 +51,6 @@
       <obj_property name="ObjectShortName">expect_tag[7:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_3_out" type="array">
-      <obj_property name="ElementShortName">sig_block_bp_3_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_block_bp_3_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_2_out" type="array">
-      <obj_property name="ElementShortName">sig_block_bp_2_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_block_bp_2_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_1_out" type="array">
-      <obj_property name="ElementShortName">sig_block_bp_1_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_block_bp_1_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_bp_0_out" type="array">
-      <obj_property name="ElementShortName">sig_block_bp_0_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_block_bp_0_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_3_out" type="array">
-      <obj_property name="ElementShortName">sig_block_shift_3_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_block_shift_3_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_2_out" type="array">
-      <obj_property name="ElementShortName">sig_block_shift_2_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_block_shift_2_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_1_out" type="array">
-      <obj_property name="ElementShortName">sig_block_shift_1_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_block_shift_1_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/decoder1/sig_block_shift_0_out" type="array">
-      <obj_property name="ElementShortName">sig_block_shift_0_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_block_shift_0_out[7:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/decoder1/final_tag" type="array">
       <obj_property name="ElementShortName">final_tag[7:0]</obj_property>
       <obj_property name="ObjectShortName">final_tag[7:0]</obj_property>
@@ -115,59 +75,13 @@
       <obj_property name="ObjectShortName">sig_record[31:0]</obj_property>
       <obj_property name="Radix">BINARYRADIX</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/sig_candidate_r" type="array">
-      <obj_property name="ElementShortName">sig_candidate_r[1:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_candidate_r[1:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/sig_candidate_w" type="array">
+      <obj_property name="ElementShortName">sig_candidate_w[1:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_candidate_w[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/sig_district_r" type="array">
-      <obj_property name="ElementShortName">sig_district_r[1:0]</obj_property>
-      <obj_property name="ObjectShortName">sig_district_r[1:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/mux_2to1_candidate/mux_select" type="logic">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">mux_select</obj_property>
-      <obj_property name="ObjectShortName">mux_select</obj_property>
-      <obj_property name="label">c_mux_select</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/mux_2to1_district/mux_select" type="logic">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">mux_select</obj_property>
-      <obj_property name="ObjectShortName">mux_select</obj_property>
-      <obj_property name="label">d_mux_select</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/mux_2to1_candidate/data_out" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">data_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">data_out[7:0]</obj_property>
-      <obj_property name="label">c_data_out[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/alu_write_data/sum" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">sum[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sum[7:0]</obj_property>
-      <obj_property name="label">c_sum[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/mux_2to1_district/data_out" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">data_out[7:0]</obj_property>
-      <obj_property name="ObjectShortName">data_out[7:0]</obj_property>
-      <obj_property name="label">d_data_out[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/alu_write_sum/sum" type="array">
-      <obj_property name="DisplayName">label</obj_property>
-      <obj_property name="ElementShortName">sum[7:0]</obj_property>
-      <obj_property name="ObjectShortName">sum[7:0]</obj_property>
-      <obj_property name="label">d_sum[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/data_memory/read_enable" type="logic">
-      <obj_property name="ElementShortName">read_enable</obj_property>
-      <obj_property name="ObjectShortName">read_enable</obj_property>
+   <wvobject fp_name="/program_core_testbench/UUT/sig_district_w" type="array">
+      <obj_property name="ElementShortName">sig_district_w[1:0]</obj_property>
+      <obj_property name="ObjectShortName">sig_district_w[1:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/write_enable" type="logic">
       <obj_property name="ElementShortName">write_enable</obj_property>
@@ -176,16 +90,6 @@
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/sig_data_mem" type="array">
       <obj_property name="ElementShortName">sig_data_mem[0:3,0:4][7:0]</obj_property>
       <obj_property name="ObjectShortName">sig_data_mem[0:3,0:4][7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/mux_2to1_candidate/data_a" type="array">
-      <obj_property name="ElementShortName">data_a[7:0]</obj_property>
-      <obj_property name="ObjectShortName">data_a[7:0]</obj_property>
-      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject fp_name="/program_core_testbench/UUT/mux_2to1_candidate/data_b" type="array">
-      <obj_property name="ElementShortName">data_b[7:0]</obj_property>
-      <obj_property name="ObjectShortName">data_b[7:0]</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/read_data" type="array">
@@ -201,17 +105,21 @@
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/c0" type="array">
       <obj_property name="ElementShortName">c0[7:0]</obj_property>
       <obj_property name="ObjectShortName">c0[7:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/c1" type="array">
       <obj_property name="ElementShortName">c1[7:0]</obj_property>
       <obj_property name="ObjectShortName">c1[7:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/c2" type="array">
       <obj_property name="ElementShortName">c2[7:0]</obj_property>
       <obj_property name="ObjectShortName">c2[7:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
    <wvobject fp_name="/program_core_testbench/UUT/data_memory/c3" type="array">
       <obj_property name="ElementShortName">c3[7:0]</obj_property>
       <obj_property name="ObjectShortName">c3[7:0]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
 </wave_config>

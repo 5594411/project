@@ -159,7 +159,9 @@ signal decoder_record_in : std_logic_vector(31 downto 0);
 signal c0, c1, c2, c3 : std_logic_vector(NUM_TALLY - 1 downto 0);
 signal display_data, temp_data   : std_logic_vector(NUM_TALLY - 1 downto 0);
 -- Debounced signals
-signal clean_btnC, clean_btnU, clean_btnR, clean_btnD, clean_btnL: std_logic;
+signal clean_btnC, prev_btnC, clean_btnU, clean_btnR, clean_btnD, clean_btnL: std_logic;
+signal clean_match, prev_match: std_logic;
+signal match_count, btnc_count : std_logic_vector(1 downto 0);
 signal test_data : std_logic_vector(NUM_TALLY - 1 downto 0);
 begin
     -- tag size <= 8 
@@ -172,13 +174,27 @@ begin
     sig_one_4b <= "0001";
     
     -- Debouncers
-    dbncebtnC: entity work.debounce
-    port map 
-    (
-        clk => clk,
-        noisy_sig => btnC,
-        clean_sig => clean_btnC
-    );
+    
+    process (clk, btnC, btnc_count, clean_btnC)
+    begin
+        if (rising_edge(clk)) then
+            if (btnC = '1' AND clean_btnC = '1' AND btnc_count = "11") then
+                clean_btnC <= '0';
+            end if;
+            if (btnC = '0') then
+                btnc_count <= (others => '0');
+                clean_btnC <= '0';
+            end if;
+            if (btnc_count = "01" AND btnC = '1') then
+                clean_btnC <= '1';
+                btnc_count <= "11";
+            end if;
+            if (btnc_count = "00" AND btnC = '1') then
+                clean_btnC <= '1';
+                btnc_count <= "01";
+            end if;
+        end if;
+    end process;
     
     dbncebtnU: entity work.debounce
     port map 
@@ -269,9 +285,8 @@ begin
     );
     
     -- tag and record displayed onto LEDs
-    led(15 downto 4) <= rec_out(11 downto 0);
-    led(3 downto 0)  <= tag_out(3 downto 0);
-    
+    --led(15 downto 4) <= rec_out(11 downto 0);
+    --led(3 downto 0)  <= tag_out(3 downto 0);
    
     idtd : entity work.id_td_pipe_reg
     port map( clk => clk, 
@@ -296,61 +311,37 @@ begin
                record_out => sig_record,
                expect_tag => tag_out_idtd,
                tag_match => tag_match);
- 
-    -- compare tag_out_idtd with sig_tag
-    mux_select_candidate <= '1' when (sig_candidate_r = sig_candidate_w) else '0';
-    mux_select_district <= '1' when (sig_candidate_r = sig_candidate_w and sig_district_r = sig_district_w) else '0';
-    
-    sig_mem_read_for_memory <= tag_match;
-    sig_candidate_r <= sig_record(NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_TALLY);
-    sig_district_r <= sig_record(NUM_DISTRICT + NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_CANDIDATE + NUM_TALLY);
-    
-    mux_2to1_candidate: entity work.mux_2to1_8b
-    port map ( mux_select => mux_select_candidate,
-               data_a => sig_read_sum,
-               data_b => mem_sum_out,
-               data_out => ex_read_sum );
-    
-    mux_2to1_district: entity work.mux_2to1_8b
-    port map ( mux_select => mux_select_district,
-               data_a => sig_read_data,
-               data_b => mem_data_out,
-               data_out => ex_read_data);
-    
-    alu_write_data : entity work.adder_8b 
-    port map ( src_a     => ex_read_data,
-               src_b     => sig_record(NUM_TALLY - 1 downto 0),
-               sum       => ex_write_data,
-               carry_out => sig_write_data_carry_out );
-    
-    alu_write_sum : entity work.adder_8b 
-    port map ( src_a     => ex_read_sum,
-               src_b     => sig_record(NUM_TALLY - 1 downto 0),
-               sum       => ex_write_sum,
-               carry_out => sig_write_sum_carry_out );
                
-    process(clk, reset)
+    
+    process (clk, tag_match, clean_match, match_count)
     begin
-        if (reset = '1') then
-            sig_write_data_for_memory  <= (others=>'0');
-            sig_write_sum <= (others=>'0');
-            sig_candidate_w <= (others=>'0');
-            sig_district_w <= (others=>'0');
-            sig_mem_write <= '0';
-        elsif (rising_edge(clk)) then
-            sig_write_data_for_memory  <= ex_write_data;
-            sig_write_sum <= ex_write_sum;
-            sig_candidate_w <= sig_candidate_r;
-            sig_district_w <= sig_district_r;
-            sig_mem_write <= sig_mem_read_for_memory;
+        if (rising_edge(clk)) then
+            if (tag_match = '1' AND clean_match = '1' AND match_count = "11") then
+                clean_match <= '0';
+            end if;
+            if (tag_match = '0') then
+                match_count <= (others => '0');
+                clean_match <= '0';
+            end if;
+            if (match_count = "01" AND tag_match = '1') then
+                clean_match <= '1';
+                match_count <= "11";
+            end if;
+            if (match_count = "00" AND tag_match = '1') then
+                clean_match <= '1';
+                match_count <= "01";
+            end if;
         end if;
     end process;
---    sig_write_data_for_memory  <= ex_write_data when reset = '0' else (others=>'0');
---    sig_write_sum <= ex_write_sum when reset = '0' else (others=>'0');
---    sig_candidate_w <= sig_candidate_r when reset = '0' else (others=>'0');
---    sig_district_w <= sig_district_r when reset = '0' else (others=>'0');
---    sig_mem_write <= sig_mem_read_for_memory when reset = '0' else '0';
-    
+    led(9 downto 8) <= btnc_count;
+    led(11 downto 10) <= match_count;
+
+    sig_mem_write <= clean_match;
+    sig_candidate_w <= sig_record(NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_TALLY);
+    sig_district_w <= sig_record(NUM_DISTRICT + NUM_CANDIDATE + NUM_TALLY - 1 downto NUM_CANDIDATE + NUM_TALLY);
+    sig_write_data_for_memory <= sig_record(NUM_TALLY - 1 downto 0);
+    sig_write_sum <= sig_record(NUM_TALLY - 1 downto 0);
+    led(7 downto 0)  <= sig_write_sum;
     data_memory: entity work.tally_table
         generic map (
             NUM_CANDIDATE => NUM_CANDIDATE,
@@ -377,9 +368,7 @@ begin
             c2 => c2,
             c3 => c3
         );
-
-    mem_data_out <= (others=>'0') when (reset = '1' OR is_x(sig_data_out)) else sig_data_out;
-    mem_sum_out <= (others=>'0') when (reset = '1' OR is_x(sig_sum_out)) else sig_sum_out;
+        
     
     -- Mux that chooses between the memory outputs and sends into final data
     
