@@ -31,16 +31,16 @@ begin
       else
         if (rising_edge(clk)) then
           if (push_en = '1') then
-                record_out(SW_RECORD_SIZE - 1 downto 0) <= record_in(15 downto SW_TAG_SIZE);
+                record_out(SW_RECORD_SIZE - 1 downto 0) <= sig_queue(4)(15 downto SW_TAG_SIZE);
                 record_out(31 downto SW_RECORD_SIZE) <= (others => '0');
-                tag_out(SW_TAG_SIZE - 1 downto 0) <= record_in(SW_TAG_SIZE - 1 downto 0);
+                tag_out(SW_TAG_SIZE - 1 downto 0) <= sig_queue(4)(SW_TAG_SIZE - 1 downto 0);
                 tag_out(7 downto SW_TAG_SIZE) <= (others => '0');
                 
                 sig_queue(4)  <= sig_queue(3);
                 sig_queue(3)  <= sig_queue(2);
                 sig_queue(2)  <= sig_queue(1);  
                 sig_queue(1)  <= sig_queue(0);
-                sig_queue(0)  <= (others=>'0');
+                sig_queue(0)(15 downto 0)  <= record_in;
           elsif (push_en='0') then
                 record_out <= (others=>'0');
                 tag_out <= (others=>'0');            

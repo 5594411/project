@@ -42,16 +42,16 @@ end instruction_memory;
 architecture Behavioral of instruction_memory is
 type mem_array is array(0 to 15) of std_logic_vector(31 downto 0);
     signal sig_insn_mem : mem_array := (
-        0 => X"30001234",
+        0 => X"1000E859",
         1 => X"30000001",
         2 => X"30000002",
         3 => X"30000003",
         4 => X"30000004",
         5 => X"30000005",
-        6 => X"00000006",
-        7 => X"00000007",   
-        8 => X"00000008",   
-        others => X"00000000"
+        6 => X"30000006",
+        7 => X"30000007",   
+        8 => X"40000008",   
+        others => X"30000000"
     );
 begin
  mem_process : process(clk, reset)

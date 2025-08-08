@@ -24,36 +24,34 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity register_file is
+   generic( tally_size    : integer :=8);
     port ( reset           : in  std_logic;
            clk             : in  std_logic;
            old_key         : out  std_logic_vector(15 downto 0);
            new_key         : in  std_logic_vector(15 downto 0);
-           write_enable    : in  std_logic;
-           write_register  : in  std_logic_vector(1 downto 0);
-           write_data      : in  std_logic_vector(31 downto 0);
-           stall           : in std_logic; 
-           key_en           : in std_logic);
+           c0              : in std_logic_vector (tally_size-1 downto 0);
+           c1              : in std_logic_vector (tally_size-1 downto 0);
+           c2              : in std_logic_vector (tally_size-1 downto 0);
+           c3              : in std_logic_vector (tally_size-1 downto 0);
+           key_en           : in std_logic;
+           write_enable        : in std_logic);
 end register_file;
 
 architecture behavioral of register_file is
 
 type reg_file is array(0 to 3) of std_logic_vector(31 downto 0);
-signal sig_regfile : reg_file;
+signal sig_regfile : reg_file; 
 
 begin
 
     mem_process : process ( reset,
-                            clk,
-                            write_enable,
-                            write_register,
-                            write_data ) is
+                            clk ) is
 
     variable var_regfile     : reg_file;
     variable var_write_addr  : integer;
     
     begin
     
-        var_write_addr  := conv_integer(write_register);
         
         if (reset = '1') then
             -- initial values of the registers - reset to zeroes
@@ -61,13 +59,20 @@ begin
 
         elsif (rising_edge(clk) and write_enable = '1') then
             -- register write on the falling clock edge
-            var_regfile(var_write_addr) := write_data;
-             
-            if (stall='0') then
+            
+            var_regfile(0)(tally_size-1 downto 0) := c0;
+            var_regfile(1)(tally_size-1 downto 0) := c1;
+            var_regfile(2)(tally_size-1 downto 0) := c2;
+            var_regfile(3)(tally_size-1 downto 0) := c3;
+            var_regfile(0)(31 downto tally_size) := (others => '0');
+            var_regfile(1)(31 downto tally_size) := (others => '0');
+            var_regfile(2)(31 downto tally_size) := (others => '0');
+            var_regfile(3)(31 downto tally_size) := (others => '0');
+        end if;
+        if (rising_edge(clk) and key_en='1') then
             
                 old_key<=new_key;
             end if; 
-        end if;
 
 
 

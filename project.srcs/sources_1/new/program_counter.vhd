@@ -40,7 +40,7 @@ entity program_counter is
     port ( reset    : in  std_logic;
            clk      : in  std_logic;
            addr_in  : in  std_logic_vector(3 downto 0);
-           addr_out : out std_logic_vector(3 downto 0);
+           addr_out : inout std_logic_vector(3 downto 0);
            enable   : in std_logic );
 end program_counter;
 
@@ -49,7 +49,7 @@ begin
 
     update_process: process ( reset, clk ) is
     begin
-       if (reset = '1') then
+       if (is_x(addr_out)) then
            addr_out <= (others => '0'); 
        elsif (rising_edge(clk) and enable='1') then 
            addr_out <= addr_in;
